@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Hazard Map</title>
+        <script src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=AqiINfRTWexry8c2zYl5uBDVzCxh6dQ46Du_ageeJbfSLdLjA1vzR96jXzC6Boif' async defer></script>
+    </head>
+    <body onload="getMap();">
+        <button style="margin: 5px;" onclick="window.location.href = `/menu?token=${window.sessionStorage.token}`;">Go Back</button>
+        <div id="myMap" style="width: 100vw; height: 100vh; text-align: center;"></div>
+        <script>
+            setInterval(()=>{
+                fetch("/updateToken",{
+                    method: "POST",
+                    body: JSON.stringify({
+                        token: window.sessionStorage.token
+                    }),
+                    headers:{
+                        "Content-Type": "application/json"
+                    }
+                });
+            }, 10000);
+        </script>
+        <script>
+            document.querySelector("#myMap").innerHTML = "<br><br><br><br><h2>Loading...</h2>";
+            var map, infobox;
+            async function getMap(){
+                coords = await getPos();
+                map = new Microsoft.Maps.Map("#myMap",{
+                    center: new Microsoft.Maps.Location(coords.coords.latitude, coords.coords.longitude),
+                    zoom: 15,
+                });
+                
+                var center = map.getCenter();
+
+                infobox = new Microsoft.Maps.Infobox(center,{visible: false});
+
+                infobox.setMap(map);
+
+                var randomLocations = []
+                dangerLocationDatas = await (await fetch("/apps/hazardMap/getDangerLocations")).json();
+                for (let j = 0; j < dangerLocationDatas.length; j++){
+                    randomLocations[randomLocations.length] = {location: new Microsoft.Maps.Location(dangerLocationDatas[j].location.lat, dangerLocationDatas[j].location.lon), time: dangerLocationDatas[j].time, type: dangerLocationDatas[j].type};
+                }
+
+                for (let i = 0; i < randomLocations.length; i++) {
+                    var pin = new Microsoft.Maps.Pushpin(randomLocations[i].location, {
+                        
+                    });
+
+                    timestamp = new Date(randomLocations[i].time);
+                    timeString = `${timestamp.getHours()}:${("0" + timestamp.getMinutes()).slice(-2)}`;
+
+                    //Store some metadata with the pushpin.
+                    pin.metadata = {
+                        title: randomLocations[i].type,
+                        description: timeString,
+                    };
+
+                    //Add a click event handler to the pushpin.
+                    Microsoft.Maps.Events.addHandler(pin, 'click', pushpinClicked);
+
+                    //Add pushpin to the map.
+                    map.entities.push(pin);
+                }
+
+
+                /*
+                //Add: TEST DATA (Pushpin)
+                let pins = Microsoft.Maps.TestDataGenerator.getPushpins(20); // pushpin[random]
+                map.entities.push(pins);
+
+                
+                //Change the display of the map.
+                map.setView({
+                    bounds: Microsoft.Maps.LocationRect.fromShapes(pins),
+                    padding: 100 //Add a padding to buffer map to account for pushpin pixel dimensions
+                });
+                */
+            }
+            
+            function pushpinClicked(e) {
+                //Make sure the infobox has metadata to display.
+                if (e.target.metadata) {
+                    //Set the infobox options with the metadata of the pushpin.
+                    infobox.setOptions({
+                        location: e.target.getLocation(),
+                        title: e.target.metadata.title,
+                        description: e.target.metadata.description,
+                        visible: true
+                    });
+                }
+            }
+
+            function getPos(){
+                return new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject, {enableHighAccuracy:true}))
+            }
+        </script>
+        <style>
+            body{
+                margin: 0;
+                font-family: Arial;
+            }
+        </style>
+    </body>
+</html>
+

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+        
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Main</title>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Email Change</h1>
+            <h3>enter your new email</h3>
+            <h3 class="msg"></h3>
+            <form>
+                <div class="fields">
+                    <div class="field">
+                        <h3>メールアドレス</h3>
+                        <input type="email" placeholder="email..." class="emailField">
+                    </div>
+                </div>
+            </form>
+            <div class="codeFieldContainer" style="display: none">
+                <div class="field">
+                    <h3>認証コード</h3>
+                    <input type="number" placeholder="verification code..." class="codeField">
+                </div>
+            </div>
+            <p class="errMsg"></p>
+            <button onclick="changeEmail();"class="submit">Confirm</button>
+            <br>
+            <a onclick="back();">Back to Menu</a>
+        </div>
+        <script>
+            const fieldContainer = document.querySelector(".fields");
+            const codeFieldContainer = document.querySelector(".codeFieldContainer");
+            const emailField = document.querySelector(".emailField");
+            const codeField = document.querySelector(".codeField");
+            
+            const msgElement = document.querySelector(".msg");
+            const errMsgElement = document.querySelector(".errMsg")
+            
+            async function changeEmail(){
+                if(emailField.value == ""){
+                    errMsgElement.innerHTML = "*Enter your new email to continue";
+                    return;
+                }
+                errMsgElement.innerHTML = "";
+                fetch(
+                    "/profile/changeEmail/sendEmail",
+                    {
+                        method:"POST",
+                        body:JSON.stringify({
+                            username:window.sessionStorage.username,
+                            email:emailField.value
+                        }),
+                        headers:{
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                ).then(response => response.json())
+                .then(response => {
+                        fieldContainer.style.display = "none";
+                        const button = document.querySelector(".submit");
+                        button.innerHTML = "verify";
+                        button.setAttribute("onclick", "register();")
+                        msgElement.innerHTML = `verification code sent to ${emailField.value}.
+                        enter the code to verify your email`;
+                        codeFieldContainer.style.display = "block";
+                })
+            }
+
+            function register(){
+                if(codeField.value == ""){
+                    errMsgElement.innerHTML = "Enter your verification code to proceed";
+                }
+                fetch(
+                    "/profile/changeEmail/verifyEmail",
+                    {
+                        method:"POST",
+                        body:JSON.stringify({
+                            username: window.sessionStorage.username,
+                            code: codeField.value
+                        }),
+                        headers:{
+                            Accept: 'application/json',
+                            "Content-Type":"application/json"
+                        }
+                    }
+                ).then(response => response.json())
+                .then(response => {
+                    const result = response.status;
+                    console.log(response.status);
+                    if (result == "verified"){
+                        window.location.href = `/menu?token=${window.sessionStorage.token}`
+                    }else{
+                        errMsgElement.innerHTML = "code incorrect"
+                    }
+                })
+            }
+            async function digestMessage(message) {
+                const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array
+                const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8); // hash the message
+                const hashArray = Array.from(new Uint8Array(hashBuffer)); // convert buffer to byte array
+                const hashHex = hashArray
+                  .map((b) => b.toString(16).padStart(2, "0"))
+                  .join(""); // convert bytes to hex string
+                return hashHex;
+            }
+            function back(){
+                window.location.href = `/menu?token=${window.sessionStorage.token}`;
+            }
+            setInterval(()=>{
+            fetch("/updateToken",{
+                method: "POST",
+                body: JSON.stringify({
+                    token: window.sessionStorage.token
+                }),
+                headers:{
+                    "Content-Type": "application/json"
+                }
+            });
+        }, 10000);
+        </script>
+
+        <style>
+            body{
+                font-family: Arial;
+                height: 100vh;
+                background: rgb(0,156,161);
+                background: linear-gradient(90deg, rgba(0,156,161,1) 0%, rgba(22,147,94,1) 74%, rgba(23,176,72,1) 100%);
+            }
+            a{
+                color: dodgerblue;
+                text-decoration: none;
+            }
+            a:hover{
+                color: dodgerblue;
+                text-decoration: underline;
+            }
+            h1{
+                margin: 0px;
+                color: whitesmoke;
+            }
+            h3{
+                margin: 0;
+                margin-bottom: 10px;
+                color: gray;
+            }
+            .container {
+                margin: 0;
+                padding: 20px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                -ms-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+                background-color: rgb(22, 22, 22);
+                border-radius: 10px;
+                text-align: center;
+                width: 350px;
+            }
+            input{
+                margin-bottom: 10px;
+                border-radius: 20px;
+                width: 230px;
+                height: 30px;
+                background-color: black;
+                border-color: gray;
+                border: thin solid gray;
+                color: white;
+                text-align: center;
+                transition: border 0.25s;
+                transition: width, 0.25s;
+            }
+            input:focus{
+                width: 270px;
+                border: thin solid greenyellow;
+            }
+            input::-webkit-outer-spin-button, input::-webkit-inner-spin-button{
+                -webkit-appearance: none;
+            }
+            input[type=number]{
+                -moz-appearance: textfield;
+            }
+            button{
+                background-color: black;
+                color: white;
+                border: thin solid gray;
+                border-radius: 15px;
+                transition: border 0.125s;
+                transition: background-color 0.1s;
+                width: 300px;
+                height: 50px;
+            }
+            button:hover{
+                border: thin solid greenyellow;
+            }
+            button:active{
+                background-color: gray;
+            }
+            .submit{
+                margin-bottom: 10px;
+            }
+            textarea:focus, input:focus{
+                outline: none;
+            }
+            .field{
+                margin: 20px;
+                color: rgb(176, 176, 176);
+            }
+            .field h4{
+                margin: 0px;
+            }
+            .errMsg{
+                color: red;
+            }
+        </style>
+    </body>
+</html>

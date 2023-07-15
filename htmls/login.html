@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+        
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Main</title>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Log In</h1>
+            <h3>Login to get access to all useful things we offer!</h3>
+            <form id="login-form">
+                <div class="fields">
+                    <div class="field">
+                        <h3>ユーザー名</h3>
+                        <input type="text" placeholder="username..." class="usernameField">
+                    </div>
+                    <div class="field">
+                        <h3>パスワード</h3>
+                        <input type="password" placeholder="password..." class="passwordField">
+                    </div>
+                </div>
+            </form>
+            <p class="errMsg"></p>
+            <button onclick="login();"class="submit">Log in</button>
+            <br>
+            <a href="/signup">Are you new? Why not create your account!</a>
+        </div>
+        <script>
+            const usernameField = document.querySelector(".usernameField");
+            const passwordField= document.querySelector(".passwordField");
+            
+            const errMsgElement = document.querySelector(".errMsg")
+            
+            async function login(){
+                if(usernameField.value == "" || passwordField.value == ""){
+                    errMsgElement.innerHTML = "*You must fill in all the fields to log in";
+                    return;
+                }
+                errMsgElement.innerHTML = "";
+                fetch(
+                    "/sendLogin",
+                    {
+                        method:"POST",
+                        body:JSON.stringify({
+                            username:usernameField.value,
+                            password:await digestMessage(passwordField.value),
+                        }),
+                        headers:{
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                ).then(response => response.json())
+                .then(response => {
+                    const result = response.status;
+                    console.log(response.status);
+                    if (result == "success"){
+                        window.sessionStorage.username = usernameField.value;
+                        const token = response.token;
+                        window.sessionStorage.token = token;
+                        window.open(`/menu?token=${token}`, "_self");
+                    }else{
+                        errMsgElement.innerHTML = "username and password doesn't match";
+                    }
+                })
+            }
+
+            async function digestMessage(message) {
+                const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array
+                const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8); // hash the message
+                const hashArray = Array.from(new Uint8Array(hashBuffer)); // convert buffer to byte array
+                const hashHex = hashArray
+                  .map((b) => b.toString(16).padStart(2, "0"))
+                  .join(""); // convert bytes to hex string
+                return hashHex;
+            }
+            
+            
+        </script>
+
+        <style>
+            body{
+                font-family: Arial;
+                height: 100vh;
+                background: rgb(0,156,161);
+                background: linear-gradient(90deg, rgba(0,156,161,1) 0%, rgba(22,147,94,1) 74%, rgba(23,176,72,1) 100%);
+            }
+            h1{
+                margin: 0px;
+                color: whitesmoke;
+            }
+            h3{
+                margin: 0;
+                margin-bottom: 10px;
+                color: gray;
+            }
+            a{
+                color: dodgerblue;
+                text-decoration: none;
+            }
+            a:hover{
+                color: dodgerblue;
+                text-decoration: underline;
+            }
+            .container {
+                margin: 0;
+                padding: 20px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                -ms-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+                background-color: rgb(22, 22, 22);
+                border-radius: 10px;
+                text-align: center;
+                width: 350px;
+            }
+            input{
+                margin-bottom: 10px;
+                border-radius: 20px;
+                width: 230px;
+                height: 30px;
+                background-color: black;
+                border-color: gray;
+                border: thin solid gray;
+                color: white;
+                text-align: center;
+                transition: border 0.25s;
+                transition: width, 0.25s;
+            }
+            input:focus{
+                width: 270px;
+                border: thin solid greenyellow;
+            }
+            input::-webkit-outer-spin-button, input::-webkit-inner-spin-button{
+                -webkit-appearance: none;
+            }
+            input[type=number]{
+                -moz-appearance: textfield;
+            }
+            button{
+                background-color: black;
+                color: white;
+                border: thin solid gray;
+                border-radius: 15px;
+                transition: border 0.125s;
+                transition: background-color 0.1s;
+                width: 300px;
+                height: 50px;
+                margin-bottom: 10px;
+            }
+            button:hover{
+                border: thin solid greenyellow;
+            }
+            button:active{
+                background-color: gray;
+            }
+            textarea:focus, input:focus{
+                outline: none;
+            }
+            .field{
+                margin: 20px;
+                color: rgb(176, 176, 176);
+            }
+            .field h4{
+                margin: 0px;
+            }
+            .errMsg{
+                color: red;
+            }
+        </style>
+    </body>
+</html>

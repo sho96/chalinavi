@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+        
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Main</title>
+    </head>
+    <body>
+        <div class="container">
+            <button onclick="back();">Go Back</button>
+            <h1>Rate Us!</h1>
+            <h4>Help us improve by your precious review!<br>(this will be sent annonymously)</h4>
+            <a href="https://lin.ee/qCe3jIb"><img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="?????" height="100" border="0"></a>
+            <!---<h2>良いところ</h2>
+            <textarea name="good-points" id="good-points" cols="50" rows="5"></textarea>
+            <h2>改善してほしいところ</h2>
+            <textarea name="bad-points" id="bad-points" cols="50" rows="5"></textarea>
+            <br>
+            <button class="submit-button" onclick="submit();">Submit</button>
+            <h3 hidden>Thank you for your rating!</h3>-->
+        </div>
+        <style>
+            body{
+                font-family: Arial;
+                background-color: white;
+                color: black;
+            }
+            .submit-button{
+                margin-top: 10px;
+                width: 100px;
+                height: 30px;
+            }
+        </style>
+        <script>
+            const goodPointsField = document.querySelector("#good-points");
+            const badPointsField = document.querySelector("#bad-points");
+
+            let submitted = false;
+            
+            function submit(){
+                if(submitted){
+                    return;
+                }
+                fetch("/apps/rate/submitRating", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        goodPoints: goodPointsField.value,
+                        badPoints: badPointsField.value
+                    }),
+                    headers:{
+                        "Content-Type": "application/json"
+                    }
+                });
+                document.querySelector("h3").hidden = false;
+                submitted = true;
+            }
+
+            function back(){
+                window.location.href = `/menu?token=${window.sessionStorage.token}`;
+            }
+            setInterval(()=>{
+            fetch("/updateToken",{
+                method: "POST",
+                body:JSON.stringify({
+                    token:window.sessionStorage.token,
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+        }, 10000)
+        </script>
+    </body>
+</html>

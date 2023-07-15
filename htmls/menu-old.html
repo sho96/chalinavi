@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chalinavi-menu</title>
+</head>
+<body>
+    <div class="whole">
+        <div class="menu-button-container closed">
+            <button class="menu-switch" onclick="switchMenu();">
+                <img style="height: 40px;" src="/imgs/menu/x.png" alt="closed"/>
+            </button>
+            <button class="menu-button" onclick="switchMenu();openContainer(0);"hidden>Apps</button>
+            <button class="menu-button" onclick="switchMenu();openContainer(1);"hidden>Dashboard</button>
+            <button class="menu-button" onclick="switchMenu();openContainer(2);"hidden>Settings</button>
+            <button class="menu-button" onclick="switchMenu();openContainer(3);"hidden>Profile</button>
+            <button class="menu-button logout-button" onclick="logOut();"hidden>Log Out</button>
+        </div>
+        <div class="container" id="apps">
+            <div class="title">
+                <h1>Apps</h1>
+            </div>
+            <div class="subcontainer app-container">
+                <div class="app" onclick="openApp('/apps/navigation')">
+                    <img class="app-img" src="/imgs/menu/chalinavi.jpg" width="80px" height="80px">
+                    <p>チャリナビ</p>
+                </div>
+                <div class="app" onclick="openApp('/apps/hazardMap')">
+                    <img class="app-img" src="/imgs/menu/hazardMap.jpg" width="80px" height="80px">
+                    <p>Hazard Map</p>
+                </div>
+                <div class="app" onclick="openApp('/apps/rate')">
+                    <img class="app-img" src="/imgs/menu/rateThisSystem.jpg" width="80px" height="80px">
+                    <p>Rate this system</p>
+                </div>
+            </div>
+        </div>
+        <div class="container" id="dashboard" hidden>
+            <div class="title">
+                <h1>Dashboard</h1>
+            </div>
+            <div class="subcontainer">
+
+            </div>
+        </div>
+        <div class="container" id="settings" hidden>
+            <div class="title">
+                <h1>Settings</h1>
+            </div>
+            <div class="subcontainer">
+                <h2 class="detection-level-label" style="margin:0; margin-top: 10px; margin-bottom: 5px;">Detection Level: 5</h2>
+                <p style="margin-left: 10px; margin-top: 0;">Determines how far of dangers we should notify you</p>
+                <div style="margin-bottom: 15px;">
+                    <label>1</label>
+                    <input class="detection-level-slider" type="range" id="volume" min="1" max="10" onchange="refreshSettingValues();" style="width: 250px; height: 30px;">
+                    <label>10</label>
+                </div>
+                <button class="save-changes-button" onclick="updateSettings();">Save Changes</button>
+            
+            </div>
+            <br>
+            <br>
+            <table border="1">
+                <tr>
+                  <td>level</th>
+                  <td>1</td>
+                  <td>2</td>
+                  <td>3</td>
+                  <td>4</td>
+                  <td>5</td>
+                  <td>6</td>
+                  <td>7</td>
+                  <td>8</td>
+                  <td>9</td>
+                  <td>10</td>
+                </tr>
+                <tr>
+                    <td>height(m)</th>
+                    <td>10</td>
+                    <td>20</td>
+                    <td>30</td>
+                    <td>40</td>
+                    <td>50</td>
+                    <td>60</td>
+                    <td>70</td>
+                    <td>80</td>
+                    <td>90</td>
+                    <td>100</td>
+                </tr>
+                <tr>
+                    <td>width(m)</th>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                </tr>
+              </table>
+        </div>
+        <div class="container" id="profile" hidden>
+            <div class="title">
+                <h1>Profile</h1>
+            </div>
+            <div class="subcontainer">
+                <h2 class="profile-usernameText">Username: ---</h2>
+                <h2 class="profile-emailText">Email: ---</h2>
+                <br>
+                <h2>Change Email</h2>
+                <button class="account-edit-button" onclick="window.location.href = `/profile/changeEmail?token=${window.sessionStorage.token}`;">Change Email</button>
+                <h2>Change Password</h2>
+                <button class="account-edit-button" onclick="window.location.href = `/profile/changePassword?token=${window.sessionStorage.token}`;">Change Password</button>
+                <h2>Delete Account</h2>
+                <button class="account-edit-button-dangerous" onclick="window.location.href = `/profile/deleteAccount?token=${window.sessionStorage.token}`;">Delete Account</button>
+            </div>
+        </div>
+    </div>
+    <style>
+        .closed{
+            position: absolute;
+            width:200px;
+            height:100vh;
+            overflow: hidden;
+            transition: width 0.1s;
+            background-color: dodgerblue;
+            display: flex;
+            flex-direction: column;
+            left: -150px;
+        }
+        .opened{
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            width: 200px;
+            background-color: dodgerblue;
+            height: 100vh;
+            z-index: 99;
+        }
+        body{
+            font-family: Arial;
+            padding: 0;
+            margin: 0;
+            color: black;
+        }
+        h1{
+            margin: 0;
+        }
+        p{
+            margin: 0;
+            margin-top: 5px;
+        }
+        .title{
+            background-color: rgb(216, 140, 0);
+            margin: 0;
+            width: 100vw - 50px;
+            padding: 5px;
+        }
+        .subcontainer{
+            padding-left: 10px;
+        }
+        .app-container{
+            display: flex;
+        }
+        .app-img{
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        .app{
+            width: 100px;
+            height: 130px;
+            padding: 10px;
+            text-align: center;
+        }
+        .app:hover{
+            opacity: 0.8;
+        }
+        /*
+        .whole{
+            display: flex;
+            flex-direction: row;
+        }*/
+        .container{
+            position: relative;
+            background: linear-gradient(70deg, rgb(0, 255, 128), rgb(0, 128, 255));
+            width: 100vw;
+            height: 100vh;
+            margin-left: 50px;
+        }
+        .menu-switch{
+            background-color: rgb(26, 129, 232);
+            border: none;
+            height: 50px;
+            transition: background-color 0.125s;
+            transition: border 0.125;
+            border: 1px solid rgb(31, 131, 232);
+            color:black;
+            align-items: center;
+        }
+        img.menu-swich-img{
+            
+            
+        }
+        .menu-switch:hover{
+            background-color: rgb(25, 113, 200);
+            border: 2px solid rgb(18, 90, 162);
+            color:black;
+        }
+        .logout-button{
+            font-size: larger;
+        }
+        .menu-button{
+            background-color: dodgerblue;
+            border: none;
+            height: 50px;
+            transition: background-color 0.125s;
+            transition: border 0.125;
+            border: 1px solid rgb(31, 131, 232);
+            color:black;
+        }
+        .menu-button:hover{
+            background-color: rgb(66, 160, 255);
+            border: 2px solid rgb(22, 115, 209);
+            color:black;
+        }
+        .account-edit-button{
+            background-color: black;
+            color: white;
+            border: thin solid gray;
+            border-radius: 15px;
+            transition: border 0.125s;
+            transition: background-color 0.1s;
+            width: 150px;
+            height: 40px;
+        }
+        .account-edit-button:hover{
+            border: thin solid greenyellow;
+        }
+        .account-edit-button:active{
+            background-color: gray;
+        }
+        .account-edit-button-dangerous{
+            background-color: rgb(255, 31, 31);
+            color: white;
+            border: thin solid gray;
+            border-radius: 15px;
+            transition: border 0.125s;
+            transition: background-color 0.1s;
+            width: 150px;
+            height: 40px;
+        }
+        .account-edit-button-dangerous:hover{
+            border: thin solid white;
+        }
+        .account-edit-button-dangerous:active{
+            background-color: red;
+        }
+        .save-changes-button{
+            background-color: black;
+            color: white;
+            border: thin solid gray;
+            border-radius: 15px;
+            transition: border 0.125s;
+            transition: background-color 0.1s;
+            width: 150px;
+            height: 40px;
+        }
+        table{
+            width: 100%;
+            border-spacing: 0;
+        }
+
+        table th{
+            border-bottom: solid 2px #fb5144;
+            padding: 10px 0;
+        }
+
+        table td{
+            border-bottom: solid 2px #ddd;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .save-changes-button:hover{
+            border: thin solid greenyellow;
+        }
+
+        .save-changes-button:active{
+            background-color: gray;
+        }
+        [hidden]{
+            display: none !important;
+        }
+    </style>
+    <script>
+        const container = document.querySelector(".menu-button-container");
+        const menuButtons = document.querySelectorAll(".menu-button");
+
+        const appsContainer = document.querySelector("#apps");
+        const dashboardContainer = document.querySelector("#dashboard");
+        const settingsContainer = document.querySelector("#settings");
+        const profileContainer = document.querySelector("#profile");
+
+        const profileUsernameText = document.querySelector(".profile-usernameText");
+        const profileEmailText = document.querySelector(".profile-emailText");
+
+        const detectionLevelSlider = document.querySelector(".detection-level-slider");
+        const detectionLevelLabel = document.querySelector(".detection-level-label");
+
+        const conversionTable = {
+            1:{w: 1, h: 10},
+            2:{w: 1, h: 20},
+            3:{w: 1, h: 30},
+            4:{w: 1, h: 40},
+            5:{w: 1, h: 50},
+            6:{w: 1, h: 60},
+            7:{w: 1, h: 70},
+            8:{w: 1, h: 80},
+            9:{w: 1, h: 90},
+            10:{w: 1, h: 100},
+        }
+
+        const containers = [
+            appsContainer,
+            dashboardContainer,
+            settingsContainer,
+            profileContainer
+        ];
+
+        function loadSettings(){
+            fetch(`/getSettings?username=${window.sessionStorage.username}`)
+            .then(resp => resp.json())
+            .then(resp => {
+                const settings = resp;
+                detectionLevelLabel.innerHTML = `Detection Level: ${settings.detectionLevel}`;
+                detectionLevelSlider.value = settings.detectionLevel;
+            });
+        }
+        async function loadProfile(){
+            profile = await (await fetch(`/getProfile?username=${window.sessionStorage.username}`)).json();
+            profileUsernameText.innerHTML = `Username: <br>${window.sessionStorage.username}`;
+            profileEmailText.innerHTML = `Email: <br>${profile["email"]}`;
+            console.log(profile);
+        }
+
+        function refreshSettingValues(){
+            detectionLevelLabel.innerHTML = `Detection Level: ${detectionLevelSlider.value}`;
+        }
+        function updateSettings(){
+            const level = detectionLevelSlider.value;
+            const width = conversionTable[detectionLevelSlider.value].w;
+            const height = conversionTable[detectionLevelSlider.value].h;
+            const settings = {
+                username: window.sessionStorage.username,
+                detectionLevel: level,
+                detectionBoxWidth: width,
+                detectionBoxHeight: height
+            };
+            fetch("/updateSettings",{
+                method: "POST",
+                body:JSON.stringify(settings),
+                headers:{
+                    "Content-Type": "application/json"
+                }
+            });
+        }
+
+        function openApp(appURL){
+            window.location.href = `${appURL}?token=${window.sessionStorage.token}`;
+        }
+
+        function switchMenu(){
+            const state = container.className.split(" ")[1]
+            if(state == "closed"){
+                container.className = `menu-button-container opened`;
+            }else{
+                container.className = "menu-button-container closed";
+            }
+            menuButtons.forEach(btn => btn.hidden = state != "closed");
+        }
+
+        function openContainer(index){
+            containers.forEach(elem => setElementVisual(elem, false));
+            setElementVisual(containers[index], true);
+        }
+
+        function setElementVisual(elem, state){
+            const children = elem.children;
+            elem.hidden = !state;
+            console.log(children);
+            for(let i = 0; i < children.length; i++){
+                children[i].hidden = !state;
+                setElementVisual(children[i], state);
+            }
+        }
+    
+        function logOut(){
+            fetch("/logOut", {
+                method: "POST",
+                body: JSON.stringify({
+                    token:window.sessionStorage.token,
+                }),
+                headers:{
+                    "Content-Type": "application/json"
+                }
+            });
+            window.location.href = "/login";
+        }
+
+        setInterval(()=>{
+            fetch("/updateToken",{
+                method: "POST",
+                body:JSON.stringify({
+                    token:window.sessionStorage.token,
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+        }, 10000);
+        loadSettings();
+        loadProfile();
+    </script>
+</body>
+</html>

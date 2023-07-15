@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+        
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Main</title>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Looks like you're new!</h1>
+            <h3>sign up to get started</h3>
+            <div class="fields">
+                <div class="field">
+                    <h3>名前</h3>
+                    <input type="text" placeholder="Your name..." class="nameField">
+                </div>
+                <div class="field">
+                    <h3>学籍番号</h3>
+                    <input type="number" placeholder="student id..." class="studentIdField">
+                </div>
+                <div class="field">
+                    <h3>メールアドレス</h3>
+                    <input type="email" placeholder="email..." class="emailField">
+                </div>
+            </div>
+            <p class="errMsg"></p>
+            <button onclick="signup();"class="submit">Sign up</button>
+        </div>
+        <script>
+            const fields = document.querySelector(".fields");
+            const nameField = document.querySelector(".nameField");
+            const studentIdField = document.querySelector(".studentIdField");
+            const emailField = document.querySelector(".emailField");
+            
+            const errMsgElement = document.querySelector(".errMsg")
+            
+            function signup(){
+                if(nameField.value == "" || studentIdField.value == "" || emailField.value == ""){
+                    errMsgElement.innerHTML = "*You must fill in all the fields to sign in";
+                    return;
+                }
+                errMsgElement.innerHTML = "";
+                fetch(
+                    "/makeVerificationCode",
+                    {
+                        method:"POST",
+                        body:JSON.stringify({
+                            name:nameField.value,
+                            studentId:studentIdField.value,
+                            email:emailField.value
+                        }),
+                        headers:{
+                            "Content-Type":"application/json"
+                        }
+                    }
+                )
+                document.querySelector(".submit").onclick = "register();";
+                var div = document.createElement("div");
+                div.innerHTML = `<h3>認証コード</h3><input type="code" placeholder="code..." class="codeField">`;
+                fields.appendChild(div);
+            }
+            function register(){
+                console.log("registerCalled")
+                const codeField = document.querySelector(".codeField");
+                if(codeField.value == ""){
+                    errMsgElement.innerHTML = "*You must fill in all the fields to register";
+                    return;
+                }
+                errMsgElement.innerHTML = "";
+                fetch(
+                    "/registerUser",
+                    {
+                        method:"POST",
+                        body:JSON.stringify({
+                            name:nameField.value,
+                            studentId:studentIdField.value,
+                            email:emailField.value
+                        }),
+                        headers:{
+                            "Content-Type":"application/json"
+                        }
+                    }
+                ).then(resp => window.location.href = "/")
+            }
+            
+        </script>
+
+        <style>
+            body{
+                font-family: Arial;
+                height: 100vh;
+                background: rgb(0,156,161);
+                background: linear-gradient(90deg, rgba(0,156,161,1) 0%, rgba(22,147,94,1) 74%, rgba(23,176,72,1) 100%);
+            }
+            h1{
+                margin: 0px;
+                color: whitesmoke;
+            }
+            h3{
+                margin: 0;
+                margin-bottom: 30px;
+                color: gray;
+            }
+            .container {
+                margin: 0;
+                padding: 20px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                -ms-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+                background-color: rgb(22, 22, 22);
+                border-radius: 10px;
+                text-align: center;
+                width: 350px;
+            }
+            input{
+                border-radius: 20px;
+                width: 230px;
+                height: 30px;
+                background-color: black;
+                border-color: gray;
+                border: thin solid gray;
+                color: white;
+                text-align: center;
+                transition: border 0.25s;
+                transition: width, 0.25s;
+            }
+            input:focus{
+                width: 270px;
+                border: thin solid greenyellow;
+            }
+            input::-webkit-outer-spin-button, input::-webkit-inner-spin-button{
+                -webkit-appearance: none;
+            }
+            input[type=number]{
+                -moz-appearance: textfield;
+            }
+            button{
+                background-color: black;
+                color: white;
+                border: thin solid gray;
+                border-radius: 15px;
+                transition: border 0.125s;
+                transition: background-color 0.1s;
+                width: 300px;
+                height: 50px;
+            }
+            button:hover{
+                border: thin solid greenyellow;
+            }
+            button:active{
+                background-color: gray;
+            }
+            textarea:focus, input:focus{
+                outline: none;
+            }
+            .field{
+                margin: 20px;
+                color: rgb(176, 176, 176);
+            }
+            .field h4{
+                margin: 0px;
+            }
+        </style>
+    </body>
+</html>

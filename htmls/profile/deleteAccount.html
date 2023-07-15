@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+        
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Main</title>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Delete Account</h1>
+            <h3>we're sad to see you go</h3>
+            <h3 class="msg"></h3>
+            <form>
+                <div class="fields">
+                    <div class="field">
+                        <h3>パスワード</h3>
+                        <input type="password" placeholder="password..." class="passwordField textField">
+                    </div>
+                </div>
+            </form>
+            <h4 style="color: white;">Before you delete your account,<br>
+            note these important things:</h4>
+            <h4 style="color: red;">
+            1. This action CANNOT be undone<br>
+            2. All of your data will be deleted<br>
+            3. No regrets when done</h4>
+            <input type="checkbox" id="agreementCheckbox" onchange="activateButton();">
+            <label for="agreementCheckbox" style="color: orange; font-size: medium;">I understand what is going to happen<br>and will to proceed</label>
+            <p class="errMsg"></p>
+            <button onclick="deleteAccount();"class="submit" type="button" disabled>Delete Account</button>
+            <br><br><br><br><br><br><br>
+            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">Back to Menu</a>
+        </div>
+        <script>
+            const passwordField= document.querySelector(".passwordField");
+            const agreementCheckbox = document.querySelector("#agreementCheckbox");
+            const submitButton = document.querySelector(".submit");
+            
+            const msgElement = document.querySelector(".msg");
+            const errMsgElement = document.querySelector(".errMsg")
+            
+            async function deleteAccount(){
+                if(passwordField.value == ""){
+                    errMsgElement.innerHTML = "*You must fill in your password to proceed";
+                    return;
+                }
+                errMsgElement.innerHTML = "";
+                fetch(
+                    "/profile/deleteAccount/delete",
+                    {
+                        method:"POST",
+                        body:JSON.stringify({
+                            username: window.sessionStorage.username,
+                            password: await digestMessage(passwordField.value),
+                        }),
+                        headers:{
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                ).then(response => response.json())
+                .then(response => {
+                    const result = response.status;
+                    if(result == "success"){
+                        console.log(response.status);
+                        window.location.href=`/login`;
+                    }else{
+                        errMsgElement.innerHTML = "incorrect password";
+                    }
+                })
+            }
+
+            function activateButton(){
+                submitButton.disabled = !agreementCheckbox.checked
+            }
+
+            async function digestMessage(message) {
+                const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array
+                const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8); // hash the message
+                const hashArray = Array.from(new Uint8Array(hashBuffer)); // convert buffer to byte array
+                const hashHex = hashArray
+                  .map((b) => b.toString(16).padStart(2, "0"))
+                  .join(""); // convert bytes to hex string
+                return hashHex;
+            }
+            setInterval(()=>{
+            fetch("/updateToken",{
+                method: "POST",
+                body:JSON.stringify({
+                    token:window.sessionStorage.token,
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+        }, 10000)
+        </script>
+
+        <style>
+            body{
+                font-family: Arial;
+                height: 100vh;
+                background: rgb(0,156,161);
+                background: linear-gradient(90deg, rgba(0,156,161,1) 0%, rgba(22,147,94,1) 74%, rgba(23,176,72,1) 100%);
+            }
+            a{
+                color: dodgerblue;
+                text-decoration: none;
+            }
+            a:hover{
+                color: dodgerblue;
+                text-decoration: underline;
+            }
+            h1{
+                margin: 0px;
+                color: whitesmoke;
+            }
+            h3{
+                margin: 0;
+                margin-bottom: 10px;
+                color: gray;
+            }
+            .container {
+                margin: 0;
+                padding: 20px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                -ms-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+                background-color: rgb(22, 22, 22);
+                border-radius: 10px;
+                text-align: center;
+                width: 350px;
+            }
+            .textField{
+                margin-bottom: 10px;
+                border-radius: 20px;
+                width: 230px;
+                height: 30px;
+                background-color: black;
+                border-color: gray;
+                border: thin solid gray;
+                color: white;
+                text-align: center;
+                transition: border 0.25s;
+                transition: width, 0.25s;
+            }
+            .textField:focus{
+                width: 270px;
+                border: thin solid greenyellow;
+            }
+            .textField::-webkit-outer-spin-button, .textField::-webkit-inner-spin-button{
+                -webkit-appearance: none;
+            }
+            .textField[type=number]{
+                -moz-appearance: textfield;
+            }
+            button{
+                background-color: red;
+                color: white;
+                border: thin solid gray;
+                border-radius: 15px;
+                transition: border 0.125s;
+                transition: background-color 0.1s;
+                width: 300px;
+                height: 50px;
+                margin-bottom: 10px;
+                margin-top: 10px;
+            }
+            button:disabled{
+                background-color: gray;
+            }
+            button:hover:not([disabled]){
+                border: thin solid rgb(255, 34, 34);
+            }
+            button:active:not([disabled]){
+                background-color: rgb(255, 96, 96);
+            }
+            textarea:focus, input:focus{
+                outline: none;
+            }
+            .field{
+                margin: 20px;
+                color: rgb(176, 176, 176);
+            }
+            .field h4{
+                margin: 0px;
+            }
+            .errMsg{
+                color: red;
+            }
+        </style>
+    </body>
+</html>
