@@ -264,22 +264,12 @@
 
             // ---------------------------------- system flow controls ----------------------------------
             //check phone orientation
-            if(screen.orientation == null){
-                document.querySelector(".orientation-lock-warning-container").hidden = false;
-                const loop = setInterval(() => {
-                    if(screen.orientation != null){
-                        document.querySelector(".orientation-lock-warning-container").hidden = true;
-                        clearInterval(loop);
-                    }
-                })
-            }else{
-                checkScreenOrientation();
-            }
+            checkScreenOrientation();
             function checkScreenOrientation(){
-                if(screen.orientation.type != "portrait-primary"){
+                if(window.screen.width > window.screen.height){
                     document.querySelector(".orientation-warning-container").hidden = false;
                     const waitForOrientationCorrection = setInterval(() => {
-                        if(screen.orientation.type == "portrait-primary"){
+                        if(window.screen.width < window.screen.height){
                             document.querySelector(".orientation-warning-container").hidden = true;
                             document.querySelector(".survey-container").hidden = false;
                             clearInterval(waitForOrientationCorrection);
