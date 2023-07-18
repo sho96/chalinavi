@@ -328,7 +328,8 @@
                 if ( typeof( DeviceMotionEvent ) !== "undefined" && typeof( DeviceMotionEvent.requestPermission ) === "function" ) {
                     // (optional) Do something before API request prompt.
                     DeviceMotionEvent.requestPermission()
-                        .then( response => {
+                    .then( response => {
+                        console.log(response);
                         // (optional) Do something after API prompt dismissed.
                         if ( response == "granted" ) {
                             window.addEventListener("devicemotion",(event) => {
@@ -337,7 +338,7 @@
                             });
                         }
                     })
-                        .catch( console.error )
+                    .catch(err => console.error(err));
                 } else {
                     window.addEventListener("devicemotion",(event) => {
                         currentAcceleration = {x: -event.acceleration.x, y: -event.acceleration.y, z: -event.acceleration.z};
