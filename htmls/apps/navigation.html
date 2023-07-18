@@ -10,6 +10,12 @@
         <script>eruda.init();</script>
     </head>
     <body style="">
+        <div class="orientation-lock-warning-container bubble-container" hidden>
+            <h1>Looks like your screen orientation is locked</h1>
+            <h3>free your screen orientation to continue</h3>
+
+            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">Back to Menu</a>
+        </div>
         <div class="orientation-warning-container bubble-container" hidden>
             <h1>Looks like your screen orientation is not right</h1>
             <h3>please rotate your screen to portrait orientation</h3>
@@ -258,17 +264,30 @@
 
             // ---------------------------------- system flow controls ----------------------------------
             //check phone orientation
-            if(screen.orientation.type != "portrait-primary"){
-                document.querySelector(".orientation-warning-container").hidden = false;
-                const waitForOrientationCorrection = setInterval(() => {
-                    if(screen.orientation.type == "portrait-primary"){
-                        document.querySelector(".orientation-warning-container").hidden = true;
-                        document.querySelector(".survey-container").hidden = false;
-                        clearInterval(waitForOrientationCorrection);
+            if(screen.orientation == null){
+                document.querySelector(".orientation-lock-warning-container").hidden = false;
+                const loop = setInterval(() => {
+                    if(screen.orientation != null){
+                        document.querySelector(".orientation-lock-warning-container").hidden = true;
+                        clearInterval(loop);
                     }
-                });
+                })
             }else{
-                document.querySelector(".survey-container").hidden = false;
+                checkScreenOrientation();
+            }
+            function checkScreenOrientation(){
+                if(screen.orientation.type != "portrait-primary"){
+                    document.querySelector(".orientation-warning-container").hidden = false;
+                    const waitForOrientationCorrection = setInterval(() => {
+                        if(screen.orientation.type == "portrait-primary"){
+                            document.querySelector(".orientation-warning-container").hidden = true;
+                            document.querySelector(".survey-container").hidden = false;
+                            clearInterval(waitForOrientationCorrection);
+                        }
+                    });
+                }else{
+                    document.querySelector(".survey-container").hidden = false;
+                }
             }
 
             function selectVehicle(vehicle){

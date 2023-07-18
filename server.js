@@ -4,12 +4,12 @@ const { readFile, readFileSync, writeFile, writeFileSync} = require("fs");
 var http = require('http');
 var https = require('https');
 var nodemailer = require('nodemailer');
-//var privateKey  = readFileSync('cert.key', 'utf-8');
+var privateKey  = readFileSync('cert.key', 'utf-8');
 //var privateKey  = readFileSync('key.pem', 'utf-8');
-//var certificate = readFileSync('cert.crt', 'utf-8');
+var certificate = readFileSync('cert.crt', 'utf-8');
 //var certificate = readFileSync('cert.pem', 'utf-8');
 
-//var credentials = {key: privateKey, cert: certificate};
+var credentials = {key: privateKey, cert: certificate};
 var express = require('express');
 var app = express();
 
@@ -585,11 +585,11 @@ app.listen(32415, () => {
 })*/
 
 
-//var httpsServer = https.createServer(credentials, app);
+var httpsServer = https.createServer(credentials, app);
 //var httpsServer = https.createServer(app);
-var httpServer = http.createServer(app);
+//var httpServer = http.createServer(app);
 
-//httpsServer.listen(15243);
-//console.log("https listening");
-httpServer.listen(80);
-console.log("http listening");
+httpsServer.listen(15243);
+console.log("https listening");
+//httpServer.listen(80);
+//console.log("http listening");

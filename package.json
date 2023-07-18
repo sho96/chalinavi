@@ -1,4 +1,10 @@
 {
+  "name": "chalinavi",
+  "version": "1.0.0",
+  "description": "My New Project description.",
+  "main": "server.js",
+  "license": "UNLICENSED",
+  "author": "abcdefg",
   "dependencies": {
     "express": "^4.18.2",
     "nodemailer": "^6.9.2"
