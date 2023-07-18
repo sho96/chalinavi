@@ -50,7 +50,7 @@ while True:
     send = input("send or receive s/r\n->") == "s"
     if send:
         server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        ip, port = "192.168."+input("ip: 192.168."), int(input("port: "))
+        ip, port = input("ip: "), int(input("port: "))
         server.bind((ip, port))
         server.listen()
         path = input("path: ")
@@ -61,7 +61,7 @@ while True:
         server.close()
     else:
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        ip, port = "192.168."+input("ip: 192.168."), int(input("port: "))
+        ip, port = input("ip: "), int(input("port: "))
         client.connect((ip, port))
         print("connected")
         location = input("target location: ")

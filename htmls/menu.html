@@ -35,15 +35,15 @@
             </div>
             <div class="subcontainer app-container">
                 <div class="app" onclick="openApp('/apps/navigation')">
-                    <img class="app-img" src="/imgs/menu/chalinavi.jpg" width="100px" height="100px">
+                    <img class="app-img" src="/imgs/menu/chalinavi.jpg">
                     <p>チャリナビ</p>
                 </div>
                 <div class="app" onclick="openApp('/apps/hazardMap')">
-                    <img class="app-img" src="/imgs/menu/hazardMap.jpg" width="100px" height="100px">
+                    <img class="app-img" src="/imgs/menu/hazardMap.jpg">
                     <p>Hazard Map</p>
                 </div>
                 <div class="app" onclick="openApp('/apps/rate')">
-                    <img class="app-img" src="/imgs/menu/rateThisSystem.jpg" width="100px" height="100px">
+                    <img class="app-img" src="/imgs/menu/rateThisSystem.jpg">
                     <p>Rate this system</p>
                 </div>
             </div>
@@ -176,6 +176,8 @@
         .app-img{
             border-radius: 20px;
             overflow: hidden;
+            width: 100px;
+            height: 100px;
         }
         .app{
             width: 100px;
@@ -348,7 +350,7 @@
 		}
 		.sidemenu {
 		  height: 100vh;
-		  padding-top: 100px;
+		  padding-top: 50px;
 		  position: fixed;
 		  left: -60%; /*メニュー幅*/
 		  transition: all 0.5s;
@@ -587,7 +589,7 @@
                     "Content-Type": "application/json"
                 }
             });
-        }, 10000)
+        }, 20000)
         loadSettings();
         loadProfile();
     </script>

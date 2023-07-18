@@ -5,6 +5,8 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Hazard Map</title>
+        <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+        <script>eruda.init();</script>
         <script src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=AqiINfRTWexry8c2zYl5uBDVzCxh6dQ46Du_ageeJbfSLdLjA1vzR96jXzC6Boif' async defer></script>
     </head>
     <body onload="getMap();">
@@ -21,7 +23,7 @@
                         "Content-Type": "application/json"
                     }
                 });
-            }, 10000);
+            }, 20000);
         </script>
         <script>
             document.querySelector("#myMap").innerHTML = "<br><br><br><br><h2>Loading...</h2>";

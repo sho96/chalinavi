@@ -92,9 +92,9 @@ app.post("/verifyEmail", (req, resp) => {
 
     delete codes[email];
 
-    writeFileSync("./jsons/registeredUsers.json", JSON.stringify(users));
-    writeFileSync("./jsons/verificationCodes.json", JSON.stringify(codes));
-    writeFileSync("./jsons/userSettings.json", JSON.stringify(settings));
+    writeFileSync("./jsons/registeredUsers.json", JSON.stringify(users), err => {if(err) console.log(err)});
+    writeFileSync("./jsons/verificationCodes.json", JSON.stringify(codes), err => {if(err) console.log(err)});
+    writeFileSync("./jsons/userSettings.json", JSON.stringify(settings), err => {if(err) console.log(err)});
 
     resp.setHeader('Content-Type', 'application/json');
     resp.end(JSON.stringify({status: "verified"}));
@@ -145,7 +145,7 @@ app.post("/sendSignup", (req, resp) => {
   sendCode(email, username, verificationCode, "Hi! Thank you for registering!");
   writeFileSync("./jsons/verificationCodes.json", JSON.stringify(codes));
   resp.setHeader("Content-Type", "application/json");
-resp.end(JSON.stringify({status: "success"}))
+  resp.end(JSON.stringify({status: "success"}))
 });
 
 
@@ -221,7 +221,7 @@ app.post("/apps/navigation/sendData", (req, resp) => {
   const dangerLocations = JSON.parse(readFileSync("./jsons/dangerLocations.json"));
   dangerLocations[dangerLocations.length] = {type: type, time: Date.now(), location: {lat: location.lat, lon: location.lon}, user: username};
   
-  writeFileSync("./jsons/dangerLocations.json",JSON.stringify(dangerLocations));
+  writeFileSync("./jsons/dangerLocations.json", JSON.stringify(dangerLocations));
   resp.status(200).send("recorded");
 });
 app.get("/apps/navigation/getData", (req, resp) => {
@@ -293,7 +293,7 @@ app.post("/apps/rate/submitRating", (req, resp) => {
   ratings = JSON.parse(readFileSync("./jsons/userRatings.json", {encoding: "utf-8"}));
   console.log(ratings);
   ratings[ratings.length] = {good: goodPoints, bad: badPoints};
-  writeFileSync("./jsons/userRatings.json", JSON.stringify(ratings));
+  writeFile("./jsons/userRatings.json", JSON.stringify(ratings), err => {if(err) console.log(err)});
   sendEmailMultiple(["maetaka-2022066@edu-g.gsn.ed.jp", "maetaka-2023104@edu-g.gsn.ed.jp"], "rating was sent", `良い点: ${goodPoints}\n改善点: ${badPoints}`);
 })
 
@@ -427,7 +427,7 @@ app.post("/profile/deleteAccount/delete", (req, resp) => {
 
     const settings = readFileSync("./jsons/userSettings.json", {encoding: "utf-8"});
     delete settings[username];
-    writeFileSync("./jsons/userSettings.json", JSON.stringify(settings));
+    writeFile("./jsons/userSettings.json", JSON.stringify(settings), err => {if(err) console.log(err)});
 
     resp.setHeader("Content-Type", "application/json");
     resp.end(JSON.stringify({status: "success"}));
@@ -441,7 +441,7 @@ app.post("/profile/deleteAccount/delete", (req, resp) => {
 
 
 //--------------------------------- general system functions ---------------------------------
-app.post("/updateToken", (req, resp) => {
+app.post("/updateToken", async (req, resp) => {
   console.log(`request for token update of "${req.body["token"]}"`);
   const tokens = JSON.parse(readFileSync("./jsons/activeTokens.json", {encoding: "utf-8"}));
   const token = req.body["token"];
@@ -467,11 +467,12 @@ app.post("/logOut", (req, resp) => {
   writeFileSync("./jsons/activeTokens.json", JSON.stringify(tokens));
 })
 
+/*
 //reset user data
 app.get("/reset", (req, resp) => {
   writeFileSync("./jsons/verificationCodes.json", "{}");
   writeFileSync("./jsons/registeredUsers.json", "{}");
-})
+})*/
 
 function getDistanceOnEarth(lat1,lon1,lat2,lon2) {
   var R = 6371; // Radius of the earth in km
@@ -568,6 +569,12 @@ app.get("/imgs/menu/hazardMap.jpg", (req, resp) => {
 });
 app.get("/imgs/menu/rateThisSystem.jpg", (req, resp) => {
   resp.status(200).send(readFileSync("./imgs/menu/rateThisSystem.jpg"));
+});
+app.get("/imgs/apps/navigation/warning.png", (req, resp) => {
+  resp.status(200).send(readFileSync("./imgs/apps/navigation/warning.png"));
+});
+app.get("/imgs/apps/rate/rate.png", (req, resp) => {
+  resp.status(200).send(readFileSync("./imgs/apps/rate/rate.png"));
 });
 
 

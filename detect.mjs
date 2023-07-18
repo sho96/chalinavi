@@ -21,7 +21,7 @@ export const degToRad = (deg) => {
 }
 
 export const extractLocations = (locations, points) => {
-    return locations.filter(location => countIntersections(location.slice(0,2), points))
+    return locations.filter(location => countIntersections([location.location.lat, location.location.lon], points))
 }
 
 export const countIntersections = (origin, points) => {
