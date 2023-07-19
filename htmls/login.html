@@ -31,15 +31,21 @@
         <script>
             const usernameField = document.querySelector(".usernameField");
             const passwordField= document.querySelector(".passwordField");
-            
-            const errMsgElement = document.querySelector(".errMsg")
+            let isLoggingIn = false;
+
+            const errMsgElement = document.querySelector(".errMsg");
             
             async function login(){
+                if(isLoggingIn){
+                    return;
+                }
                 if(usernameField.value == "" || passwordField.value == ""){
                     errMsgElement.innerHTML = "*You must fill in all the fields to log in";
                     return;
                 }
+                isLoggingIn = true;
                 errMsgElement.innerHTML = "";
+                submitButton.disabled = true;
                 fetch(
                     "/sendLogin",
                     {
@@ -63,6 +69,7 @@
                         window.open(`/menu?token=${token}`, "_self");
                     }else{
                         errMsgElement.innerHTML = "username and password doesn't match";
+                        isLoggingIn = false;
                     }
                 })
             }

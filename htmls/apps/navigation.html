@@ -42,12 +42,15 @@
             <br>
             <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">Back to Menu</a>
         </div>
-        <div class="main-container" hidden>
-            <div class="signal-meter" style="display: flex; flex-direction: row; position: absolute; right: 20px; top: 10px;">
-                <div class="signal-meter-0 signal-bar" style="height: 20px; margin-top: 30px;"></div>
-                <div class="signal-meter-1 signal-bar" style="height: 30px; margin-top: 20px;"></div>
-                <div class="signal-meter-2 signal-bar" style="height: 40px; margin-top: 10px;"></div>
-                <div class="signal-meter-3 signal-bar" style="height: 50px; margin-top: 0px;"></div>
+        <div class="main-container">
+            <div class="signal-meter" style="position: absolute; right: 20px; top: 10px;">
+                <div class="signal-meter-bars" style="display: flex; flex-direction: row;">
+                    <div class="signal-meter-0 signal-bar" style="height: 20px; margin-top: 30px;"></div>
+                    <div class="signal-meter-1 signal-bar" style="height: 30px; margin-top: 20px;"></div>
+                    <div class="signal-meter-2 signal-bar" style="height: 40px; margin-top: 10px;"></div>
+                    <div class="signal-meter-3 signal-bar" style="height: 50px; margin-top: 0px;"></div>
+                </div>
+                <h2 style="margin-top: 5px;">GPS</h2>
             </div>
             <h1 style="color: #bebebe;"><span class="speedometer" style="color: white; font-size: 10rem;">---</span> km/h</h1>
             <h1 style="color: #bebebe;"><span class="compass" style="color: white; font-size: 5rem;">-- ---</span></h1>
@@ -210,7 +213,7 @@
                         continue;
                     }
                     distanceToAccident = getDistanceOnEarth(currentPosition.latitude, currentPosition.longitude, locations[index].location.lat, locations[index].location.lon);
-                    alertAccident(distanceToAccident, locations[index].type, 1000);
+                    alertAccident(firstNDigits(distanceToAccident*1000, 2), locations[index].type, 1000);
                     surroundingAccidents[index]["alerted"] = true;
                 }
             }

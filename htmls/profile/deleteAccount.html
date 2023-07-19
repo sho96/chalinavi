@@ -40,12 +40,18 @@
             
             const msgElement = document.querySelector(".msg");
             const errMsgElement = document.querySelector(".errMsg")
+
+            let isDeleting = false;
             
             async function deleteAccount(){
+                if(isDeleting){
+                    return;
+                }
                 if(passwordField.value == ""){
                     errMsgElement.innerHTML = "*You must fill in your password to proceed";
                     return;
                 }
+                isDeleting = true;
                 errMsgElement.innerHTML = "";
                 fetch(
                     "/profile/deleteAccount/delete",
@@ -67,6 +73,7 @@
                         window.location.href=`/login`;
                     }else{
                         errMsgElement.innerHTML = "incorrect password";
+                        isDeleting = false;
                     }
                 })
             }

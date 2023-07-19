@@ -39,12 +39,19 @@
             
             const msgElement = document.querySelector(".msg");
             const errMsgElement = document.querySelector(".errMsg")
+
+            let isChangingEmail = false;
+            let isVerifying = false;
             
             async function changeEmail(){
+                if(isChangingEmail){
+                    return;
+                }
                 if(emailField.value == ""){
                     errMsgElement.innerHTML = "*Enter your new email to continue";
                     return;
                 }
+                isChangingEmail = true;
                 errMsgElement.innerHTML = "";
                 fetch(
                     "/profile/changeEmail/sendEmail",
@@ -67,13 +74,18 @@
                         msgElement.innerHTML = `verification code sent to ${emailField.value}.
                         enter the code to verify your email`;
                         codeFieldContainer.style.display = "block";
+                        isChangingEmail = false;
                 })
             }
 
             function register(){
+                if(isVerifying){
+                    return;
+                }
                 if(codeField.value == ""){
                     errMsgElement.innerHTML = "Enter your verification code to proceed";
                 }
+                isVerifying = true;
                 fetch(
                     "/profile/changeEmail/verifyEmail",
                     {
@@ -92,9 +104,10 @@
                     const result = response.status;
                     console.log(response.status);
                     if (result == "verified"){
-                        window.location.href = `/menu?token=${window.sessionStorage.token}`
+                        window.location.href = `/menu?token=${window.sessionStorage.token}`;
                     }else{
-                        errMsgElement.innerHTML = "code incorrect"
+                        errMsgElement.innerHTML = "code incorrect";
+                        isVerifying = false;
                     }
                 })
             }

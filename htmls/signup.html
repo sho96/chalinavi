@@ -51,7 +51,13 @@
             const msgElement = document.querySelector(".msg");
             const errMsgElement = document.querySelector(".errMsg")
             
+            let isSigningUp = false;
+            let isVerifying = false;
+            
             async function signup(){
+                if(isSigningUp){
+                    return;
+                }
                 if(usernameField.value == "" || passwordField.value == "" || emailField.value == ""){
                     errMsgElement.innerHTML = "*You must fill in all the fields to sign in";
                     return;
@@ -60,6 +66,7 @@
                     errMsgElement.innerHTML = "*passwords don't match";
                     return;
                 }
+                isSigningUp = true;
                 errMsgElement.innerHTML = "";
                 fetch(
                     "/sendSignup",
@@ -87,15 +94,20 @@
                         enter the code to verify your email`;
                         codeFieldContainer.style.display = "block";
                     }else{
+                        isSigningUp = false;
                         errMsgElement.innerHTML = "username already taken";
                     }
                 })
             }
 
             async function register(){
+                if(isVerifying){
+                    return;
+                }
                 if(codeField.value == ""){
                     errMsgElement.innerHTML = "Enter your verification code to proceed";
                 }
+                isVerifying = true;
                 fetch(
                     "/verifyEmail",
                     {
@@ -119,6 +131,7 @@
                         errMsgElement.innerHTML = "code expired.\nTry again from sign up";
                     }else{
                         errMsgElement.innerHTML = "code incorrect";
+                        isVerifying = false;
                     }
                 })
             }
