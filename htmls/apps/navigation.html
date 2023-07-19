@@ -16,6 +16,13 @@
 
             <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">Back to Menu</a>
         </div>
+        <div class="permission-container bubble-container" hidden>
+            <h1>Allow motion sensor on your device</h1>
+            <h3>allow the use of accelerometer on your device to use this feature</h3>
+            <button class="allow-button" onclick="requestPermission()">Allow</button>
+            <br>
+            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">Back to Menu</a>
+        </div>
         <div class="orientation-warning-container bubble-container" hidden>
             <h1>Looks like your screen orientation is not right</h1>
             <h3>please rotate your screen to portrait orientation</h3>
@@ -284,6 +291,7 @@
             }
 
             function selectVehicle(vehicle){
+                askSensorPermission();
                 if (vehicle == "bike"){
                     accelerationThreshold = 30;
                 }else{
@@ -605,7 +613,6 @@
                     "Content-Type": "application/json"
                 }
             });
-            askSensorPermission();
         </script>
 
         <style>
@@ -665,6 +672,17 @@
                 font-size: 500%;
             }
             .car:hover{
+                background-color: rgb(185, 255, 232);
+                border: thin solid rgb(4, 0, 255)
+            }
+            .allow-button{
+                background-color: aquamarine;
+                height: 100px;
+                width: 250px;
+                color:black;
+                font-size: 500%;
+            }
+            .allow-button:hover{
                 background-color: rgb(185, 255, 232);
                 border: thin solid rgb(4, 0, 255)
             }
