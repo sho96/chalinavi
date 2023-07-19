@@ -327,9 +327,20 @@
             }
 
             // ---------------------------------- update sensors -----------------------------------
-            function askSensorPermission () {
+            async function askSensorPermission () {
                 if ( typeof( DeviceMotionEvent ) !== "undefined" && typeof( DeviceMotionEvent.requestPermission ) === "function" ) {
+                    console.log("ios device detected");
                     // (optional) Do something before API request prompt.
+                    const response = await DeviceMotionEvent.requestPermission();
+                    console.log(response);
+                    if(response == "granted"){
+                        window.addEventListener("devicemotion",(event) => {
+                            currentAcceleration = {x: -event.acceleration.x, y: -event.acceleration.y, z: -event.acceleration.z};
+                            currentAccelerationWtihGravity = {x: -event.accelerationIncludingGravity.x, y: -event.accelerationIncludingGravity.y, z: -event.accelerationIncludingGravity.z};
+                        });
+                    }
+
+                    /*
                     DeviceMotionEvent.requestPermission()
                     .then( response => {
                         console.log(response);
@@ -341,8 +352,9 @@
                             });
                         }
                     })
-                    .catch(err => console.error(err));
+                    .catch(err => console.error(err));*/
                 } else {
+                    console.log("non ios device detected");
                     window.addEventListener("devicemotion",(event) => {
                         currentAcceleration = {x: -event.acceleration.x, y: -event.acceleration.y, z: -event.acceleration.z};
                         currentAccelerationWtihGravity = {x: -event.accelerationIncludingGravity.x, y: -event.accelerationIncludingGravity.y, z: -event.accelerationIncludingGravity.z};
