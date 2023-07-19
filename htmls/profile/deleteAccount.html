@@ -92,16 +92,25 @@
                 return hashHex;
             }
             setInterval(()=>{
-            fetch("/updateToken",{
-                method: "POST",
-                body:JSON.stringify({
-                    token:window.sessionStorage.token,
-                }),
-                headers: {
-                    "Content-Type": "application/json"
-                }
+                fetch("/updateToken",{
+                    method: "POST",
+                    body:JSON.stringify({
+                        token:window.sessionStorage.token,
+                    }),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
             });
         }, 20000)
+        fetch("/updateToken",{
+            method: "POST",
+            body: JSON.stringify({
+                token: window.sessionStorage.token
+            }),
+            headers:{
+                "Content-Type": "application/json"
+            }
+        });
         </script>
 
         <style>
