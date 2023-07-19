@@ -30,6 +30,7 @@ app.get("/login", (req, resp) => {
   resp.status(200).send(readFileSync("./htmls/login.html", {encoding: "utf-8"}));
 });
 app.post("/sendLogin", (req, resp) => {
+  console.log("loginSent");
   username = req.body["username"];
   password = req.body["password"];
   const users = JSON.parse(readFileSync("./jsons/registeredUsers.json", {encoding: "utf-8"}));
