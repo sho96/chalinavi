@@ -34,7 +34,7 @@ app.post("/sendLogin", (req, resp) => {
   username = req.body["username"];
   password = req.body["password"];
   const users = JSON.parse(readFileSync("./jsons/registeredUsers.json", {encoding: "utf-8"}));
-  console.log(users);
+  //console.log(users);
   if(!(username in users)){
     resp.setHeader("Content-Type", "application/json");
     resp.end(JSON.stringify({status: "username and password don't match"}))
@@ -53,7 +53,7 @@ app.post("/sendLogin", (req, resp) => {
   deleteOldTokens();
   const tokens = JSON.parse(readFileSync("./jsons/activeTokens.json", {encoding: "utf-8"}));
   tokens[token] = {due: Date.now() + 60000};
-  console.log(tokens);
+  //console.log(tokens);
   writeFileSync("./jsons/activeTokens.json", JSON.stringify(tokens));
   resp.setHeader("Content-Type", "application/json");
   resp.end(JSON.stringify({status: "success", token: token}))
@@ -507,13 +507,13 @@ function sendCode(toEmailAddress, username, verificationCode, message) {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'projecthomesafer@gmail.com',
-      pass: 'uagquinrfweblmpf'
+      user: 'chalinavimailer@gmail.com',
+      pass: 'pqntqgngxjteqber'
     }
   });
 
   const mailOptions = {
-    from: 'projecthomesafer@gmail.com',
+    from: 'chalinavimailer@gmail.com',
     to: toEmailAddress,
     subject: `Email verification for ${username}`,
     text: `${message}\nHere's the verification code: ${verificationCode}`
@@ -532,13 +532,13 @@ function sendEmail(toEmailAddress, subject, content){
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'projecthomesafer@gmail.com',
-      pass: 'uagquinrfweblmpf'
+      user: 'chalinavimailer@gmail.com',
+      pass: 'pqntqgngxjteqber'
     }
   });
 
   const mailOptions = {
-    from: 'projecthomesafer@gmail.com',
+    from: 'chalinavimailer@gmail.com',
     to: toEmailAddress,
     subject: subject,
     text: content,
@@ -557,6 +557,9 @@ function sendEmailMultiple(toEmailAddresses, subject, content){
     sendEmail(toEmailAddresses[addr], subject, content);
   }
 }
+
+//projecthomesafer@gmail.com -- uagquinrfweblmpf
+//chalinavimailer@gmail.com -- pqntqgngxjteqber
 
 //----------------------------- responding to image requests -------------------------------
 app.get("/imgs/menu/x.png", (req, resp) => {
