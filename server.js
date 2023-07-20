@@ -312,7 +312,7 @@ app.post("/apps/rate/submitRating", (req, resp) => {
 
 
 //-------------------------------- dashboard ----------------------------------
-app.get("/getDashbaord", (req, resp) => {
+app.get("/getDashboard", (req, resp) => {
   const username = req.query.username;
   const travelDatas = readFileSync("./jsons/travelDatas.json", {encoding: "utf-8"});
   data["totalDistanceTraveled"] = travelDatas.username.totalDistanceTraveled;
