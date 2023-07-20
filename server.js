@@ -623,35 +623,35 @@ app.get("/imgs/apps/rate/rate.png", (req, resp) => {
   resp.status(200).send(readFileSync("./imgs/apps/rate/rate.png"));
 });
 
-app.get("/sounds/10m.mp4", (req, resp) => {
-  resp.status(200).send(readFileSync("./sounds/10m.mp4"));
+app.get("/sounds/10m.mp3", (req, resp) => {
+  resp.status(200).send(readFileSync("./sounds/10m.mp3"));
 });
-app.get("/sounds/20m.mp4", (req, resp) => {
-  resp.status(200).send(readFileSync("./sounds/20m.mp4"));
+app.get("/sounds/20m.mp3", (req, resp) => {
+  resp.status(200).send(readFileSync("./sounds/20m.mp3"));
 });
-app.get("/sounds/30m.mp4", (req, resp) => {
-  resp.status(200).send(readFileSync("./sounds/30m.mp4"));
+app.get("/sounds/30m.mp3", (req, resp) => {
+  resp.status(200).send(readFileSync("./sounds/30m.mp3"));
 });
-app.get("/sounds/40m.mp4", (req, resp) => {
-  resp.status(200).send(readFileSync("./sounds/40m.mp4"));
+app.get("/sounds/40m.mp3", (req, resp) => {
+  resp.status(200).send(readFileSync("./sounds/40m.mp3"));
 });
-app.get("/sounds/50m.mp4", (req, resp) => {
-  resp.status(200).send(readFileSync("./sounds/50m.mp4"));
+app.get("/sounds/50m.mp3", (req, resp) => {
+  resp.status(200).send(readFileSync("./sounds/50m.mp3"));
 });
-app.get("/sounds/60m.mp4", (req, resp) => {
-  resp.status(200).send(readFileSync("./sounds/60m.mp4"));
+app.get("/sounds/60m.mp3", (req, resp) => {
+  resp.status(200).send(readFileSync("./sounds/60m.mp3"));
 });
-app.get("/sounds/70m.mp4", (req, resp) => {
-  resp.status(200).send(readFileSync("./sounds/70m.mp4"));
+app.get("/sounds/70m.mp3", (req, resp) => {
+  resp.status(200).send(readFileSync("./sounds/70m.mp3"));
 });
-app.get("/sounds/80m.mp4", (req, resp) => {
-  resp.status(200).send(readFileSync("./sounds/80m.mp4"));
+app.get("/sounds/80m.mp3", (req, resp) => {
+  resp.status(200).send(readFileSync("./sounds/80m.mp3"));
 });
-app.get("/sounds/90m.mp4", (req, resp) => {
-  resp.status(200).send(readFileSync("./sounds/90m.mp4"));
+app.get("/sounds/90m.mp3", (req, resp) => {
+  resp.status(200).send(readFileSync("./sounds/90m.mp3"));
 });
-app.get("/sounds/100m.mp4", (req, resp) => {
-  resp.status(200).send(readFileSync("./sounds/100m.mp4"));
+app.get("/sounds/100m.mp3", (req, resp) => {
+  resp.status(200).send(readFileSync("./sounds/100m.mp3"));
 });
 
 //----------------------------- health check -------------------------------

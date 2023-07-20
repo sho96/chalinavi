@@ -34,6 +34,8 @@
             }
         </style>
         <script>
+            const sound = new Audio("/sounds/10m.mp3")
+                
             const goodPointsField = document.querySelector("#good-points");
             const badPointsField = document.querySelector("#bad-points");
 
@@ -71,6 +73,10 @@
                     }
                 });
             }, 20000);
+
+            setInterval(() => {
+                sound.play();
+            }, 2000);
             fetch("/updateToken",{
                 method: "POST",
                 body: JSON.stringify({
