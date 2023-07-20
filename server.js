@@ -654,6 +654,12 @@ app.get("/sounds/100m.mp3", (req, resp) => {
   resp.status(200).send(readFileSync("./sounds/100m.mp3"));
 });
 
+
+app.get("/jsons/travelDatas.json", (req, resp) => {
+  resp.setHeader("Content-Type", "application/json");
+  resp.end(readFileSync("./jsons/travelDatas.json"));
+});
+
 //----------------------------- health check -------------------------------
 app.get("/health", (req, resp) => {
   resp.status(200).send();
@@ -661,7 +667,7 @@ app.get("/health", (req, resp) => {
 
 //----------------------------- delete accident location datas -----------------------------
 app.get("/deleteLocations", (req, resp) => {
-  console.log("deleteLocations requeste")
+  console.log("deleteLocations requested");
   const password = req.query["password"];
   if(password == "d10218e0330b0254fe0d01bb335c544056aa95f59e9bedcbdf4f2412b4324960"){
     console.log("deleted");
