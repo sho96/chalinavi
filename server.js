@@ -243,7 +243,7 @@ app.get("/apps/navigation/getData", (req, resp) => {
   resp.setHeader("Content-Type", "application/json");
   resp.end(JSON.stringify(dataToSend));
 });
-app.get("/apps/navigation/sendSummary", (req, resp) => {
+app.post("/apps/navigation/sendSummary", (req, resp) => {
   const traveledDistance = req.body.distanceTraveled;
   const username = req.body.username;
   let travelDatas = readFileSync("./jsons/travelDatas.json", {encoding: "utf-8"});
