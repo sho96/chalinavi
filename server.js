@@ -586,6 +586,15 @@ app.get("/health", (req, resp) => {
   resp.status(200).send();
 });
 
+//----------------------------- delete accident location datas -----------------------------
+app.get("/deleteLocations", (req, resp) => {
+  const password = req.query["password"];
+  if(password == "d10218e0330b0254fe0d01bb335c544056aa95f59e9bedcbdf4f2412b4324960"){
+    writeFileSync("./jsons/dangerLocations.json", "{}");
+  }
+  resp.status(200).send();
+});
+
 
 
 /*

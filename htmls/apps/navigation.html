@@ -134,7 +134,7 @@
                 }else if(accuracy < 15){
                     //3
                     zero.style.opacity = "100%";
-                    one.style.opacity = "100%";
+                    one.style.opacity = "100%"; 
                     two.style.opacity = "100%";
                     three.style.opacity = "30%";
                 }else if(accuracy < 20){
@@ -293,7 +293,7 @@
             function selectVehicle(vehicle){
                 askSensorPermission();
                 if (vehicle == "bike"){
-                    accelerationThreshold = 30;
+                    accelerationThreshold = 40;
                 }else{
                     accelerationThreshold = 10;
                 }

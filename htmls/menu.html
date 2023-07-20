@@ -29,7 +29,7 @@
                 </nav>
             </div>
         </div>
-        <div class="container" id="apps">
+        <div class="container" id="apps" hidden>
             <div class="title">
                 <h1>Apps</h1>
             </div>
@@ -48,11 +48,24 @@
                 </div>
             </div>
         </div>
-        <div class="container" id="dashboard" hidden>
+        <div class="container" id="dashboard">
             <div class="title">
                 <h1>Dashboard</h1>
             </div>
             <div class="subcontainer dashboard-container">
+                <div class="dashboard-bubble totalDistanceTraveled" style="background-color: #798dc5;">
+                    <h2>Total Distance Traveled</h2>
+                    <h1 style="font-size: 3rem; color: rgb(69, 69, 69);"><span style="font-size: 10rem; color: black;">100</span>km</h1>
+                </div>
+                <div class="dashboard-bubble totalSuddenBrakes" style="background-color: #798dc5;">
+                    <h2>Sudden Brakes for Past 3 days</h2>
+                    <h1 style="font-size: 3rem; color: rgb(69, 69, 69);"><span style="font-size: 10rem; color: black;">50</span> brakes</h1>
+                </div>
+                <div class="dashboard-bubble totalRearImpacts" style="background-color: #798dc5;">
+                    <h2>Total Reat Impacts for Past 3 days </h2>
+                    <h1 style="font-size: 3rem; color: rgb(69, 69, 69);"><span style="font-size: 10rem; color: black;">100</span> rear impacts</h1>
+                </div>
+                <!--
                 <div class="dashboard-bubble totalDistanceTraveled" style="background-color: #798dc5;">
                     <h2>Total number of sudden brake for 3 days</h2>
                 </div>
@@ -65,9 +78,7 @@
                 <div class="dashboard-bubble totalDistanceTraveled" style="background-color: #234858;">
                     <h2>Total Distance Traveled</h2>
                 </div>
-            
-
-            </div>
+            </div>-->
         </div>
         <div class="container" id="settings" hidden>
             <div class="title">
@@ -499,6 +510,8 @@
             }
         }
         toggleNav();
+
+        // ------------------- load GUIs ---------------------
         function loadSettings(){
             fetch(`/getSettings?username=${window.sessionStorage.username}`)
             .then(resp => resp.json())
@@ -513,6 +526,10 @@
             profileUsernameText.innerHTML = `Username: <br>${window.sessionStorage.username}`;
             profileEmailText.innerHTML = `Email: <br>${profile["email"]}`;
             console.log(profile);
+        }
+        async function loadDashboard(){
+            dashboard = await (await fetch(`/getDashboard?username=${window.sessionStorage.username}`)).json();
+
         }
 
         function refreshSettingValues(){
