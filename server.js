@@ -315,7 +315,7 @@ app.post("/apps/rate/submitRating", (req, resp) => {
 app.get("/getDashboard", (req, resp) => {
   const username = req.query.username;
   const travelDatas = readFileSync("./jsons/travelDatas.json", {encoding: "utf-8"});
-  if(!(username in travelDatas)){
+  if(!(username in Object.keys(travelDatas))){
     resp.setHeader("Content-Type", "application/json");
     resp.end(JSON.stringify({totalDistanceTraveled:0, totalSuddenBrakes:0, totalRearImpacts:0}));
     return;
