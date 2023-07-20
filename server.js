@@ -247,7 +247,7 @@ app.post("/apps/navigation/sendSummary", (req, resp) => {
   const traveledDistance = req.body.distanceTraveled;
   const username = req.body.username;
   let travelDatas = readFileSync("./jsons/travelDatas.json", {encoding: "utf-8"});
-  if(!username in travelDatas){
+  if(!(username in travelDatas)){
     travelDatas[username] = 0;
   }
   travelDatas[username] += traveledDistance;
