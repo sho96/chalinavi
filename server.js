@@ -243,6 +243,17 @@ app.get("/apps/navigation/getData", (req, resp) => {
   resp.setHeader("Content-Type", "application/json");
   resp.end(JSON.stringify(dataToSend));
 });
+app.get("/apps/navigation/sendSummary", (req, resp) => {
+  const traveledDistance = req.body.distanceTraveled;
+  const username = req.body.username;
+  let travelDatas = readFileSync("./jsons/travelDatas.json", {encoding: "utf-8"});
+  if(!username in travelDatas){
+    travelDatas[username] = 0;
+  }
+  travelDatas[username] += traveledDistance;
+  writeFileSync("./jsons/travelDatas.json", JSON.stringify(travelDatas));
+  resp.status(200).send();
+});
 
 //hazard map page
 app.get("/apps/hazardMap", (req, resp) => {
@@ -296,7 +307,31 @@ app.post("/apps/rate/submitRating", (req, resp) => {
   ratings[ratings.length] = {good: goodPoints, bad: badPoints};
   writeFile("./jsons/userRatings.json", JSON.stringify(ratings), err => {if(err) console.log(err)});
   sendEmailMultiple(["maetaka-2022066@edu-g.gsn.ed.jp", "maetaka-2023104@edu-g.gsn.ed.jp"], "rating was sent", `良い点: ${goodPoints}\n改善点: ${badPoints}`);
-})
+  resp.status(200).send();
+});
+
+
+//-------------------------------- dashboard ----------------------------------
+app.get("/getDashbaord", (req, resp) => {
+  const username = req.query.username;
+  const travelDatas = readFileSync("./jsons/travelDatas.json", {encoding: "utf-8"});
+  data["totalDistanceTraveled"] = travelDatas.username.totalDistanceTraveled;
+  delete travelDatas;
+  const accidentLocations = readFileSync("./jsons/dangerLocations.json", {encoding: "utf-8"});
+  let countBrakes = 0;
+  let countRearImpacts = 0;
+  for(i in accidentLocations){
+    if(accidentLocations[i].type == "brake"){
+      countBrakes++;
+    }else if(accidentLocations[i].type == "rear impact"){
+      countRearImpacts++;
+    }
+  }
+  data["totalSuddenBrakes"] = countBrakes;
+  data["totalRearImpacts"] = countRearImpacts;
+  resp.setHeader("Content-Type", "application/json");
+  resp.end(JSON.stringify(data));
+});
 
 
 //--------------------------------- profile ----------------------------------
@@ -579,6 +614,37 @@ app.get("/imgs/apps/navigation/warning.png", (req, resp) => {
 });
 app.get("/imgs/apps/rate/rate.png", (req, resp) => {
   resp.status(200).send(readFileSync("./imgs/apps/rate/rate.png"));
+});
+
+app.get("/sounds/10m.mp4", (req, resp) => {
+  resp.status(200).send(readFileSync("./sounds/10m.mp4"));
+});
+app.get("/sounds/20m.mp4", (req, resp) => {
+  resp.status(200).send(readFileSync("./sounds/20m.mp4"));
+});
+app.get("/sounds/30m.mp4", (req, resp) => {
+  resp.status(200).send(readFileSync("./sounds/30m.mp4"));
+});
+app.get("/sounds/40m.mp4", (req, resp) => {
+  resp.status(200).send(readFileSync("./sounds/40m.mp4"));
+});
+app.get("/sounds/50m.mp4", (req, resp) => {
+  resp.status(200).send(readFileSync("./sounds/50m.mp4"));
+});
+app.get("/sounds/60m.mp4", (req, resp) => {
+  resp.status(200).send(readFileSync("./sounds/60m.mp4"));
+});
+app.get("/sounds/70m.mp4", (req, resp) => {
+  resp.status(200).send(readFileSync("./sounds/70m.mp4"));
+});
+app.get("/sounds/80m.mp4", (req, resp) => {
+  resp.status(200).send(readFileSync("./sounds/80m.mp4"));
+});
+app.get("/sounds/90m.mp4", (req, resp) => {
+  resp.status(200).send(readFileSync("./sounds/90m.mp4"));
+});
+app.get("/sounds/100m.mp4", (req, resp) => {
+  resp.status(200).send(readFileSync("./sounds/100m.mp4"));
 });
 
 //----------------------------- health check -------------------------------

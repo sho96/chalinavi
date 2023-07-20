@@ -197,7 +197,7 @@
                 if(350 < accelerationOrientation || accelerationOrientation < 10){
                     // rear-end collision
                     console.log("0, 360 degrees detected");
-                    sendAccident("rear-end collision");
+                    sendAccident("rear impact");
                     timeLastSentAccident = Date.now();
                 }
             }
@@ -269,6 +269,15 @@
             // ----------------------------------- summary and leave -----------------------------------
             function summary(){
                 alert(`Total Distance Traveled: ${parseFloat(parseFloat((totalDistanceTraveled / 1000).toFixed(2)).toPrecision(3))} km`);
+                fetch("/apps/navigation/sendSummary", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        distanceTraveled: totalDistanceTraveled
+                    }),
+                    headers:{
+                        "Content-Type": "application/json"
+                    }
+                });
                 window.location.href = `/menu?token=${window.sessionStorage.token}`;
             }
 
