@@ -330,6 +330,7 @@ app.get("/getDashboard", (req, resp) => {
   }
   data["totalSuddenBrakes"] = countBrakes;
   data["totalRearImpacts"] = countRearImpacts;
+  delete accidentLocations;
   resp.setHeader("Content-Type", "application/json");
   resp.end(JSON.stringify(data));
 });
