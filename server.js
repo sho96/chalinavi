@@ -314,8 +314,10 @@ app.post("/apps/rate/submitRating", (req, resp) => {
 //-------------------------------- dashboard ----------------------------------
 app.get("/getDashboard", (req, resp) => {
   const username = req.query.username;
-  const travelDatas = readFileSync("./jsons/travelDatas.json", {encoding: "utf-8"});
-  if(!(username in Object.keys(travelDatas))){
+  const travelDatas = JSON.parse(("./jsons/travelDatas.json", {encoding: "utf-8"}));
+  console.log(username);
+  console.log(travelDatas);
+  if(!(username in travelDatas)){
     resp.setHeader("Content-Type", "application/json");
     resp.end(JSON.stringify({totalDistanceTraveled:0, totalSuddenBrakes:0, totalRearImpacts:0}));
     return;
@@ -323,7 +325,7 @@ app.get("/getDashboard", (req, resp) => {
   let data = {};
   data["totalDistanceTraveled"] = travelDatas.username.totalDistanceTraveled;
   delete travelDatas;
-  const accidentLocations = readFileSync("./jsons/dangerLocations.json", {encoding: "utf-8"});
+  const accidentLocations = JSON.parse(("./jsons/dangerLocations.json", {encoding: "utf-8"}));
   let countBrakes = 0;
   let countRearImpacts = 0;
   for(i in accidentLocations){
