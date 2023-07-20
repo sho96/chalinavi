@@ -248,9 +248,9 @@ app.post("/apps/navigation/sendSummary", (req, resp) => {
   const username = req.body.username;
   let travelDatas = JSON.parse(readFileSync("./jsons/travelDatas.json", {encoding: "utf-8"}));
   if(!(username in travelDatas)){
-    travelDatas[username] = 0;
+    travelDatas[username] = {totalDistanceTraveled: 0};
   }
-  travelDatas[username] += traveledDistance;
+  travelDatas[username].totalDistanceTraveled += traveledDistance;
   writeFileSync("./jsons/travelDatas.json", JSON.stringify(travelDatas));
   resp.status(200).send();
 });
@@ -327,6 +327,9 @@ app.get("/getDashboard", (req, resp) => {
   let countBrakes = 0;
   let countRearImpacts = 0;
   for(i in accidentLocations){
+    if(accidentLocations[i].time < (Date.now() - 259200000)){
+      continue;
+    }
     if(accidentLocations[i].type == "brake"){
       countBrakes++;
     }else if(accidentLocations[i].type == "rear impact"){
