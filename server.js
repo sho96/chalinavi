@@ -658,6 +658,12 @@ app.get("/sounds/90m.mp3", (req, resp) => {
 app.get("/sounds/100m.mp3", (req, resp) => {
   resp.status(200).send(readFileSync("./sounds/100m.mp3"));
 });
+app.get("/sounds/rear_impact.mp3", (req, resp) => {
+  resp.status(200).send(readFileSync("./sounds/rear_impact.mp3"));
+});
+app.get("/sounds/sudden_brake.mp3", (req, resp) => {
+  resp.status(200).send(readFileSync("./sounds/sudden_brake.mp3"));
+});
 
 
 app.get("/jsons/travelDatas.json", (req, resp) => {

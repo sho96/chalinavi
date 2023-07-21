@@ -111,6 +111,21 @@
 
             let timeLastSentAccident;
 
+            const distanceSounds = {
+                10: new Audio("/sounds/10m.mp3"),
+                20: new Audio("/sounds/20m.mp3"),
+                30: new Audio("/sounds/30m.mp3"),
+                40: new Audio("/sounds/40m.mp3"),
+                50: new Audio("/sounds/50m.mp3"),
+                60: new Audio("/sounds/60m.mp3"),
+                70: new Audio("/sounds/70m.mp3"),
+                80: new Audio("/sounds/80m.mp3"),
+                90: new Audio("/sounds/90m.mp3"),
+                100: new Audio("/sounds/100m.mp3"),
+            };
+            const suddenBrakeWarningSound = new Audio("/sounds/sudden_brake.mp3");
+            const rearImpactWarningSound = new Audio("/sounds/rear_impact.mp3");
+
             // ---------------------------------- main process ----------------------------------
             function updateMeasurements(){
                 conversionTable = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
@@ -224,13 +239,13 @@
                         continue;
                     }
                     distanceToAccident = getDistanceOnEarth(currentPosition.latitude, currentPosition.longitude, locations[index].location.lat, locations[index].location.lon);
-                    alertAccident(firstNDigits(distanceToAccident*1000, 2), convertToMessage[locations[index].type], 5000);
+                    alertAccident(firstNDigits(distanceToAccident*1000, 2), convertToMessage[locations[index].type], 5000, locations[index].type);
                     surroundingAccidents[index]["alerted"] = true;
                 }
             }
             
             //function to alert the accident
-            function alertAccident(distance, message, duration){
+            function alertAccident(distance, message, duration, type){
                 document.querySelector(".alert-distance").innerHTML = distance;
                 document.querySelector(".alert-message").innerHTML = message;
                 document.querySelector(".alert-container").hidden = false;
@@ -242,6 +257,18 @@
                         clearInterval(loop);
                     }
                 }, 800);
+                const roundedDistance = Math.round(distance/10) * 10;
+                const distanceSoundToPlay = distanceSounds[roundedDistance];
+                let warningSoundToPlay;
+                if(type == "brake"){
+                    warningSoundToPlay = suddenBrakeWarningSound;
+                }else if(type == "rear impact"){
+                    warningSoundToPlay = rearImpactWarningSound;
+                }
+                distanceSoundToPlay.play();
+                distanceSoundToPlay.addEventListener("ended", () => {
+                    warningSoundToPlay.play();
+                }, false);
             }
 
             //update surrounding accidents
