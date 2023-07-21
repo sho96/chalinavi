@@ -27,7 +27,14 @@ app.get("/", (req, resp) => {
 
 // log in functionalities
 app.get("/login", (req, resp) => {
-  resp.status(200).send(readFileSync("./htmls/login.html", {encoding: "utf-8"}));
+  const lang = req.query["lang"];
+  if(lang == "en"){
+    resp.status(200).send(readFileSync("./htmls-en/login.html", {encoding: "utf-8"}));
+  }else if(lang == "ja"){
+    resp.status(200).send(readFileSync("./htmls/login.html", {encoding: "utf-8"}));
+  }else{
+    resp.status(200).send(readFileSync("./htmls-en/login.html", {encoding: "utf-8"}));
+  }
 });
 app.post("/sendLogin", (req, resp) => {
   console.log("loginSent");
@@ -69,7 +76,14 @@ app.get("/signup", (req, resp) => {
   if (userIP in registeredUsers){
       resp.redirect("/main");
   }
-  resp.status(200).send(readFileSync("./htmls/signup.html", {encoding : "utf-8"}));
+  const lang = req.query["lang"];
+  if(lang == "en"){
+    resp.status(200).send(readFileSync("./htmls-en/signup.html", {encoding: "utf-8"}));
+  }else if(lang == "ja"){
+    resp.status(200).send(readFileSync("./htmls/signup.html", {encoding: "utf-8"}));
+  }else{
+    resp.status(200).send(readFileSync("./htmls-en/signup.html", {encoding: "utf-8"}));
+  }
 });
 app.post("/verifyEmail", (req, resp) => {
   const userIP = req.socket.remoteAddress;
@@ -772,7 +786,7 @@ app.get("/deleteLocations", (req, resp) => {
   if(password == "mchaaleintaavkia"){
     console.log("deleted");
     writeFileSync("./jsons/dangerLocations.json", "{}");
-    resp.status(200).send("deleted");
+    resp.status(200).send("successfully deleted");
   }else{
     console.log("passwordWrong");
     resp.status(200).send("");

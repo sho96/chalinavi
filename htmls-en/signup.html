@@ -40,6 +40,10 @@
             <a href="/login">Back to Log In</a>
         </div>
         <script>
+            if(window.navigator.language.slice(0,2) == "ja"){
+                window.location.href = `/signup?lang=ja`;
+            }
+
             const fieldContainer = document.querySelector(".fields");
             const codeFieldContainer = document.querySelector(".codeFieldContainer");
             const usernameField = document.querySelector(".usernameField");

@@ -29,6 +29,10 @@
             <a href="/signup">Are you new? Why not create your account!</a>
         </div>
         <script>
+            if(window.navigator.language.slice(0,2) == "ja"){
+                window.location.href = `/login?lang=ja`;
+            }
+
             const usernameField = document.querySelector(".usernameField");
             const passwordField= document.querySelector(".passwordField");
             let isLoggingIn = false;
