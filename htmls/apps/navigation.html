@@ -14,20 +14,20 @@
             <h1>Looks like your screen orientation is locked</h1>
             <h3>free your screen orientation to continue</h3>
 
-            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">Back to Menu</a>
+            <a href="" onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">Back to Menu</a>
         </div>
         <div class="permission-container bubble-container" hidden>
             <h1>Allow motion sensor on your device</h1>
             <h3>allow the use of accelerometer on your device to use this feature</h3>
             <button class="allow-button" onclick="requestPermission()">Allow</button>
             <br>
-            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">Back to Menu</a>
+            <a href="" onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">Back to Menu</a>
         </div>
         <div class="orientation-warning-container bubble-container" hidden>
             <h1>Looks like your screen orientation is not right</h1>
             <h3>please rotate your screen to portrait orientation</h3>
 
-            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">Back to Menu</a>
+            <a href="" onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">Back to Menu</a>
         </div>
         <div class="survey-container bubble-container" hidden>
             <h1>Select your vehicle</h1>
@@ -37,7 +37,7 @@
             <button class="car" onclick="selectVehicle('car')">car</button><br>
             
             <br>
-            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">Back to Menu</a>
+            <a href="" onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">Back to Menu</a>
         </div>
         <div class="calibration-container bubble-container" hidden>
             <h1>Sensor Calibration</h1>
@@ -47,7 +47,7 @@
             <button class="calibrate-button" onclick="startCalibration()">start</button><br>
             
             <br>
-            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">Back to Menu</a>
+            <a href="" onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">Back to Menu</a>
         </div>
         <div class="main-container" hidden>
             <div class="signal-meter" style="position: absolute; right: 20px; top: 10px;">
