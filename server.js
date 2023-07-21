@@ -167,7 +167,14 @@ app.get("/menu", (req, resp) => {
     console.log("token expired");
     return;
   }
-  resp.status(200).send(readFileSync("./htmls/menu.html", {encoding : "utf-8"}));
+  const lang = req.query["lang"];
+  if(lang == "en"){
+    resp.status(200).send(readFileSync("./htmls-en/menu.html", {encoding : "utf-8"}));
+  }else if(lang == "ja"){
+    resp.status(200).send(readFileSync("./htmls/menu.html", {encoding : "utf-8"}));
+  }else{
+
+  }
 });
 
 // setting updates
@@ -628,6 +635,7 @@ app.get("/imgs/apps/rate/rate.png", (req, resp) => {
   resp.status(200).send(readFileSync("./imgs/apps/rate/rate.png"));
 });
 
+//----------------------------- responding to sound requests -------------------------------
 app.get("/sounds/10m.mp3", (req, resp) => {
   resp.status(200).send(readFileSync("./sounds/10m.mp3"));
 });
@@ -665,7 +673,7 @@ app.get("/sounds/sudden_brake.mp3", (req, resp) => {
   resp.status(200).send(readFileSync("./sounds/sudden_brake.mp3"));
 });
 
-
+//----------------------------- responding to json requests -------------------------------
 app.get("/jsons/travelDatas.json", (req, resp) => {
   if(req.query.password !== "mchaaleintaavkia"){
     resp.status(200).send();
@@ -706,14 +714,6 @@ app.get("/jsons/userRatings.json", (req, resp) => {
   resp.setHeader("Content-Type", "application/json");
   resp.end(readFileSync("./jsons/userRatings.json"));
 });
-app.get("/jsons/travelDatas.json", (req, resp) => {
-  if(req.query.password !== "mchaaleintaavkia"){
-    resp.status(200).send();
-    return;
-  }
-  resp.setHeader("Content-Type", "application/json");
-  resp.end(readFileSync("./jsons/travelDatas.json"));
-});
 
 //----------------------------- health check -------------------------------
 app.get("/health", (req, resp) => {
@@ -740,20 +740,9 @@ app.get("/test", (req ,resp) => {
 })
 
 
-/*
-app.listen(32415, () => {
-  console.log("listening on port 32415")
-})*/
-
-
-//var httpsServer = https.createServer(credentials, app);
-//var httpsServer = https.createServer(app);
 var httpServer = http.createServer(app);
 
 let port = process.env.PORT || 15243;
-//httpsServer.listen(15243);
-//console.log("https listening");
 httpServer.listen(port, () => {
   console.log(`server listening on port ${port}`);
 });
-//console.log("http listening");

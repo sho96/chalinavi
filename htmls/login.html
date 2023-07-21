@@ -60,11 +60,13 @@
                 ).then(response => response.json())
                 .then(response => {
                     const result = response.status;
+                    const language = response.language;
                     console.log(response.status);
                     if (result == "success"){
                         window.sessionStorage.username = usernameField.value;
                         const token = response.token;
                         window.sessionStorage.token = token;
+                        window.sessionStorage.language = language;
                         window.open(`/menu?token=${token}`, "_self");
                     }else{
                         errMsgElement.innerHTML = "ユーザー名とパスワードが合いません";
