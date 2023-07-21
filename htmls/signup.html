@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">        
+<html lang="ja">        
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -75,7 +75,8 @@
                         body:JSON.stringify({
                             username:usernameField.value,
                             password:await digestMessage(passwordField.value),
-                            email:emailField.value
+                            email:emailField.value,
+                            language: window.navigator.language.slice(0,2)
                         }),
                         headers:{
                             'Content-Type': 'application/json'

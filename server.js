@@ -55,8 +55,9 @@ app.post("/sendLogin", (req, resp) => {
   tokens[token] = {due: Date.now() + 60000};
   //console.log(tokens);
   writeFileSync("./jsons/activeTokens.json", JSON.stringify(tokens));
+  const settings = JSON.parse(readFileSync("./jsons/userSettings.json", {encoding: "utf-8"}));
   resp.setHeader("Content-Type", "application/json");
-  resp.end(JSON.stringify({status: "success", token: token}))
+  resp.end(JSON.stringify({status: "success", token: token, language: settings[username].language}))
   console.log(`token of "${token}" sent`);
 })
 
@@ -88,7 +89,8 @@ app.post("/verifyEmail", (req, resp) => {
     const settings = JSON.parse(readFileSync("./jsons/userSettings.json"), {encoding: "utf-8"});
 
     const userdata = {password: codes[email]["password"], email: email};
-    settings[codes[email]["username"]] = {detectionLevel: "5", detectionBoxWidth: 1, detectionBoxHeight: 40, language: "ja"}; 
+    const language = codes[email]["language"];
+    settings[codes[email]["username"]] = {detectionLevel: "5", detectionBoxWidth: 1, detectionBoxHeight: 40, language: language}; 
     users[codes[email]["username"]] = userdata;
 
     delete codes[email];
@@ -112,6 +114,7 @@ app.post("/sendSignup", (req, resp) => {
   const username = data["username"];
   const password = data["password"];
   const email = data["email"];
+  const language = data["language"];
   
   const verificationCodes = JSON.parse(readFileSync("./jsons/verificationCodes.json"));
   let usedUsernames = []
@@ -142,7 +145,7 @@ app.post("/sendSignup", (req, resp) => {
 
   const verificationCode = `${getRandomInt(9)+1}${getRandomInt(10)}${getRandomInt(10)}${getRandomInt(10)}${getRandomInt(10)}`;
   const codes = JSON.parse(readFileSync("./jsons/verificationCodes.json", {encoding : "utf-8"}));
-  codes[email] = {code: verificationCode, username: username, password: password, due: Date.now()+600000};
+  codes[email] = {code: verificationCode, username: username, password: password, language: language, due: Date.now()+600000};
   sendCode(email, username, verificationCode, "Hi! Thank you for registering!");
   writeFileSync("./jsons/verificationCodes.json", JSON.stringify(codes));
   resp.setHeader("Content-Type", "application/json");
@@ -217,7 +220,14 @@ app.get("/apps/navigation", (req, resp) => {
     console.log("token expired");
     return;
   }
-  resp.status(200).send(readFileSync("./htmls/apps/navigation.html", {encoding : "utf-8"}));
+  const lang = req.query["lang"];
+  if(lang == "en"){
+    resp.status(200).send(readFileSync("./htmls-en/apps/navigation.html", {encoding : "utf-8"}));
+  }else if(lang == "ja"){
+    resp.status(200).send(readFileSync("./htmls/apps/navigation.html", {encoding : "utf-8"}));
+  }else{
+    resp.status(200).send(readFileSync("./htmls-en/apps/navigation.html", {encoding : "utf-8"}));
+  }
 });
 app.post("/apps/navigation/sendData", (req, resp) => {
   const type = req.body.type;
@@ -278,7 +288,14 @@ app.get("/apps/hazardMap", (req, resp) => {
     console.log("token expired");  
     return;
   }
-  resp.status(200).send(readFileSync("./htmls/apps/hazardMap.html", {encoding : "utf-8"}));
+  const lang = req.query["lang"];
+  if(lang == "en"){
+    resp.status(200).send(readFileSync("./htmls-en/apps/hazardMap.html", {encoding : "utf-8"}));
+  }else if(lang == "ja"){
+    resp.status(200).send(readFileSync("./htmls/apps/hazardMap.html", {encoding : "utf-8"}));
+  }else{
+    resp.status(200).send(readFileSync("./htmls-en/apps/hazardMap.html", {encoding : "utf-8"}));
+  }
 });
 app.get("/apps/hazardMap/getDangerLocations", (req, resp) => {
   const dangerLocations = JSON.parse(readFileSync("./jsons/dangerLocations.json", {encoding: "utf-8"}));
@@ -302,7 +319,14 @@ app.get("/apps/rate", (req, resp) => {
     console.log("token expired");  
     return;
   }
-  resp.status(200).send(readFileSync("./htmls/apps/rate.html", {encoding : "utf-8"}));
+  const lang = req.query["lang"];
+  if(lang == "en"){
+    resp.status(200).send(readFileSync("./htmls-en/apps/rate.html", {encoding : "utf-8"}));
+  }else if(lang == "ja"){
+    resp.status(200).send(readFileSync("./htmls/apps/rate.html", {encoding : "utf-8"}));
+  }else{
+    resp.status(200).send(readFileSync("./htmls-en/apps/rate.html", {encoding : "utf-8"}));
+  }
 });
 app.post("/apps/rate/submitRating", (req, resp) => {
   const goodPoints = req.body.goodPoints;
@@ -377,7 +401,14 @@ app.get("/profile/changeEmail", (req, resp) => {
     console.log("token expired");
     return;
   }
-  resp.status(200).send(readFileSync("./htmls/profile/changeEmail.html", {encoding : "utf-8"}));
+  const lang = req.query["lang"];
+  if(lang == "en"){
+    resp.status(200).send(readFileSync("./htmls-en/profile/changeEmail.html", {encoding : "utf-8"}));
+  }else if(lang == "ja"){
+    resp.status(200).send(readFileSync("./htmls/profile/changeEmail.html", {encoding : "utf-8"}));
+  }else{
+    resp.status(200).send(readFileSync("./htmls-en/profile/changeEmail.html", {encoding : "utf-8"}));
+  }
 })
 app.post("/profile/changeEmail/sendEmail", (req, resp) => {
   const username = req.body["username"];
@@ -434,7 +465,14 @@ app.get("/profile/changePassword", (req, resp) => {
     console.log("token expired");  
     return;
   }
-  resp.status(200).send(readFileSync("./htmls/profile/changePassword.html", {encoding : "utf-8"}));
+  const lang = req.query["lang"];
+  if(lang == "en"){
+    resp.status(200).send(readFileSync("./htmls-en/profile/changePassword.html", {encoding : "utf-8"}));
+  }else if(lang == "ja"){
+    resp.status(200).send(readFileSync("./htmls/profile/changePassword.html", {encoding : "utf-8"}));
+  }else{
+    resp.status(200).send(readFileSync("./htmls-en/profile/changePassword.html", {encoding : "utf-8"}));
+  }
 });
 app.post("/profile/changePassword/sendPassword", (req, resp) => {
   const username = req.body.username;
@@ -468,7 +506,14 @@ app.get("/profile/deleteAccount", (req, resp) => {
     console.log("token expired");  
     return;
   }
-  resp.status(200).send(readFileSync("./htmls/profile/deleteAccount.html", {encoding : "utf-8"}));
+  const lang = req.query["lang"];
+  if(lang == "en"){
+    resp.status(200).send(readFileSync("./htmls-en/profile/deleteAccount.html", {encoding : "utf-8"}));
+  }else if(lang == "ja"){
+    resp.status(200).send(readFileSync("./htmls/profile/deleteAccount.html", {encoding : "utf-8"}));
+  }else{
+    resp.status(200).send(readFileSync("./htmls-en/profile/deleteAccount.html", {encoding : "utf-8"}));
+  }
 });
 app.post("/profile/deleteAccount/delete", (req, resp) => {
   const username = req.body.username;
@@ -735,10 +780,10 @@ app.get("/deleteLocations", (req, resp) => {
 });
 
 //------------------------------ test ------------------------------
-app.get("/test", (req ,resp) => {
+/*app.get("/test", (req ,resp) => {
   resp.status(200).send(readFileSync("./htmls/test/login-test.html", {encoding: "utf-8"}));
 })
-
+*/
 
 var httpServer = http.createServer(app);
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -158,11 +158,11 @@
                 <h2 class="profile-emailText">Eメール: ---</h2>
                 <br>
                 <h2>Eメール変更</h2>
-                <button class="account-edit-button" onclick="window.location.href = `/profile/changeEmail?token=${window.sessionStorage.token}`;">Eメール変更</button>
+                <button class="account-edit-button" onclick="window.location.href = `/profile/changeEmail?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">Eメール変更</button>
                 <h2>パスワード変更</h2>
-                <button class="account-edit-button" onclick="window.location.href = `/profile/changePassword?token=${window.sessionStorage.token}`;">パスワード変更</button>
+                <button class="account-edit-button" onclick="window.location.href = `/profile/changePassword?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">パスワード変更</button>
                 <h2>アカウント削除</h2>
-                <button class="account-edit-button-dangerous" onclick="window.location.href = `/profile/deleteAccount?token=${window.sessionStorage.token}`;">アカウント削除</button>
+                <button class="account-edit-button-dangerous" onclick="window.location.href = `/profile/deleteAccount?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">アカウント削除</button>
             </div>
         </div>
     </div>
@@ -574,7 +574,7 @@
         }
 
         function openApp(appURL){
-            window.location.href = `${appURL}?token=${window.sessionStorage.token}`;
+            window.location.href = `${appURL}?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;
         }
 
         function switchMenu(){

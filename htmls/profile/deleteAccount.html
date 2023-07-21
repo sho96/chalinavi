@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
         
     <head>
         <meta charset="UTF-8">
@@ -31,7 +31,7 @@
             <p class="errMsg"></p>
             <button onclick="deleteAccount();"class="submit" type="button" disabled>削除</button>
             <br><br><br><br><br><br><br>
-            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">メニューに戻る</a>
+            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">メニューに戻る</a>
         </div>
         <script>
             const passwordField= document.querySelector(".passwordField");

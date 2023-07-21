@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
         
     <head>
         <meta charset="UTF-8">
@@ -91,7 +91,7 @@
             }
 
             function back(){
-                window.location.href = `/menu?token=${window.sessionStorage.token}`;
+                window.location.href = `/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;
             }
             setInterval(()=>{
                 fetch("/updateToken",{

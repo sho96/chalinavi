@@ -60,12 +60,17 @@
                 ).then(response => response.json())
                 .then(response => {
                     const result = response.status;
+                    const language = response.language;
                     console.log(response.status);
                     if (result == "success"){
                         window.sessionStorage.username = usernameField.value;
                         const token = response.token;
                         window.sessionStorage.token = token;
-                        window.open(`/menu?token=${token}`, "_self");
+                        if(language == null){
+                            window.sessionStorage.language = window.navigator.language.slice(0,2);
+                        }
+                        window.sessionStorage.language = language;
+                        window.open(`/menu?token=${token}&lang=${language}`, "_self");
                     }else{
                         errMsgElement.innerHTML = "username and password doesn't match";
                         isLoggingIn = false;

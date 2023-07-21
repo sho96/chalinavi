@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,7 +10,7 @@
         <script src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=AqiINfRTWexry8c2zYl5uBDVzCxh6dQ46Du_ageeJbfSLdLjA1vzR96jXzC6Boif' async defer></script>
     </head>
     <body onload="getMap();">
-        <button style="margin: 5px;" onclick="window.location.href = `/menu?token=${window.sessionStorage.token}`;">メニューに戻る</button>
+        <button style="margin: 5px;" onclick="window.location.href = `/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">メニューに戻る</button>
         <div id="myMap" style="width: 100vw; height: 100vh; text-align: center;"></div>
         <script>
             setInterval(()=>{

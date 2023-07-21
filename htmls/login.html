@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
         
     <head>
         <meta charset="UTF-8">
@@ -66,8 +66,11 @@
                         window.sessionStorage.username = usernameField.value;
                         const token = response.token;
                         window.sessionStorage.token = token;
+                        if(language == null){
+                            window.sessionStorage.language = window.navigator.language.slice(0,2);
+                        }
                         window.sessionStorage.language = language;
-                        window.open(`/menu?token=${token}`, "_self");
+                        window.open(`/menu?token=${token}&lang=${language}`, "_self");
                     }else{
                         errMsgElement.innerHTML = "ユーザー名とパスワードが合いません";
                         isLoggingIn = false;

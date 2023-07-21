@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
         
     <head>
         <meta charset="UTF-8">
@@ -104,7 +104,7 @@
                     const result = response.status;
                     console.log(response.status);
                     if (result == "verified"){
-                        window.location.href = `/menu?token=${window.sessionStorage.token}`;
+                        window.location.href = `/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;
                     }else{
                         errMsgElement.innerHTML = "認証コードが違います";
                         isVerifying = false;
@@ -121,7 +121,7 @@
                 return hashHex;
             }
             function back(){
-                window.location.href = `/menu?token=${window.sessionStorage.token}`;
+                window.location.href = `/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;
             }
             setInterval(()=>{
                 fetch("/updateToken",{
