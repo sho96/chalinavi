@@ -62,6 +62,7 @@
                     const result = response.status;
                     const language = response.language;
                     console.log(response.status);
+                    console.log(response.language);
                     if (result == "success"){
                         window.sessionStorage.username = usernameField.value;
                         const token = response.token;
