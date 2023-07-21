@@ -59,11 +59,11 @@
                 </div>
                 <div class="dashboard-bubble totalSuddenBrakes" style="background-color: #798dc5;">
                     <h2>過去三日間の急ブレーキ数</h2>
-                    <h1 style="font-size: 3rem; color: rgb(69, 69, 69);"><span style="font-size: 8rem; color: black;" class="totalSuddenBrakesField">---</span> times</h1>
+                    <h1 style="font-size: 3rem; color: rgb(69, 69, 69);"><span style="font-size: 8rem; color: black;" class="totalSuddenBrakesField">---</span> 回</h1>
                 </div>
                 <div class="dashboard-bubble totalRearImpacts" style="background-color: #798dc5;">
                     <h2>過去三日間の追突事故回数</h2>
-                    <h1 style="font-size: 3rem; color: rgb(69, 69, 69);"><span style="font-size: 8rem; color: black;" class="totalRearImpactsField">---</span> times</h1>
+                    <h1 style="font-size: 3rem; color: rgb(69, 69, 69);"><span style="font-size: 8rem; color: black;" class="totalRearImpactsField">---</span> 回</h1>
                 </div>
                 <!--
                 <div class="dashboard-bubble totalDistanceTraveled" style="background-color: #798dc5;">
@@ -93,7 +93,7 @@
                     <input class="detection-level-slider" type="range" id="volume" min="1" max="10" onchange="refreshSettingValues();" style="width: 250px; height: 30px;">
                     <label>10</label>
                 </div>
-                <button class="save-changes-button" onclick="updateSettings();">Save Changes</button>
+                <button class="save-changes-button" onclick="updateSettings();">保存</button>
             
             </div>
             <br>
@@ -518,7 +518,7 @@
             .then(resp => resp.json())
             .then(resp => {
                 const settings = resp;
-                detectionLevelLabel.innerHTML = `Detection Level: ${settings.detectionLevel}`;
+                detectionLevelLabel.innerHTML = `検出レベル: ${settings.detectionLevel}`;
                 detectionLevelSlider.value = settings.detectionLevel;
             });
         }

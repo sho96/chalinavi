@@ -29,7 +29,7 @@
 
             <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">メニューに戻る</a>
         </div>
-        <div class="survey-container bubble-container" hidden>
+        <div class="survey-container bubble-container">
             <h1>車両を選んでください</h1>
             <h3>何に乗っているかを選んでください</h3>
             
@@ -62,7 +62,7 @@
             <h1 style="color: #bebebe;"><span class="speedometer" style="color: white; font-size: 10rem;">---</span> km/h</h1>
             <h1 style="color: #bebebe;"><span class="compass" style="color: white; font-size: 5rem;">-- ---</span></h1>
             <h1 style="color: #bebebe;"><span class="total-distance" style="color: white; font-size: 5rem;">---</span> km</h1>
-            <button onclick="summary();" class="done-button" style="font-size: 2rem; color: black;">Done</button>
+            <button onclick="summary();" class="done-button" style="font-size: 2rem; color: black;">終わる</button>
             
             <!--Delete on Deployment-->
             <h4 class="gravityVector">重力ベクトル: ---</h4>
@@ -182,7 +182,7 @@
                 if(Date.now() - timeLastSentAccident < 3000){
                     return;
                 }
-                document.querySelector(".accelerationOrientation").innerHTML = `Orientation: ${firstNDigits(accelerationOrientation, 3)}`;
+                document.querySelector(".accelerationOrientation").innerHTML = `加速度の向き: ${firstNDigits(accelerationOrientation, 3)}`;
                 if(currentSpeed < 6){
                     return;
                 }
@@ -342,7 +342,7 @@
                 }, 75);
             }
             function main(){
-                document.querySelector(".gravityVector").innerHTML = `GravityVector:<br>x: ${gravityVector.x}<br>y: ${gravityVector.y}<br>z: ${gravityVector.z}<br>`;
+                document.querySelector(".gravityVector").innerHTML = `重力ベクトル:<br>x: ${gravityVector.x}<br>y: ${gravityVector.y}<br>z: ${gravityVector.z}<br>`;
                 startMain();
                 console.log(`x: ${gravityVector.x}\ny: ${gravityVector.y}\nz: ${gravityVector.z}\n`);
                 console.log(`baseOrientation: ${rad2deg(baseOrientation)} deg`);
@@ -660,7 +660,7 @@
                 background-color: aquamarine;
                 height:100px;
                 color:black;
-                font-size: 500%;
+                font-size: 400%;
             }
             .bike:hover{
                 background-color: rgb(185, 255, 232);
@@ -670,7 +670,7 @@
                 background-color: aquamarine;
                 height:100px;
                 color:black;
-                font-size: 500%;
+                font-size: 400%;
             }
             .calibrate-button:hover{
                 background-color: rgb(185, 255, 232);
@@ -683,7 +683,7 @@
                 background-color: aquamarine;
                 height:100px;
                 color:black;
-                font-size: 500%;
+                font-size: 400%;
             }
             .car:hover{
                 background-color: rgb(185, 255, 232);
@@ -694,7 +694,7 @@
                 height: 100px;
                 width: 250px;
                 color:black;
-                font-size: 500%;
+                font-size: 400%;
             }
             .allow-button:hover{
                 background-color: rgb(185, 255, 232);
