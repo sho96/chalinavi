@@ -85,6 +85,16 @@
             <div class="title">
                 <h1>設定</h1>
             </div>
+            <div style="margin: 10px;">
+                <form>
+                    <span style="font-size: 20px;">言語：</span>
+                    <select id="language-selection" style="font-size: 20px; width: 100px; height: 30px; border-radius: 10px; background-color: white;">
+                        <option value="ja">日本語</option>
+                        <option value="en">英語</option>
+                    </select>
+                </form>
+            </div>
+            
             <div class="subcontainer">
                 <h2 class="detection-level-label" style="margin:0; margin-top: 10px; margin-bottom: 5px;">検出レベル: 5</h2>
                 <p style="margin-left: 10px; margin-top: 0;">どこまで遠くの危険箇所を知らせるべきかを決定</p>
@@ -94,7 +104,6 @@
                     <label>10</label>
                 </div>
                 <button class="save-changes-button" onclick="updateSettings();">保存</button>
-            
             </div>
             <br>
             <br>
@@ -470,7 +479,6 @@
 
         const profileUsernameText = document.querySelector(".profile-usernameText");
         const profileEmailText = document.querySelector(".profile-emailText");
-
         const detectionLevelSlider = document.querySelector(".detection-level-slider");
         const detectionLevelLabel = document.querySelector(".detection-level-label");
 
@@ -520,6 +528,7 @@
                 const settings = resp;
                 detectionLevelLabel.innerHTML = `検出レベル: ${settings.detectionLevel}`;
                 detectionLevelSlider.value = settings.detectionLevel;
+                document.querySelector("#language-selection").value = settings.language;
             });
         }
         async function loadDashboard(){
@@ -542,6 +551,8 @@
             detectionLevelLabel.innerHTML = `検出レベル: ${detectionLevelSlider.value}`;
         }
         function updateSettings(){
+            const languageSelectionMenu = document.getElementById("language-selection");
+            const language = languageSelectionMenu.value;
             const level = detectionLevelSlider.value;
             const width = conversionTable[detectionLevelSlider.value].w;
             const height = conversionTable[detectionLevelSlider.value].h;
@@ -549,7 +560,8 @@
                 username: window.sessionStorage.username,
                 detectionLevel: level,
                 detectionBoxWidth: width,
-                detectionBoxHeight: height
+                detectionBoxHeight: height,
+                language: language
             };
             fetch("/updateSettings",{
                 method: "POST",
