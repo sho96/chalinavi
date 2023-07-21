@@ -724,13 +724,14 @@ app.get("/health", (req, resp) => {
 app.get("/deleteLocations", (req, resp) => {
   console.log("deleteLocations requested");
   const password = req.query["password"];
-  if(password == "d10218e0330b0254fe0d01bb335c544056aa95f59e9bedcbdf4f2412b4324960"){
+  if(password == "mchaaleintaavkia"){
     console.log("deleted");
     writeFileSync("./jsons/dangerLocations.json", "{}");
+    resp.status(200).send("deleted");
   }else{
     console.log("passwordWrong");
+    resp.status(200).send("");
   }
-  resp.status(200).send();
 });
 
 //------------------------------ test ------------------------------
