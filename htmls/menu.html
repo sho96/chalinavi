@@ -21,7 +21,7 @@
                 <nav>
                     <ul>
                         <li class="menu-option" onclick="openContainer(0);"><a>アプリ</a></li>
-                        <li class="menu-option" onclick="openContainer(1);"><a>ダッシュボード</a></li>
+                        <li class="menu-option" onclick="openContainer(1);"><a>ダッシュボード</a></li
                         <li class="menu-option" onclick="openContainer(2);"><a>設定</a></li>
                         <li class="menu-option" onclick="openContainer(3);"><a>プロフィール</a></li>
                         <li class="menu-option" onclick="logOut();"><a>ログアウト</a></li>
@@ -29,7 +29,7 @@
                 </nav>
             </div>
         </div>
-        <div class="container" id="apps">
+        <div class="container" id="apps" hidden>
             <div class="title">
                 <h1>アプリ</h1>
             </div>
@@ -48,22 +48,22 @@
                 </div>
             </div>
         </div>
-        <div class="container" id="dashboard" hidden>
+        <div class="container" id="dashboard">
             <div class="title">
                 <h1>ダッシュボード</h1>
             </div>
             <div class="subcontainer dashboard-container">
                 <div class="dashboard-bubble totalDistanceTraveled" style="background-color: #90e0ef;">
                     <h2>総走行距離</h2>
-                    <h1 style="font-size: 3rem; color: rgb(69, 69, 69); "><span style="font-size: 7rem; color: black;" class="totalDistanceTraveledField">---</span>km</h1>
+                    <h1 style="font-size: 3rem; color: rgb(69, 69, 69); "><span style="font-size: 10vh; color: black;" class="totalDistanceTraveledField">0</span>km</h1>
                 </div>
                 <div class="dashboard-bubble totalSuddenBrakes" style="background-color: #90e0ef;">
                     <h2>過去三日間の急ブレーキ数</h2>
-                    <h1 style="font-size: 3rem; color: rgb(69, 69, 69);"><span style="font-size: 7rem; color: black;" class="totalSuddenBrakesField">---</span> 回</h1>
+                    <h1 style="font-size: 3rem; color: rgb(69, 69, 69);"><span style="font-size: 10vh; color: black;" class="totalSuddenBrakesField">0</span> 回</h1>
                 </div>
                 <div class="dashboard-bubble totalRearImpacts" style="background-color: #90e0ef;">
                     <h2>過去三日間の追突事故回数</h2>
-                    <h1 style="font-size: 3rem; color: rgb(69, 69, 69);"><span style="font-size: 7rem; color: black;" class="totalRearImpactsField">---</span> 回</h1>
+                    <h1 style="font-size: 3rem; color: rgb(69, 69, 69);"><span style="font-size: 10vh; color: black;" class="totalRearImpactsField">0</span> 回</h1>
                 </div>
                 <!--
                 <div class="dashboard-bubble totalDistanceTraveled" style="background-color: #798dc5;">
@@ -628,9 +628,3 @@
     </script>
 </body>
 </html>
-
-<!-- 
-    サーバーの内容をアップデートしたいときは
-    ターミナルに ./pushGit.bat と打って実行してください
-    数分するとアップデートされます。
--->
