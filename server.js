@@ -670,6 +670,26 @@ app.get("/jsons/travelDatas.json", (req, resp) => {
   resp.setHeader("Content-Type", "application/json");
   resp.end(readFileSync("./jsons/travelDatas.json"));
 });
+app.get("/jsons/dangerLocations.json", (req, resp) => {
+  resp.setHeader("Content-Type", "application/json");
+  resp.end(readFileSync("./jsons/dangerLocations.json"));
+});
+app.get("/jsons/registeredUsers.json", (req, resp) => {
+  resp.setHeader("Content-Type", "application/json");
+  resp.end(readFileSync("./jsons/registeredUsers.json"));
+});
+app.get("/jsons/userSettings.json", (req, resp) => {
+  resp.setHeader("Content-Type", "application/json");
+  resp.end(readFileSync("./jsons/userSettings.json"));
+});
+app.get("/jsons/userRatings.json", (req, resp) => {
+  resp.setHeader("Content-Type", "application/json");
+  resp.end(readFileSync("./jsons/userRatings.json"));
+});
+app.get("/jsons/travelDatas.json", (req, resp) => {
+  resp.setHeader("Content-Type", "application/json");
+  resp.end(readFileSync("./jsons/travelDatas.json"));
+});
 
 //----------------------------- health check -------------------------------
 app.get("/health", (req, resp) => {
