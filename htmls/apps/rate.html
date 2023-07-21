@@ -9,10 +9,12 @@
     </head>
     <body>
         <div class="container">
-            <button onclick="back();">Go Back</button>
             <h1>Rate Us!</h1>
             <h4>Help us improve by your precious review!<br>(this will be sent annonymously)</h4>
             <a href="https://lin.ee/qCe3jIb"><img src="/imgs/apps/rate/rate.png" alt="Rate us in LINE" height="100" border="0"></a>
+            <br>
+            <br>
+            <a onclick="back();">Back to Menu</a>
             <!---<h2>良いところ</h2>
             <textarea name="good-points" id="good-points" cols="50" rows="5"></textarea>
             <h2>改善してほしいところ</h2>
@@ -32,6 +34,27 @@
                 margin-top: 10px;
                 width: 100px;
                 height: 30px;
+            }
+            .container {
+                margin: 0;
+                padding: 20px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                -ms-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+                background-color: rgb(22, 22, 22);
+                border-radius: 10px;
+                text-align: center;
+                width: 350px;
+            }
+            a{
+                color: dodgerblue;
+                text-decoration: none;
+            }
+            a:hover{
+                color: dodgerblue;
+                text-decoration: underline;
             }
         </style>
         <script>
