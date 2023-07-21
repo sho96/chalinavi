@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>チャリナビ メニュー</title>
+    <title>chalinavi menu</title>
 </head>
 <body>
     <div class="whole">
@@ -20,23 +20,23 @@
             <div class="sidemenu">
                 <nav>
                     <ul>
-                        <li class="menu-option" onclick="openContainer(0);"><a>Apps</a></li>
-                        <li class="menu-option" onclick="openContainer(1);"><a>Dashboard</a></li>
-                        <li class="menu-option" onclick="openContainer(2);"><a>Settings</a></li>
-                        <li class="menu-option" onclick="openContainer(3);"><a>Profile</a></li>
-                        <li class="menu-option" onclick="logOut();"><a>Log Out</a></li>
+                        <li class="menu-option" onclick="openContainer(0);"><a>apps</a></li>
+                        <li class="menu-option" onclick="openContainer(1);"><a>dashbord</a></li>
+                        <li class="menu-option" onclick="openContainer(2);"><a>setting</a></li>
+                        <li class="menu-option" onclick="openContainer(3);"><a>profile</a></li>
+                        <li class="menu-option" onclick="logOut();"><a>logout</a></li>
                     </ul>
                 </nav>
             </div>
         </div>
         <div class="container" id="apps">
             <div class="title">
-                <h1>Apps/h1>
+                <h1>Apps</h1>
             </div>
             <div class="subcontainer app-container">
                 <div class="app" onclick="openApp('/apps/navigation')">
                     <img class="app-img" src="/imgs/menu/chalinavi.jpg">
-                    <p>Chalinavi</p>
+                    <p>チャリナビ</p>
                 </div>
                 <div class="app" onclick="openApp('/apps/hazardMap')">
                     <img class="app-img" src="/imgs/menu/hazardMap.jpg">
@@ -44,7 +44,7 @@
                 </div>
                 <div class="app" onclick="openApp('/apps/rate')">
                     <img class="app-img" src="/imgs/menu/rateThisSystem.jpg">
-                    <p>Rate</p>
+                    <p>Rate this system</p>
                 </div>
             </div>
         </div>
@@ -53,17 +53,17 @@
                 <h1>Dashboard</h1>
             </div>
             <div class="subcontainer dashboard-container">
-                <div class="dashboard-bubble totalDistanceTraveled" style="background-color: #90e0ef;">
-                    <h2 style="font-size: 4vw;">Total Distance Traveled</h2>
-                    <h1 style="font-size: 3rem; color: rgb(69, 69, 69); "><span style="font-size: 10vh; color: black;" class="totalDistanceTraveledField">0</span>km</h1>
+                <div class="dashboard-bubble totalDistanceTraveled" style="background-color: #798dc5;">
+                    <h2>Total Distance Traveled</h2>
+                    <h1 style="font-size: 3rem; color: rgb(69, 69, 69);"><span style="font-size: 8rem; color: black;" class="totalDistanceTraveledField">---</span>km</h1>
                 </div>
-                <div class="dashboard-bubble totalSuddenBrakes" style="background-color: #90e0ef;">
-                    <h2 style="font-size: 4vw;">Sudden Brakes for Past 3 days</h2>
-                    <h1 style="font-size: 3rem; color: rgb(69, 69, 69);"><span style="font-size: 10vh; color: black;" class="totalSuddenBrakesField">0</span> 回</h1>
+                <div class="dashboard-bubble totalSuddenBrakes" style="background-color: #798dc5;">
+                    <h2>Sudden Brakes for Past 3 days</h2>
+                    <h1 style="font-size: 3rem; color: rgb(69, 69, 69);"><span style="font-size: 8rem; color: black;" class="totalSuddenBrakesField">---</span> times</h1>
                 </div>
-                <div class="dashboard-bubble totalRearImpacts" style="background-color: #90e0ef;">
-                    <h2 style="font-size: 4vw;">Total Reat Impacts for Past 3 days</h2>
-                    <h1 style="font-size: 3rem; color: rgb(69, 69, 69);"><span style="font-size: 10vh; color: black;" class="totalRearImpactsField">0</span> 回</h1>
+                <div class="dashboard-bubble totalRearImpacts" style="background-color: #798dc5;">
+                    <h2>Total Reat Impacts for Past 3 days</h2>
+                    <h1 style="font-size: 3rem; color: rgb(69, 69, 69);"><span style="font-size: 8rem; color: black;" class="totalRearImpactsField">---</span> times</h1>
                 </div>
                 <!--
                 <div class="dashboard-bubble totalDistanceTraveled" style="background-color: #798dc5;">
@@ -85,16 +85,6 @@
             <div class="title">
                 <h1>Settings</h1>
             </div>
-            <div style="margin: 10px;">
-                <form>
-                    <span style="font-size: 20px;">Language: </span>
-                    <select id="language-selection" style="font-size: 20px; width: 100px; height: 30px; border-radius: 10px; background-color: white;">
-                        <option value="en">English</option>
-                        <option value="ja">Japanese</option>
-                    </select>
-                </form>
-            </div>
-            
             <div class="subcontainer">
                 <h2 class="detection-level-label" style="margin:0; margin-top: 10px; margin-bottom: 5px;">Detection Level: 5</h2>
                 <p style="margin-left: 10px; margin-top: 0;">Determines how far of dangers we should notify you</p>
@@ -104,12 +94,13 @@
                     <label>10</label>
                 </div>
                 <button class="save-changes-button" onclick="updateSettings();">Save Changes</button>
+            
             </div>
             <br>
             <br>
             <table border="1">
                 <tr>
-                  <td>Level</th>
+                  <td>level</th>
                   <td>1</td>
                   <td>2</td>
                   <td>3</td>
@@ -122,7 +113,7 @@
                   <td>10</td>
                 </tr>
                 <tr>
-                    <td>Distance(m)</th>
+                    <td>height(m)</th>
                     <td>10</td>
                     <td>20</td>
                     <td>30</td>
@@ -135,7 +126,7 @@
                     <td>100</td>
                 </tr>
                 <tr>
-                    <td>Width(m)</th>
+                    <td>width(m)</th>
                     <td>1</td>
                     <td>1</td>
                     <td>1</td>
@@ -158,11 +149,11 @@
                 <h2 class="profile-emailText">Email: ---</h2>
                 <br>
                 <h2>Change Email</h2>
-                <button class="account-edit-button" onclick="window.location.href = `/profile/changeEmail?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">Eメール変更</button>
+                <button class="account-edit-button" onclick="window.location.href = `/profile/changeEmail?token=${window.sessionStorage.token}`;">Change Email</button>
                 <h2>Change Password</h2>
-                <button class="account-edit-button" onclick="window.location.href = `/profile/changePassword?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">パスワード変更</button>
+                <button class="account-edit-button" onclick="window.location.href = `/profile/changePassword?token=${window.sessionStorage.token}`;">Change Password</button>
                 <h2>Delete Account</h2>
-                <button class="account-edit-button-dangerous" onclick="window.location.href = `/profile/deleteAccount?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">アカウント削除</button>
+                <button class="account-edit-button-dangerous" onclick="window.location.href = `/profile/deleteAccount?token=${window.sessionStorage.token}`;">Delete Account</button>
             </div>
         </div>
     </div>
@@ -479,6 +470,7 @@
 
         const profileUsernameText = document.querySelector(".profile-usernameText");
         const profileEmailText = document.querySelector(".profile-emailText");
+
         const detectionLevelSlider = document.querySelector(".detection-level-slider");
         const detectionLevelLabel = document.querySelector(".detection-level-label");
 
@@ -528,7 +520,6 @@
                 const settings = resp;
                 detectionLevelLabel.innerHTML = `Detection Level: ${settings.detectionLevel}`;
                 detectionLevelSlider.value = settings.detectionLevel;
-                document.querySelector("#language-selection").value = settings.language;
             });
         }
         async function loadDashboard(){
@@ -536,7 +527,7 @@
             const totalDistanceTraveled = dashboard.totalDistanceTraveled;
             const totalSuddenBrakes = dashboard.totalSuddenBrakes;
             const totalRearImpacts = dashboard.totalRearImpacts;
-            document.querySelector(".totalDistanceTraveledField").innerHTML = Math.round(totalDistanceTraveled/1000 * 100) / 100;
+            document.querySelector(".totalDistanceTraveledField").innerHTML = totalDistanceTraveled;
             document.querySelector(".totalSuddenBrakesField").innerHTML = totalSuddenBrakes;
             document.querySelector(".totalRearImpactsField").innerHTML = totalRearImpacts;
         }
@@ -548,11 +539,9 @@
         }
 
         function refreshSettingValues(){
-            detectionLevelLabel.innerHTML = `DetectionLevel: ${detectionLevelSlider.value}`;
+            detectionLevelLabel.innerHTML = `Detection Level: ${detectionLevelSlider.value}`;
         }
         function updateSettings(){
-            const languageSelectionMenu = document.getElementById("language-selection");
-            const language = languageSelectionMenu.value;
             const level = detectionLevelSlider.value;
             const width = conversionTable[detectionLevelSlider.value].w;
             const height = conversionTable[detectionLevelSlider.value].h;
@@ -560,10 +549,8 @@
                 username: window.sessionStorage.username,
                 detectionLevel: level,
                 detectionBoxWidth: width,
-                detectionBoxHeight: height,
-                language: language
+                detectionBoxHeight: height
             };
-            window.sessionStorage.language = language;
             fetch("/updateSettings",{
                 method: "POST",
                 body:JSON.stringify(settings),
@@ -574,7 +561,7 @@
         }
 
         function openApp(appURL){
-            window.location.href = `${appURL}?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;
+            window.location.href = `${appURL}?token=${window.sessionStorage.token}`;
         }
 
         function switchMenu(){
