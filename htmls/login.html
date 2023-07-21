@@ -5,28 +5,28 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Log in</title>
+        <title>ログイン</title>
     </head>
     <body>
         <div class="container">
-            <h1>Log In</h1>
-            <h3>Login to get access to all useful things we offer!</h3>
+            <h1>ログイン</h1>
+            <h3>ユーザー名とパスワードを入力してください</h3>
             <form id="login-form">
                 <div class="fields">
                     <div class="field">
                         <h3>ユーザー名</h3>
-                        <input type="text" placeholder="username..." class="usernameField">
+                        <input type="text" placeholder="ユーザー名..." class="usernameField">
                     </div>
                     <div class="field">
                         <h3>パスワード</h3>
-                        <input type="password" placeholder="password..." class="passwordField">
+                        <input type="password" placeholder="パスワード..." class="passwordField">
                     </div>
                 </div>
             </form>
             <p class="errMsg"></p>
-            <button onclick="login();"class="submit">Log in</button>
+            <button onclick="login();"class="submit">ログイン</button>
             <br>
-            <a href="/signup">Are you new? Why not create your account!</a>
+            <a href="/signup">アカウントを持っていませんか？アカウントを作成</a>
         </div>
         <script>
             const usernameField = document.querySelector(".usernameField");
@@ -40,7 +40,7 @@
                     return;
                 }
                 if(usernameField.value == "" || passwordField.value == ""){
-                    errMsgElement.innerHTML = "*You must fill in all the fields to log in";
+                    errMsgElement.innerHTML = "*ユーザー名とパスワードを入力してください";
                     return;
                 }
                 isLoggingIn = true;
@@ -67,7 +67,7 @@
                         window.sessionStorage.token = token;
                         window.open(`/menu?token=${token}`, "_self");
                     }else{
-                        errMsgElement.innerHTML = "username and password doesn't match";
+                        errMsgElement.innerHTML = "ユーザー名とパスワードが合いません";
                         isLoggingIn = false;
                     }
                 })

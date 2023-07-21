@@ -5,33 +5,33 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>delete account</title>
+        <title>アカウント削除</title>
     </head>
     <body>
         <div class="container">
-            <h1>Delete Account</h1>
-            <h3>we're sad to see you go</h3>
+            <h1>アカウント削除</h1>
+            <h3>絶対に後悔しませんね？？？</h3>
             <h3 class="msg"></h3>
             <form>
                 <div class="fields">
                     <div class="field">
                         <h3>パスワード</h3>
-                        <input type="password" placeholder="password..." class="passwordField textField">
+                        <input type="password" placeholder="パスワード..." class="passwordField textField">
                     </div>
                 </div>
             </form>
-            <h4 style="color: white;">Before you delete your account,<br>
-            note these important things:</h4>
+            <h4 style="color: white;">アカウントを削除する前に,<br>
+            下記のことに注意してください:</h4>
             <h4 style="color: red;">
-            1. This action CANNOT be undone<br>
-            2. All of your data will be deleted<br>
-            3. No regrets when done</h4>
+            1. この操作はやり直しが効きません<br>
+            2. 個人のデータはすべて削除されます<br>
+            3. 絶対に後悔しないこと</h4>
             <input type="checkbox" id="agreementCheckbox" onchange="activateButton();">
-            <label for="agreementCheckbox" style="color: orange; font-size: medium;">I understand what is going to happen<br>and will to proceed</label>
+            <label for="agreementCheckbox" style="color: orange; font-size: medium;">上記のことを確認し<br>アカウントを削除します。</label>
             <p class="errMsg"></p>
-            <button onclick="deleteAccount();"class="submit" type="button" disabled>Delete Account</button>
+            <button onclick="deleteAccount();"class="submit" type="button" disabled>削除</button>
             <br><br><br><br><br><br><br>
-            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">Back to Menu</a>
+            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">メニューに戻る</a>
         </div>
         <script>
             const passwordField= document.querySelector(".passwordField");
@@ -48,7 +48,7 @@
                     return;
                 }
                 if(passwordField.value == ""){
-                    errMsgElement.innerHTML = "*You must fill in your password to proceed";
+                    errMsgElement.innerHTML = "*パスワードを入力してください";
                     return;
                 }
                 isDeleting = true;
@@ -72,7 +72,7 @@
                         console.log(response.status);
                         window.location.href=`/login`;
                     }else{
-                        errMsgElement.innerHTML = "incorrect password";
+                        errMsgElement.innerHTML = "パスワードが違います";
                         isDeleting = false;
                     }
                 })

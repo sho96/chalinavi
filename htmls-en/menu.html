@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>チャリナビ メニュー</title>
+    <title>chalinavi menu</title>
 </head>
 <body>
     <div class="whole">
@@ -20,18 +20,18 @@
             <div class="sidemenu">
                 <nav>
                     <ul>
-                        <li class="menu-option" onclick="openContainer(0);"><a>アプリ</a></li>
-                        <li class="menu-option" onclick="openContainer(1);"><a>ダッシュボード</a></li>
-                        <li class="menu-option" onclick="openContainer(2);"><a>設定</a></li>
-                        <li class="menu-option" onclick="openContainer(3);"><a>プロフィール</a></li>
-                        <li class="menu-option" onclick="logOut();"><a>ログアウト</a></li>
+                        <li class="menu-option" onclick="openContainer(0);"><a>apps</a></li>
+                        <li class="menu-option" onclick="openContainer(1);"><a>dashbord</a></li>
+                        <li class="menu-option" onclick="openContainer(2);"><a>setting</a></li>
+                        <li class="menu-option" onclick="openContainer(3);"><a>profile</a></li>
+                        <li class="menu-option" onclick="logOut();"><a>logout</a></li>
                     </ul>
                 </nav>
             </div>
         </div>
         <div class="container" id="apps">
             <div class="title">
-                <h1>アプリ</h1>
+                <h1>Apps</h1>
             </div>
             <div class="subcontainer app-container">
                 <div class="app" onclick="openApp('/apps/navigation')">
@@ -40,29 +40,29 @@
                 </div>
                 <div class="app" onclick="openApp('/apps/hazardMap')">
                     <img class="app-img" src="/imgs/menu/hazardMap.jpg">
-                    <p>ハザードマップ</p>
+                    <p>Hazard Map</p>
                 </div>
                 <div class="app" onclick="openApp('/apps/rate')">
                     <img class="app-img" src="/imgs/menu/rateThisSystem.jpg">
-                    <p>評価</p>
+                    <p>Rate this system</p>
                 </div>
             </div>
         </div>
         <div class="container" id="dashboard" hidden>
             <div class="title">
-                <h1>ダッシュボード</h1>
+                <h1>Dashboard</h1>
             </div>
             <div class="subcontainer dashboard-container">
                 <div class="dashboard-bubble totalDistanceTraveled" style="background-color: #798dc5;">
-                    <h2>総走行距離</h2>
+                    <h2>Total Distance Traveled</h2>
                     <h1 style="font-size: 3rem; color: rgb(69, 69, 69);"><span style="font-size: 8rem; color: black;" class="totalDistanceTraveledField">---</span>km</h1>
                 </div>
                 <div class="dashboard-bubble totalSuddenBrakes" style="background-color: #798dc5;">
-                    <h2>過去三日間の急ブレーキ数</h2>
+                    <h2>Sudden Brakes for Past 3 days</h2>
                     <h1 style="font-size: 3rem; color: rgb(69, 69, 69);"><span style="font-size: 8rem; color: black;" class="totalSuddenBrakesField">---</span> times</h1>
                 </div>
                 <div class="dashboard-bubble totalRearImpacts" style="background-color: #798dc5;">
-                    <h2>過去三日間の追突事故回数</h2>
+                    <h2>Total Reat Impacts for Past 3 days </h2>
                     <h1 style="font-size: 3rem; color: rgb(69, 69, 69);"><span style="font-size: 8rem; color: black;" class="totalRearImpactsField">---</span> times</h1>
                 </div>
                 <!--
@@ -83,11 +83,11 @@
         </div>
         <div class="container" id="settings" hidden>
             <div class="title">
-                <h1>設定</h1>
+                <h1>Settings</h1>
             </div>
             <div class="subcontainer">
-                <h2 class="detection-level-label" style="margin:0; margin-top: 10px; margin-bottom: 5px;">検出レベル: 5</h2>
-                <p style="margin-left: 10px; margin-top: 0;">どこまで遠くの危険箇所を知らせるべきかを決定</p>
+                <h2 class="detection-level-label" style="margin:0; margin-top: 10px; margin-bottom: 5px;">Detection Level: 5</h2>
+                <p style="margin-left: 10px; margin-top: 0;">Determines how far of dangers we should notify you</p>
                 <div style="margin-bottom: 15px;">
                     <label>1</label>
                     <input class="detection-level-slider" type="range" id="volume" min="1" max="10" onchange="refreshSettingValues();" style="width: 250px; height: 30px;">
@@ -100,7 +100,7 @@
             <br>
             <table border="1">
                 <tr>
-                  <td>レベル</th>
+                  <td>level</th>
                   <td>1</td>
                   <td>2</td>
                   <td>3</td>
@@ -113,7 +113,7 @@
                   <td>10</td>
                 </tr>
                 <tr>
-                    <td>遠さ(m)</th>
+                    <td>height(m)</th>
                     <td>10</td>
                     <td>20</td>
                     <td>30</td>
@@ -126,7 +126,7 @@
                     <td>100</td>
                 </tr>
                 <tr>
-                    <td>横幅(m)</th>
+                    <td>width(m)</th>
                     <td>1</td>
                     <td>1</td>
                     <td>1</td>
@@ -142,18 +142,18 @@
         </div>
         <div class="container" id="profile" hidden>
             <div class="title">
-                <h1>プロフィール</h1>
+                <h1>Profile</h1>
             </div>
             <div class="subcontainer">
-                <h2 class="profile-usernameText">ユーザー名: ---</h2>
-                <h2 class="profile-emailText">Eメール: ---</h2>
+                <h2 class="profile-usernameText">Username: ---</h2>
+                <h2 class="profile-emailText">Email: ---</h2>
                 <br>
-                <h2>Eメール変更</h2>
-                <button class="account-edit-button" onclick="window.location.href = `/profile/changeEmail?token=${window.sessionStorage.token}`;">Eメール変更</button>
-                <h2>パスワード変更</h2>
-                <button class="account-edit-button" onclick="window.location.href = `/profile/changePassword?token=${window.sessionStorage.token}`;">パスワード変更</button>
-                <h2>アカウント削除</h2>
-                <button class="account-edit-button-dangerous" onclick="window.location.href = `/profile/deleteAccount?token=${window.sessionStorage.token}`;">アカウント削除</button>
+                <h2>Change Email</h2>
+                <button class="account-edit-button" onclick="window.location.href = `/profile/changeEmail?token=${window.sessionStorage.token}`;">Change Email</button>
+                <h2>Change Password</h2>
+                <button class="account-edit-button" onclick="window.location.href = `/profile/changePassword?token=${window.sessionStorage.token}`;">Change Password</button>
+                <h2>Delete Account</h2>
+                <button class="account-edit-button-dangerous" onclick="window.location.href = `/profile/deleteAccount?token=${window.sessionStorage.token}`;">Delete Account</button>
             </div>
         </div>
     </div>
@@ -533,13 +533,13 @@
         }
         async function loadProfile(){
             const profile = await (await fetch(`/getProfile?username=${window.sessionStorage.username}`)).json();
-            profileUsernameText.innerHTML = `ユーザー名: <br>${window.sessionStorage.username}`;
-            profileEmailText.innerHTML = `Eメール: <br>${profile["email"]}`;
+            profileUsernameText.innerHTML = `Username: <br>${window.sessionStorage.username}`;
+            profileEmailText.innerHTML = `Email: <br>${profile["email"]}`;
             console.log(profile);
         }
 
         function refreshSettingValues(){
-            detectionLevelLabel.innerHTML = `検出レベル: ${detectionLevelSlider.value}`;
+            detectionLevelLabel.innerHTML = `Detection Level: ${detectionLevelSlider.value}`;
         }
         function updateSettings(){
             const level = detectionLevelSlider.value;

@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Navigation</title>
+    </head>
+    <body>
+        <button onclick="back();">Go Back</button>
+        <h1></h1>
+        <p></p>
+        <h3></h3>
+        <h4></h4>
+    </body>
+    <script>
+        const accuracyThreshold = 20;
+        const messageField = document.querySelector("h1");
+        const statusField = document.querySelector("p");
+        const logField = document.querySelector("h4");
+        const accField = document.querySelector("h3");
+        let currentDirection = 0;
+        let directionUpdate = false;
+        let lastPosition;
+        let lastAccDatas = [];
+
+        async function updateLocation(){
+            const position = await getPos();
+            //log(lastPosition);
+            //log(position);
+            log(currentDirection);
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+
+            
+            if(position.coords.accuracy >= accuracyThreshold){
+                messageField.innerHTML = `Your GPS accuracy might be too low:\n${position.coords.accuracy}`;
+            }else{
+                messageField.innerHTML = position.coords.accuracy
+            }
+            
+            if(lastPosition == null){
+                lastPosition = position.coords;
+                return;
+            }
+            
+            const distance = getDistanceOnEarth(lat, lon, lastPosition.latitude, lastPosition.longitude) * 1000;
+            
+            if(distance <= 3){
+                return;
+            }
+
+            let deltaLat = lat - lastPosition.latitude;
+            let deltaLon = lon - lastPosition.longitude;
+
+            const rawAngle = Math.atan2(deltaLat, deltaLon) * 180 / Math.PI;
+            const angle = 360 - (rawAngle-90 + 360)%360;
+            currentDirection = angle;
+            directionUpdate = true;
+            statusField.innerHTML = `dir: ${currentDirection}\nlat: ${lat}\nlon: ${lon}\ndist: ${distance}`;
+            lastPosition = position.coords;
+            //log("position updated");
+        }
+        function detect(event){
+            const acc = event.acceleration;
+            const x = acc.x;
+            const y = acc.y;
+            const z = acc.z;
+            const totalAmount = Math.sqrt(x ** 2 + y ** 2 + z ** 2);
+            accField.innerHTML = `x: ${x.toPrecision(3)} <br>y: ${y.toPrecision(3)} <br>z: ${z.toPrecision(3)}<br>distance: ${distance}`;
+            if (distance >= 30){
+                log("sudden brake detected");
+            }
+        }
+        function log(msg){
+            logField.innerHTML += `${msg}<br>`;
+        }
+        function getDistanceOnEarth(lat1,lon1,lat2,lon2) {
+            var R = 6371; // Radius of the earth in km
+            var dLat = deg2rad(lat2-lat1);  // deg2rad below
+            var dLon = deg2rad(lon2-lon1); 
+            var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon/2) * Math.sin(dLon/2); 
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+            var d = R * c; // Distance in km
+            return d;
+        }
+
+        function deg2rad(deg) {
+            return deg * (Math.PI/180);
+        }
+        function back(){
+            window.location.href = `/menu?token=${window.sessionStorage.token}`;
+        }
+        //update();
+        setInterval(updateLocation, 1000);
+        window.addEventListener("devicemotion", detect);
+        function getPos(){
+            return new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject, {enableHighAccuracy:true}));
+        }
+        setInterval(()=>{
+            fetch("/updateToken",{
+                method: "POST",
+                body: JSON.stringify({
+                    token: window.sessionStorage.token
+                }),
+                headers:{
+                    "Content-Type": "application/json"
+                }
+            });
+        }, 10000);
+    </script>
+</html>

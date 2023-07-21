@@ -5,49 +5,49 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>チャリナビ</title>
+        <title>Main</title>
         <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
         <script>eruda.init();</script>
     </head>
     <body style="">
         <div class="orientation-lock-warning-container bubble-container" hidden>
-            <h1>画面の向きがロックされているようです</h1>
-            <h3>画面のロックを解除してください</h3>
+            <h1>Looks like your screen orientation is locked</h1>
+            <h3>free your screen orientation to continue</h3>
 
-            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">メニューに戻る</a>
+            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">Back to Menu</a>
         </div>
         <div class="permission-container bubble-container" hidden>
-            <h1>加速度センサーの利用を許可してください</h1>
-            <h3>この機能を利用するには加速度センサーの使用が必要です</h3>
-            <button class="allow-button" onclick="requestPermission()">許可する</button>
+            <h1>Allow motion sensor on your device</h1>
+            <h3>allow the use of accelerometer on your device to use this feature</h3>
+            <button class="allow-button" onclick="requestPermission()">Allow</button>
             <br>
-            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">メニューに戻る</a>
+            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">Back to Menu</a>
         </div>
         <div class="orientation-warning-container bubble-container" hidden>
-            <h1>画面の向きが違うようです</h1>
-            <h3>画面を縦にしてください</h3>
+            <h1>Looks like your screen orientation is not right</h1>
+            <h3>please rotate your screen to portrait orientation</h3>
 
-            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">メニューに戻る</a>
+            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">Back to Menu</a>
         </div>
         <div class="survey-container bubble-container" hidden>
-            <h1>車両を選んでください</h1>
-            <h3>何に乗っているかを選んでください</h3>
+            <h1>Select your vehicle</h1>
+            <h3>please select what you are riding</h3>
             
-            <button class="bike" onclick="selectVehicle('bike')">自転車</button><br>
-            <button class="car" onclick="selectVehicle('car')">車</button><br>
+            <button class="bike" onclick="selectVehicle('bike')">bike</button><br>
+            <button class="car" onclick="selectVehicle('car')">car</button><br>
             
             <br>
-            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">メニューに戻る</a>
+            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">Back to Menu</a>
         </div>
         <div class="calibration-container bubble-container" hidden>
-            <h1>センサーを補正</h1>
-            <h3>あと少し！</h3>
-            <h2>下のボタンを押して端末をできるだけ動かさずに3秒間センサーを補正してください</h2>
+            <h1>Sensor Calibration</h1>
+            <h3>You're almost there!</h3>
+            <h2>when you're device is stable and ready, press the button below to start the calibration</h2>
             
-            <button class="calibrate-button" onclick="startCalibration()">補正</button><br>
+            <button class="calibrate-button" onclick="startCalibration()">start</button><br>
             
             <br>
-            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">メニューに戻る</a>
+            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">Back to Menu</a>
         </div>
         <div class="main-container" hidden>
             <div class="signal-meter" style="position: absolute; right: 20px; top: 10px;">
@@ -65,19 +65,19 @@
             <button onclick="summary();" class="done-button" style="font-size: 2rem; color: black;">Done</button>
             
             <!--Delete on Deployment-->
-            <h4 class="gravityVector">重力ベクトル: ---</h4>
-            <h4 class="accelerationOrientation">加速度の向き: ---</h4>
+            <h4 class="gravityVector">GracityVector: ---</h4>
+            <h4 class="accelerationOrientation">Orientation: ---</h4>
             <!---->
         </div>
         <div class="alert-container" hidden>
             <div class="alert-window" >
                 <div name="alert-distance" style="background-color: red;">
-                    <h1 style="font-size: 5rem; color: rgb(106, 255, 0);"><span class="alert-distance">100</span>m 先</h1>
+                    <h1 style="font-size: 5rem; color: rgb(106, 255, 0);"><span class="alert-distance">100</span>m ahead</h1>
                 </div>
                 
                 <div name="alert-content" class="alert-blink">
                     <img src="/imgs/apps/navigation/warning.png" alt="warning sign" width="75%" style="margin-top: 20px;">
-                    <h1 class="alert-message" style="color: black; font-size: 4rem; margin-left: 15px; margin-right: 15px;"></h1>
+                    <h1 class="alert-message" style="color: black; font-size: 4rem; margin-left: 15px; margin-right: 15px;">Area of frequent emergency braking</h1>
                 </div>
             </div>
         </div>
@@ -215,16 +215,12 @@
                     surroundingAccidents,
                 );
                 console.log(locations.length);
-                const convertToMessage = {
-                    "brake": "急ブレーキ多発箇所",
-                    "rear impact": "追突事故多発箇所"
-                }
                 for(index in locations){
                     if ('alerted' in locations[index]){
                         continue;
                     }
                     distanceToAccident = getDistanceOnEarth(currentPosition.latitude, currentPosition.longitude, locations[index].location.lat, locations[index].location.lon);
-                    alertAccident(firstNDigits(distanceToAccident*1000, 2), convertToMessage[locations[index].type], 5000);
+                    alertAccident(firstNDigits(distanceToAccident*1000, 2), locations[index].type, 1000);
                     surroundingAccidents[index]["alerted"] = true;
                 }
             }

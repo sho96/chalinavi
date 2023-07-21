@@ -5,63 +5,61 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>パスワード変更</title>
+        <title>change email</title>
     </head>
     <body>
         <div class="container">
-            <h1>パスワード変更</h1>
-            <h3>新しいパスワードを入力してください</h3>
+            <h1>Email Change</h1>
+            <h3>enter your new email</h3>
             <h3 class="msg"></h3>
             <form>
                 <div class="fields">
                     <div class="field">
-                        <h3>今のパスワード</h3>
-                        <input type="password" placeholder="パスワード..." class="oldPasswordField">
-                    </div>
-                    <div class="field">
-                        <h3>新しいパスワード</h3>
-                        <input type="password" placeholder="新しいパスワード..." class="passwordField">
-                        <input type="password" placeholder="再入力" class="confirmField">
+                        <h3>メールアドレス</h3>
+                        <input type="email" placeholder="email..." class="emailField">
                     </div>
                 </div>
             </form>
+            <div class="codeFieldContainer" style="display: none">
+                <div class="field">
+                    <h3>認証コード</h3>
+                    <input type="number" placeholder="verification code..." class="codeField">
+                </div>
+            </div>
             <p class="errMsg"></p>
-            <button onclick="changePassword();"class="submit">パスワードを変更</button>
+            <button onclick="changeEmail();"class="submit">Confirm</button>
             <br>
-            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">メニューに戻る</a>
+            <a onclick="back();">Back to Menu</a>
         </div>
         <script>
-            const oldPasswordField = document.querySelector(".oldPasswordField");
-            const passwordField= document.querySelector(".passwordField");
-            const confirmField = document.querySelector(".confirmField");
+            const fieldContainer = document.querySelector(".fields");
+            const codeFieldContainer = document.querySelector(".codeFieldContainer");
+            const emailField = document.querySelector(".emailField");
+            const codeField = document.querySelector(".codeField");
             
             const msgElement = document.querySelector(".msg");
             const errMsgElement = document.querySelector(".errMsg")
 
-            let isChangingPassword = false;
+            let isChangingEmail = false;
+            let isVerifying = false;
             
-            async function changePassword(){
-                if(isChangingPassword){
+            async function changeEmail(){
+                if(isChangingEmail){
                     return;
                 }
-                if(oldPasswordField.value == "" || passwordField.value == "" || confirmField.value == ""){
-                    errMsgElement.innerHTML = "*すべての欄を埋めてください";
+                if(emailField.value == ""){
+                    errMsgElement.innerHTML = "*Enter your new email to continue";
                     return;
                 }
-                if(passwordField.value != confirmField.value){
-                    errMsgElement.innerHTML = "*新しいパスワードが合いません";
-                    return;
-                }
-                isChangingPassword = true;
+                isChangingEmail = true;
                 errMsgElement.innerHTML = "";
                 fetch(
-                    "/profile/changePassword/sendPassword",
+                    "/profile/changeEmail/sendEmail",
                     {
                         method:"POST",
                         body:JSON.stringify({
-                            username: window.sessionStorage.username,
-                            oldPassword: await digestMessage(oldPasswordField.value),
-                            password: await digestMessage(passwordField.value),
+                            username:window.sessionStorage.username,
+                            email:emailField.value
                         }),
                         headers:{
                             'Content-Type': 'application/json'
@@ -69,13 +67,47 @@
                     }
                 ).then(response => response.json())
                 .then(response => {
+                        fieldContainer.style.display = "none";
+                        const button = document.querySelector(".submit");
+                        button.innerHTML = "verify";
+                        button.setAttribute("onclick", "register();")
+                        msgElement.innerHTML = `verification code sent to ${emailField.value}.
+                        enter the code to verify your email`;
+                        codeFieldContainer.style.display = "block";
+                        isChangingEmail = false;
+                })
+            }
+
+            function register(){
+                if(isVerifying){
+                    return;
+                }
+                if(codeField.value == ""){
+                    errMsgElement.innerHTML = "Enter your verification code to proceed";
+                }
+                isVerifying = true;
+                fetch(
+                    "/profile/changeEmail/verifyEmail",
+                    {
+                        method:"POST",
+                        body:JSON.stringify({
+                            username: window.sessionStorage.username,
+                            code: codeField.value
+                        }),
+                        headers:{
+                            Accept: 'application/json',
+                            "Content-Type":"application/json"
+                        }
+                    }
+                ).then(response => response.json())
+                .then(response => {
                     const result = response.status;
-                    if(result == "success"){
-                        console.log(response.status);
-                        window.location.href=`/menu?token=${window.sessionStorage.token}`;
+                    console.log(response.status);
+                    if (result == "verified"){
+                        window.location.href = `/menu?token=${window.sessionStorage.token}`;
                     }else{
-                        errMsgElement.innerHTML = "パスワードが違います";
-                        isChangingPassword = false;
+                        errMsgElement.innerHTML = "code incorrect";
+                        isVerifying = false;
                     }
                 })
             }
@@ -88,17 +120,20 @@
                   .join(""); // convert bytes to hex string
                 return hashHex;
             }
+            function back(){
+                window.location.href = `/menu?token=${window.sessionStorage.token}`;
+            }
             setInterval(()=>{
                 fetch("/updateToken",{
                     method: "POST",
-                    body:JSON.stringify({
-                        token:window.sessionStorage.token,
+                    body: JSON.stringify({
+                        token: window.sessionStorage.token
                     }),
-                    headers: {
+                    headers:{
                         "Content-Type": "application/json"
                     }
                 });
-            }, 20000)
+            }, 20000);
             fetch("/updateToken",{
                 method: "POST",
                 body: JSON.stringify({

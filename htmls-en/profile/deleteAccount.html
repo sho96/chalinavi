@@ -5,62 +5,60 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>パスワード変更</title>
+        <title>delete account</title>
     </head>
     <body>
         <div class="container">
-            <h1>パスワード変更</h1>
-            <h3>新しいパスワードを入力してください</h3>
+            <h1>Delete Account</h1>
+            <h3>we're sad to see you go</h3>
             <h3 class="msg"></h3>
             <form>
                 <div class="fields">
                     <div class="field">
-                        <h3>今のパスワード</h3>
-                        <input type="password" placeholder="パスワード..." class="oldPasswordField">
-                    </div>
-                    <div class="field">
-                        <h3>新しいパスワード</h3>
-                        <input type="password" placeholder="新しいパスワード..." class="passwordField">
-                        <input type="password" placeholder="再入力" class="confirmField">
+                        <h3>パスワード</h3>
+                        <input type="password" placeholder="password..." class="passwordField textField">
                     </div>
                 </div>
             </form>
+            <h4 style="color: white;">Before you delete your account,<br>
+            note these important things:</h4>
+            <h4 style="color: red;">
+            1. This action CANNOT be undone<br>
+            2. All of your data will be deleted<br>
+            3. No regrets when done</h4>
+            <input type="checkbox" id="agreementCheckbox" onchange="activateButton();">
+            <label for="agreementCheckbox" style="color: orange; font-size: medium;">I understand what is going to happen<br>and will to proceed</label>
             <p class="errMsg"></p>
-            <button onclick="changePassword();"class="submit">パスワードを変更</button>
-            <br>
-            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">メニューに戻る</a>
+            <button onclick="deleteAccount();"class="submit" type="button" disabled>Delete Account</button>
+            <br><br><br><br><br><br><br>
+            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">Back to Menu</a>
         </div>
         <script>
-            const oldPasswordField = document.querySelector(".oldPasswordField");
             const passwordField= document.querySelector(".passwordField");
-            const confirmField = document.querySelector(".confirmField");
+            const agreementCheckbox = document.querySelector("#agreementCheckbox");
+            const submitButton = document.querySelector(".submit");
             
             const msgElement = document.querySelector(".msg");
             const errMsgElement = document.querySelector(".errMsg")
 
-            let isChangingPassword = false;
+            let isDeleting = false;
             
-            async function changePassword(){
-                if(isChangingPassword){
+            async function deleteAccount(){
+                if(isDeleting){
                     return;
                 }
-                if(oldPasswordField.value == "" || passwordField.value == "" || confirmField.value == ""){
-                    errMsgElement.innerHTML = "*すべての欄を埋めてください";
+                if(passwordField.value == ""){
+                    errMsgElement.innerHTML = "*You must fill in your password to proceed";
                     return;
                 }
-                if(passwordField.value != confirmField.value){
-                    errMsgElement.innerHTML = "*新しいパスワードが合いません";
-                    return;
-                }
-                isChangingPassword = true;
+                isDeleting = true;
                 errMsgElement.innerHTML = "";
                 fetch(
-                    "/profile/changePassword/sendPassword",
+                    "/profile/deleteAccount/delete",
                     {
                         method:"POST",
                         body:JSON.stringify({
                             username: window.sessionStorage.username,
-                            oldPassword: await digestMessage(oldPasswordField.value),
                             password: await digestMessage(passwordField.value),
                         }),
                         headers:{
@@ -72,13 +70,18 @@
                     const result = response.status;
                     if(result == "success"){
                         console.log(response.status);
-                        window.location.href=`/menu?token=${window.sessionStorage.token}`;
+                        window.location.href=`/login`;
                     }else{
-                        errMsgElement.innerHTML = "パスワードが違います";
-                        isChangingPassword = false;
+                        errMsgElement.innerHTML = "incorrect password";
+                        isDeleting = false;
                     }
                 })
             }
+
+            function activateButton(){
+                submitButton.disabled = !agreementCheckbox.checked
+            }
+
             async function digestMessage(message) {
                 const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array
                 const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8); // hash the message
@@ -97,17 +100,17 @@
                     headers: {
                         "Content-Type": "application/json"
                     }
-                });
-            }, 20000)
-            fetch("/updateToken",{
-                method: "POST",
-                body: JSON.stringify({
-                    token: window.sessionStorage.token
-                }),
-                headers:{
-                    "Content-Type": "application/json"
-                }
             });
+        }, 20000)
+        fetch("/updateToken",{
+            method: "POST",
+            body: JSON.stringify({
+                token: window.sessionStorage.token
+            }),
+            headers:{
+                "Content-Type": "application/json"
+            }
+        });
         </script>
 
         <style>
@@ -147,7 +150,7 @@
                 text-align: center;
                 width: 350px;
             }
-            input{
+            .textField{
                 margin-bottom: 10px;
                 border-radius: 20px;
                 width: 230px;
@@ -160,18 +163,18 @@
                 transition: border 0.25s;
                 transition: width, 0.25s;
             }
-            input:focus{
+            .textField:focus{
                 width: 270px;
                 border: thin solid greenyellow;
             }
-            input::-webkit-outer-spin-button, input::-webkit-inner-spin-button{
+            .textField::-webkit-outer-spin-button, .textField::-webkit-inner-spin-button{
                 -webkit-appearance: none;
             }
-            input[type=number]{
+            .textField[type=number]{
                 -moz-appearance: textfield;
             }
             button{
-                background-color: black;
+                background-color: red;
                 color: white;
                 border: thin solid gray;
                 border-radius: 15px;
@@ -179,15 +182,17 @@
                 transition: background-color 0.1s;
                 width: 300px;
                 height: 50px;
+                margin-bottom: 10px;
+                margin-top: 10px;
             }
-            button:hover{
-                border: thin solid greenyellow;
-            }
-            button:active{
+            button:disabled{
                 background-color: gray;
             }
-            .submit{
-                margin-bottom: 10px;
+            button:hover:not([disabled]){
+                border: thin solid rgb(255, 34, 34);
+            }
+            button:active:not([disabled]){
+                background-color: rgb(255, 96, 96);
             }
             textarea:focus, input:focus{
                 outline: none;
