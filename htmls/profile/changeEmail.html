@@ -69,7 +69,7 @@
                 .then(response => {
                         fieldContainer.style.display = "none";
                         const button = document.querySelector(".submit");
-                        button.innerHTML = "verify";
+                        button.innerHTML = "認証";
                         button.setAttribute("onclick", "register();")
                         msgElement.innerHTML = `認証コードを ${emailField.value}.
                         に送りました。認証コードを入力してください`;
