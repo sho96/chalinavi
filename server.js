@@ -88,7 +88,7 @@ app.post("/verifyEmail", (req, resp) => {
     const settings = JSON.parse(readFileSync("./jsons/userSettings.json"), {encoding: "utf-8"});
 
     const userdata = {password: codes[email]["password"], email: email};
-    settings[codes[email]["username"]] = {detectionLevel: "5", detectionBoxWidth: 1, detectionBoxHeight: 40}; 
+    settings[codes[email]["username"]] = {detectionLevel: "5", detectionBoxWidth: 1, detectionBoxHeight: 40, language: "ja"}; 
     users[codes[email]["username"]] = userdata;
 
     delete codes[email];
