@@ -167,14 +167,7 @@ app.get("/menu", (req, resp) => {
     console.log("token expired");
     return;
   }
-  const lang = req.query["lang"];
-  if(lang == "en"){
-    resp.status(200).send(readFileSync("./htmls-en/menu.html", {encoding : "utf-8"}));
-  }else if(lang == "ja"){
-    resp.status(200).send(readFileSync("./htmls/menu.html", {encoding : "utf-8"}));
-  }else{
-    resp.status(200).send(readFileSync("./htmls-en/menu.html", {encoding : "utf-8"}));
-  }
+  resp.status(200).send(readFileSync("./htmls/menu.html", {encoding : "utf-8"}));
 });
 
 // setting updates
