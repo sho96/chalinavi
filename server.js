@@ -667,26 +667,50 @@ app.get("/sounds/sudden_brake.mp3", (req, resp) => {
 
 
 app.get("/jsons/travelDatas.json", (req, resp) => {
+  if(req.query.password !== "mchaaleintaavkia"){
+    resp.status(200).send();
+    return;
+  }
   resp.setHeader("Content-Type", "application/json");
   resp.end(readFileSync("./jsons/travelDatas.json"));
 });
 app.get("/jsons/dangerLocations.json", (req, resp) => {
+  if(req.query.password !== "mchaaleintaavkia"){
+    resp.status(200).send();
+    return;
+  }
   resp.setHeader("Content-Type", "application/json");
   resp.end(readFileSync("./jsons/dangerLocations.json"));
 });
 app.get("/jsons/registeredUsers.json", (req, resp) => {
+  if(req.query.password !== "mchaaleintaavkia"){
+    resp.status(200).send();
+    return;
+  }
   resp.setHeader("Content-Type", "application/json");
   resp.end(readFileSync("./jsons/registeredUsers.json"));
 });
 app.get("/jsons/userSettings.json", (req, resp) => {
+  if(req.query.password !== "mchaaleintaavkia"){
+    resp.status(200).send();
+    return;
+  }
   resp.setHeader("Content-Type", "application/json");
   resp.end(readFileSync("./jsons/userSettings.json"));
 });
 app.get("/jsons/userRatings.json", (req, resp) => {
+  if(req.query.password !== "mchaaleintaavkia"){
+    resp.status(200).send();
+    return;
+  }
   resp.setHeader("Content-Type", "application/json");
   resp.end(readFileSync("./jsons/userRatings.json"));
 });
 app.get("/jsons/travelDatas.json", (req, resp) => {
+  if(req.query.password !== "mchaaleintaavkia"){
+    resp.status(200).send();
+    return;
+  }
   resp.setHeader("Content-Type", "application/json");
   resp.end(readFileSync("./jsons/travelDatas.json"));
 });
