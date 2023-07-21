@@ -683,6 +683,10 @@ app.get("/deleteLocations", (req, resp) => {
   resp.status(200).send();
 });
 
+//------------------------------ test ------------------------------
+app.get("/test", (req ,resp) => {
+  resp.status(200).send(readFileSync("./htmls/test/login-test.html", {encoding: "utf-8"}));
+})
 
 
 /*
