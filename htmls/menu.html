@@ -536,7 +536,7 @@
             const totalDistanceTraveled = dashboard.totalDistanceTraveled;
             const totalSuddenBrakes = dashboard.totalSuddenBrakes;
             const totalRearImpacts = dashboard.totalRearImpacts;
-            document.querySelector(".totalDistanceTraveledField").innerHTML = totalDistanceTraveled;
+            document.querySelector(".totalDistanceTraveledField").innerHTML = Math.round(totalDistanceTraveled/1000 * 100) / 100;
             document.querySelector(".totalSuddenBrakesField").innerHTML = totalSuddenBrakes;
             document.querySelector(".totalRearImpactsField").innerHTML = totalRearImpacts;
         }
