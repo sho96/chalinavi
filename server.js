@@ -12,7 +12,6 @@ var nodemailer = require('nodemailer');
 //var credentials = {key: privateKey, cert: certificate};
 var express = require('express');
 var app = express();
-var favicon = require('serve-favicon');
 
 app.use(express.json());
 
