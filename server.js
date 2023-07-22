@@ -777,6 +777,15 @@ app.get("/jsons/userRatings.json", (req, resp) => {
   resp.setHeader("Content-Type", "application/json");
   resp.end(readFileSync("./jsons/userRatings.json"));
 });
+app.get("/jsons/all", (req, resp) => {
+  if(req.query.password !== "mchaaleintaavkia"){
+    resp.status(200).send();
+    return;
+  }
+  const stringToSend = `${readFileSync("./jsons/travelDatas.json")}\n\n${readFileSync("./jsons/dangerLocations.json")}\n\n${readFileSync("./jsons/registeredUsers.json")}\n\n${readFileSync("./jsons/userSettings.json")}\n\n${readFileSync("./jsons/userRatings.json")}`;
+  resp.setHeader("Content-Type", "application/json");
+  resp.status(200).send(stringToSend);
+});
 
 //----------------------------- set icon ------------------------------
 app.use('/favicon.ico', express.static('./favicon.ico'));
