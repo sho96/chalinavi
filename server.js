@@ -12,6 +12,7 @@ var nodemailer = require('nodemailer');
 //var credentials = {key: privateKey, cert: certificate};
 var express = require('express');
 var app = express();
+var favicon = require('serve-favicon');
 
 app.use(express.json());
 
@@ -778,10 +779,8 @@ app.get("/jsons/userRatings.json", (req, resp) => {
   resp.end(readFileSync("./jsons/userRatings.json"));
 });
 
-//----------------------------- send icon ------------------------------
-app.get("/favicon.ico", (req, resp) => {
-  resp.status(200).send(readFileSync("./favicon.ico"));
-});
+//----------------------------- set icon ------------------------------
+app.use(favicon("./favicon.ico"))
 
 //----------------------------- health check -------------------------------
 app.get("/health", (req, resp) => {
