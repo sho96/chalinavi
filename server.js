@@ -780,7 +780,7 @@ app.get("/jsons/userRatings.json", (req, resp) => {
 });
 
 //----------------------------- set icon ------------------------------
-app.use(favicon("./favicon.ico"))
+app.use('/favicon.ico', express.static('./favicon.ico'));
 
 //----------------------------- health check -------------------------------
 app.get("/health", (req, resp) => {
