@@ -782,7 +782,7 @@ app.get("/jsons/all", (req, resp) => {
     resp.status(200).send();
     return;
   }
-  const stringToSend = `${readFileSync("./jsons/travelDatas.json")}\n\n${readFileSync("./jsons/dangerLocations.json")}\n\n${readFileSync("./jsons/registeredUsers.json")}\n\n${readFileSync("./jsons/userSettings.json")}\n\n${readFileSync("./jsons/userRatings.json")}`;
+  const stringToSend = `travelDatas.json\n${readFileSync("./jsons/travelDatas.json")}\n\ndangerLocations.json\n${readFileSync("./jsons/dangerLocations.json")}\n\nregisteredUsers.json\n${readFileSync("./jsons/registeredUsers.json")}\n\nuserSettings.json\n${readFileSync("./jsons/userSettings.json")}\n\nuserRatings.json\n${readFileSync("./jsons/userRatings.json")}`;
   resp.setHeader("Content-Type", "application/json");
   resp.status(200).send(stringToSend);
 });
