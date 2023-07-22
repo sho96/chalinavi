@@ -51,6 +51,7 @@ app.post("/sendLogin", (req, resp) => {
     resp.end(JSON.stringify({status: "username and password don't match"}));
     return;
   } 
+  delete users;
   const availableLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz0123456789-_";
   const length = 20;
   let token = "";
@@ -62,20 +63,17 @@ app.post("/sendLogin", (req, resp) => {
   tokens[token] = {due: Date.now() + 60000};
   //console.log(tokens);
   writeFileSync("./jsons/activeTokens.json", JSON.stringify(tokens));
+  delete tokens;
   const settings = JSON.parse(readFileSync("./jsons/userSettings.json", {encoding: "utf-8"}));
   resp.setHeader("Content-Type", "application/json");
-  resp.end(JSON.stringify({status: "success", token: token, language: settings[username].language}))
+  resp.end(JSON.stringify({status: "success", token: token, language: settings[username].language}));
+  delete settings;
   console.log(`token of "${token}" sent`);
 })
 
 // sign up functionalities
 app.get("/signup", (req, resp) => {
   console.log("signup request");
-  const userIP = req.socket.remoteAddress;
-  const registeredUsers = JSON.parse(readFileSync("./jsons/registeredUsers.json", {encoding : "utf-8"}));
-  if (userIP in registeredUsers){
-      resp.redirect("/main");
-  }
   const lang = req.query["lang"];
   if(lang == "en"){
     resp.status(200).send(readFileSync("./htmls-en/signup.html", {encoding: "utf-8"}));
@@ -86,7 +84,6 @@ app.get("/signup", (req, resp) => {
   }
 });
 app.post("/verifyEmail", (req, resp) => {
-  const userIP = req.socket.remoteAddress;
   email = req.body["email"];
   verificationCode = req.body["code"];
   const codes = JSON.parse(readFileSync("./jsons/verificationCodes.json", {encoding : "utf-8"}));
@@ -112,6 +109,9 @@ app.post("/verifyEmail", (req, resp) => {
     writeFileSync("./jsons/registeredUsers.json", JSON.stringify(users), err => {if(err) console.log(err)});
     writeFileSync("./jsons/verificationCodes.json", JSON.stringify(codes), err => {if(err) console.log(err)});
     writeFileSync("./jsons/userSettings.json", JSON.stringify(settings), err => {if(err) console.log(err)});
+
+    delete users;
+    delete settings;
 
     resp.setHeader('Content-Type', 'application/json');
     resp.end(JSON.stringify({status: "verified"}));
@@ -142,11 +142,13 @@ app.post("/sendSignup", (req, resp) => {
     i++;
   }
   writeFileSync("./jsons/verificationCodes.json", JSON.stringify(verificationCodes));
+  delete verificationCodes;
   const registeredUsers = JSON.parse(readFileSync("./jsons/registeredUsers.json"));
   for(const registeredUsername in registeredUsers){
     usedUsernames[i] = registeredUsername;
     i++;
   }
+  delete registeredUsers;
   
   console.log(usedUsernames);
 
@@ -162,6 +164,7 @@ app.post("/sendSignup", (req, resp) => {
   codes[email] = {code: verificationCode, username: username, password: password, language: language, due: Date.now()+600000};
   sendCode(email, username, verificationCode, "Hi! Thank you for registering!");
   writeFileSync("./jsons/verificationCodes.json", JSON.stringify(codes));
+  delete codes;
   resp.setHeader("Content-Type", "application/json");
   resp.end(JSON.stringify({status: "success"}))
 });
@@ -184,6 +187,7 @@ app.get("/menu", (req, resp) => {
     console.log("token expired");
     return;
   }
+  delete activeTokens;
   const lang = req.query["lang"];
   if(lang == "en"){
     resp.status(200).send(readFileSync("./htmls-en/menu.html", {encoding : "utf-8"}));
@@ -772,6 +776,11 @@ app.get("/jsons/userRatings.json", (req, resp) => {
   }
   resp.setHeader("Content-Type", "application/json");
   resp.end(readFileSync("./jsons/userRatings.json"));
+});
+
+//----------------------------- send icon ------------------------------
+app.get("/favicon.ico", (req, resp) => {
+  resp.status(200).send(readFileSync("./favicon.ico"));
 });
 
 //----------------------------- health check -------------------------------
