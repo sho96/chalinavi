@@ -300,7 +300,9 @@
 
             // ----------------------------------- summary and leave -----------------------------------
             function summary(){
-                alert(`Total distance traveled: ${parseFloat(parseFloat((totalDistanceTraveled / 1000).toFixed(2)).toPrecision(3))} km`);
+                if(!confirm(`Total distance traveled: ${parseFloat(parseFloat((totalDistanceTraveled / 1000).toFixed(2)).toPrecision(3))} km`)){
+                    return;
+                }
                 fetch("/apps/navigation/sendSummary", {
                     method: "POST",
                     body: JSON.stringify({
