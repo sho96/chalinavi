@@ -786,6 +786,20 @@ app.get("/health", (req, resp) => {
   resp.status(200).send();
 });
 
+//----------------------------- add accident location data -----------------------------
+app.post("/addLocation", (req, resp) => {
+  if(req.body.password != "mchaaleintaavkia"){
+    resp.status(200).send()
+    return;
+  }
+  delete req.body.password;
+  const locations = JSON.parse(readFileSync("./jsons/dangerLocations.json", {encoding: "utf-8"}));
+  locations[locations.length] = req.body;
+  writeFileSync("./jsons/dangerLocations.json", JSON.stringify(locations));
+  delete locations;
+  resp.status(200).send("added");
+});
+
 //----------------------------- delete accident location datas -----------------------------
 app.get("/deleteLocations", (req, resp) => {
   console.log("deleteLocations requested");
