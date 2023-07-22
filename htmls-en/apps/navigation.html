@@ -450,7 +450,8 @@
                             deltaLon = currentPosition.longitude - lastPosition.longitude;
                             rawAngle = Math.atan2(deltaLat, deltaLon) * 180 / Math.PI;
                             currentDirection = 360 - (rawAngle-90 + 360)%360;
-    
+                        }
+                        if(distanceFromPreviousMeasurement > deltaTime * 1){
                             totalDistanceTraveled += distanceFromPreviousMeasurement;
                         }
 
