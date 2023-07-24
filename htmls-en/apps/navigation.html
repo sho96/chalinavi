@@ -111,6 +111,9 @@
 
             let timeLastSentAccident;
 
+            let accelerationDurationType= "none";
+            let accelerationDurationStart = 0;
+
             const distanceSounds = {
                 10: new Audio("/sounds/10m.mp3"),
                 20: new Audio("/sounds/20m.mp3"),
@@ -193,7 +196,6 @@
                 // guard clauses to not let the bump get detected
                 if(accelerationStrength < accelerationThreshold){
                     return;
-                    
                 }
                 if(Date.now() - timeLastSentAccident < 3000){
                     return;
@@ -204,7 +206,30 @@
                 }
 
                 //error of 10 degrees
-                const error = 15;
+                const error = 30;
+                if(180-error < accelerationOrientation < 180+error){
+                    // sudden brake
+                    if(accelerationDurationType != "brake"){
+                        accelerationDurationStart = Date.now();
+                    }
+                    accelerationDurationType = "brake";
+                }
+                else if(360-error < accelerationOrientation || accelerationOrientation < error){
+                    // rear-end collision
+                    if(accelerationDurationType != "rear impact"){
+                        accelerationDurationStart = Date.now();
+                    }
+                    accelerationDurationType = "rear impact";
+                }else{
+                    if(Date.now() - accelerationDurationStart > 500){
+                        console.log(`${accelerationDurationType} detected`);
+                        sendAccident(accelerationDurationType);
+                        timeLastSentAccident = Date.now();
+                    }
+                    accelerationDurationStart = Date.now();
+                    accelerationDurationType = "none";
+                }
+                /*
                 if(180-error < accelerationOrientation < 180+error){
                     // sudden brake
                     console.log("180 degrees detected");
@@ -216,7 +241,7 @@
                     console.log("0, 360 degrees detected");
                     sendAccident("rear impact");
                     timeLastSentAccident = Date.now();
-                }
+                }*/
             }
 
             //check for accidents in sight
