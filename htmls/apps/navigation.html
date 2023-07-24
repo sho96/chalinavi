@@ -116,16 +116,16 @@
             let accelerationDurationThreshold = 0;
 
             const distanceSounds = {
-                10: new Audio("/sounds/10m.mp3"),
-                20: new Audio("/sounds/20m.mp3"),
-                30: new Audio("/sounds/30m.mp3"),
-                40: new Audio("/sounds/40m.mp3"),
-                50: new Audio("/sounds/50m.mp3"),
-                60: new Audio("/sounds/60m.mp3"),
-                70: new Audio("/sounds/70m.mp3"),
-                80: new Audio("/sounds/80m.mp3"),
-                90: new Audio("/sounds/90m.mp3"),
-                100: new Audio("/sounds/100m.mp3"),
+                10: new Audio("/sounds/ja/10m.mp3"),
+                20: new Audio("/sounds/ja/20m.mp3"),
+                30: new Audio("/sounds/ja/30m.mp3"),
+                40: new Audio("/sounds/ja/40m.mp3"),
+                50: new Audio("/sounds/ja/50m.mp3"),
+                60: new Audio("/sounds/ja/60m.mp3"),
+                70: new Audio("/sounds/ja/70m.mp3"),
+                80: new Audio("/sounds/ja/80m.mp3"),
+                90: new Audio("/sounds/ja/90m.mp3"),
+                100: new Audio("/sounds/ja/100m.mp3"),
             };
             const suddenBrakeWarningSound = new Audio("/sounds/sudden_brake.mp3");
             const rearImpactWarningSound = new Audio("/sounds/rear_impact.mp3");
@@ -291,15 +291,18 @@
                 const roundedDistance = Math.round(distance/10) * 10;
                 const distanceSoundToPlay = distanceSounds[roundedDistance];
                 let warningSoundToPlay;
+                let waitTime = 0;
                 if(type == "brake"){
                     warningSoundToPlay = suddenBrakeWarningSound;
+                    waitTime = 1000;
                 }else if(type == "rear impact"){
                     warningSoundToPlay = rearImpactWarningSound;
+                    waitTime = 1000;
                 }
                 distanceSoundToPlay.play();
-                distanceSoundToPlay.addEventListener("ended", () => {
+                setTimeout(() => {
                     warningSoundToPlay.play();
-                }, false);
+                }, waitTime);
             }
 
             //update surrounding accidents
