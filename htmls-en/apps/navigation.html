@@ -221,7 +221,7 @@
                     }
                     accelerationDurationType = "rear impact";
                 }else{
-                    if(Date.now() - accelerationDurationStart > 100){
+                    if(Date.now() - accelerationDurationStart > 1){
                         console.log(`${accelerationDurationType} detected`);
                         sendAccident(accelerationDurationType);
                         timeLastSentAccident = Date.now();
