@@ -291,6 +291,7 @@
                 const roundedDistance = Math.round(distance/10) * 10;
                 const distanceSoundToPlay = distanceSounds[roundedDistance];
                 let warningSoundToPlay;
+                let waitTime = 0;
                 if(type == "brake"){
                     warningSoundToPlay = suddenBrakeWarningSound;
                     waitTime = 1400;
