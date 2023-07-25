@@ -198,6 +198,7 @@
 
                 // guard clauses to not let the bump get detected
                 if(accelerationStrength < accelerationThreshold){
+                    accelerationDurationStart = Date.now();
                     return;
                 }
                 if(Date.now() - timeLastSentAccident < 3000){
@@ -266,8 +267,8 @@
                 );
                 console.log(locations.length);
                 const convertToMessage = {
-                    "brake": "Frequent Emergency Brakes",
-                    "rear impact": "Frequent rear impact accidents"
+                    "brake": "There was an emergency brake",
+                    "rear impact": "There was a rear-end collision"
                 }
                 for(index in locations){
                     if ('alerted' in locations[index]){
