@@ -299,10 +299,10 @@
                 let waitTime = 0;
                 if(type == "brake"){
                     warningSoundToPlay = suddenBrakeWarningSound;
-                    waitTime = 1400;
+                    waitTime = 1700;
                 }else if(type == "rear impact"){
                     warningSoundToPlay = rearImpactWarningSound;
-                    waitTime = 1400;
+                    waitTime = 1700;
                 }
                 navigator.vibrate(1000);
                 warningSoundToPlay.play();
