@@ -67,6 +67,7 @@
             <!--Delete on Deployment-->
             <h4 class="gravityVector">重力ベクトル: ---</h4>
             <h4 class="accelerationOrientation">加速度の向き: ---</h4>
+            <h4 class="accelerationType">種類: ---</h4>
             <!---->
         </div>
         <div class="alert-container" hidden>
@@ -233,6 +234,7 @@
                         timeLastSentAccident = Date.now();
                     }
                 }
+                document.querySelector(".accelerationType").innerHTML = `種類: ${accelerationDurationType}`;
                 /*
                 if(180-error < accelerationOrientation < 180+error){
                     // sudden brake

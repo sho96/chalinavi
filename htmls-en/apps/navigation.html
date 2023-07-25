@@ -67,6 +67,7 @@
             <!--Delete on Deployment-->
             <h4 class="gravityVector">GravityVector: ---</h4>
             <h4 class="accelerationOrientation">Orientation: ---</h4>
+            <h4 class="accelerationType">Type: ---</h4>
             <!---->
         </div>
         <div class="alert-container" hidden>
@@ -233,6 +234,7 @@
                         timeLastSentAccident = Date.now();
                     }
                 }
+                document.querySelector(".accelerationType").innerHTML = `Type: ${accelerationDurationType}`;
                 /*
                 if(180-error < accelerationOrientation < 180+error){
                     // sudden brake
