@@ -28,9 +28,9 @@ app.get("/", (req, resp) => {
 // log in functionalities
 app.get("/login", (req, resp) => {
   const lang = req.query["lang"];
-  response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-  response.setHeader("Pragma", "no-cache");
-  response.setHeader("Expires", "0");
+  resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  resp.setHeader("Pragma", "no-cache");
+  resp.setHeader("Expires", "0");
   if(lang == "en"){
     resp.status(200).send(readFileSync("./htmls-en/login.html", {encoding: "utf-8"}));
   }else if(lang == "ja"){
@@ -78,9 +78,9 @@ app.post("/sendLogin", (req, resp) => {
 app.get("/signup", (req, resp) => {
   console.log("signup request");
   const lang = req.query["lang"];
-  response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-  response.setHeader("Pragma", "no-cache");
-  response.setHeader("Expires", "0");
+  resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  resp.setHeader("Pragma", "no-cache");
+  resp.setHeader("Expires", "0");
   if(lang == "en"){
     resp.status(200).send(readFileSync("./htmls-en/signup.html", {encoding: "utf-8"}));
   }else if(lang == "ja"){
@@ -195,9 +195,9 @@ app.get("/menu", (req, resp) => {
   }
   delete activeTokens;
   const lang = req.query["lang"];
-  response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-  response.setHeader("Pragma", "no-cache");
-  response.setHeader("Expires", "0");
+  resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  resp.setHeader("Pragma", "no-cache");
+  resp.setHeader("Expires", "0");
   if(lang == "en"){
     resp.status(200).send(readFileSync("./htmls-en/menu.html", {encoding : "utf-8"}));
   }else if(lang == "ja"){
@@ -248,9 +248,9 @@ app.get("/apps/navigation", (req, resp) => {
     return;
   }
   const lang = req.query["lang"];
-  response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-  response.setHeader("Pragma", "no-cache");
-  response.setHeader("Expires", "0");
+  resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  resp.setHeader("Pragma", "no-cache");
+  resp.setHeader("Expires", "0");
   if(lang == "en"){
     resp.status(200).send(readFileSync("./htmls-en/apps/navigation.html", {encoding : "utf-8"}));
   }else if(lang == "ja"){
@@ -319,9 +319,9 @@ app.get("/apps/hazardMap", (req, resp) => {
     return;
   }
   const lang = req.query["lang"];
-  response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-  response.setHeader("Pragma", "no-cache");
-  response.setHeader("Expires", "0");
+  resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  resp.setHeader("Pragma", "no-cache");
+  resp.setHeader("Expires", "0");
   if(lang == "en"){
     resp.status(200).send(readFileSync("./htmls-en/apps/hazardMap.html", {encoding : "utf-8"}));
   }else if(lang == "ja"){
@@ -353,9 +353,9 @@ app.get("/apps/rate", (req, resp) => {
     return;
   }
   const lang = req.query["lang"];
-  response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-  response.setHeader("Pragma", "no-cache");
-  response.setHeader("Expires", "0");
+  resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  resp.setHeader("Pragma", "no-cache");
+  resp.setHeader("Expires", "0");
   if(lang == "en"){
     resp.status(200).send(readFileSync("./htmls-en/apps/rate.html", {encoding : "utf-8"}));
   }else if(lang == "ja"){
@@ -438,9 +438,9 @@ app.get("/profile/changeEmail", (req, resp) => {
     return;
   }
   const lang = req.query["lang"];
-  response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-  response.setHeader("Pragma", "no-cache");
-  response.setHeader("Expires", "0");
+  resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  resp.setHeader("Pragma", "no-cache");
+  resp.setHeader("Expires", "0");
   if(lang == "en"){
     resp.status(200).send(readFileSync("./htmls-en/profile/changeEmail.html", {encoding : "utf-8"}));
   }else if(lang == "ja"){
@@ -505,9 +505,9 @@ app.get("/profile/changePassword", (req, resp) => {
     return;
   }
   const lang = req.query["lang"];
-  response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-  response.setHeader("Pragma", "no-cache");
-  response.setHeader("Expires", "0");
+  resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  resp.setHeader("Pragma", "no-cache");
+  resp.setHeader("Expires", "0");
   if(lang == "en"){
     resp.status(200).send(readFileSync("./htmls-en/profile/changePassword.html", {encoding : "utf-8"}));
   }else if(lang == "ja"){
@@ -549,9 +549,9 @@ app.get("/profile/deleteAccount", (req, resp) => {
     return;
   }
   const lang = req.query["lang"];
-  response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-  response.setHeader("Pragma", "no-cache");
-  response.setHeader("Expires", "0");
+  resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  resp.setHeader("Pragma", "no-cache");
+  resp.setHeader("Expires", "0");
   if(lang == "en"){
     resp.status(200).send(readFileSync("./htmls-en/profile/deleteAccount.html", {encoding : "utf-8"}));
   }else if(lang == "ja"){
