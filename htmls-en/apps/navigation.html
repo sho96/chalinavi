@@ -302,6 +302,7 @@
                     warningSoundToPlay = rearImpactWarningSound;
                     waitTime = 1400;
                 }
+                navigator.vibrate(1000);
                 warningSoundToPlay.play();
                 setTimeout(() => {
                     distanceSoundToPlay.play();

@@ -198,6 +198,7 @@
 
                 // guard clauses to not let the bump get detected
                 if(accelerationStrength < accelerationThreshold){
+                    accelerationDurationStart = Date.now();
                     return;
                 }
                 if(Date.now() - timeLastSentAccident < 3000){
@@ -297,11 +298,12 @@
                 let waitTime = 0;
                 if(type == "brake"){
                     warningSoundToPlay = suddenBrakeWarningSound;
-                    waitTime = 800;
+                    waitTime = 900;
                 }else if(type == "rear impact"){
                     warningSoundToPlay = rearImpactWarningSound;
-                    waitTime = 800;
+                    waitTime = 900;
                 }
+                navigator.vibrate(1000);
                 distanceSoundToPlay.play();
                 setTimeout(() => {
                     warningSoundToPlay.play();
