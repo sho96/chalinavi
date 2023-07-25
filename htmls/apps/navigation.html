@@ -294,10 +294,10 @@
                 let waitTime = 0;
                 if(type == "brake"){
                     warningSoundToPlay = suddenBrakeWarningSound;
-                    waitTime = 1000;
+                    waitTime = 900;
                 }else if(type == "rear impact"){
                     warningSoundToPlay = rearImpactWarningSound;
-                    waitTime = 1000;
+                    waitTime = 900;
                 }
                 distanceSoundToPlay.play();
                 setTimeout(() => {
