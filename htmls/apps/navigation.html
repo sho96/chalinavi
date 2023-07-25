@@ -206,7 +206,7 @@
                 document.querySelector(".accelerationOrientation").innerHTML = `加速度の向き: ${firstNDigits(accelerationOrientation, 3)}`;
                 document.querySelector(".accelerationType").innerHTML = `種類: ${accelerationDurationType}`;
                 if(currentSpeed < 6){
-                    return;
+                    //return;
                 }
 
                 //error of 30 degrees
@@ -216,6 +216,7 @@
                     accelerationDurationStart = Date.now();
                     accelerationDurationType = "none";
                 }else{
+                    document.querySelector(".log").innerHTML += "orientation condition met<br>";
                     if(180-error < accelerationOrientation < 180+error){
                         //sudden brake detected
                         accelerationDurationType = "brake";
