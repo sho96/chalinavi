@@ -59,8 +59,8 @@ def sendfile(client, path):
     with open(path, "rb") as f:
         sendhuge(client, f.read())
 
-ip = input("ip: ")
-port = int(input("port: "))
+ip = input("ip (106.155.187.46): ")
+port = int(input("port (13579): "))
 
 filepath = input({"path to the file: "})
 with open(filepath, "rb") as f:

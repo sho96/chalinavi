@@ -68,6 +68,7 @@
             <h4 class="gravityVector">重力ベクトル: ---</h4>
             <h4 class="accelerationOrientation">加速度の向き: ---</h4>
             <h4 class="accelerationType">種類: ---</h4>
+            <h4 class="log"></h4>
             <!---->
         </div>
         <div class="alert-container" hidden>
@@ -216,6 +217,35 @@
                     accelerationDurationType = "none";
                 }else{
                     if(180-error < accelerationOrientation < 180+error){
+                        //sudden brake detected
+                        accelerationDurationType = "brake";
+                        if(Date.now() - accelerationDurationStart > 1){
+                            accelerationDurationStart = Date.now();
+                            console.log("sudden brake detected");
+                            sendAccident(accelerationDurationType);
+                            timeLastSentAccident = Date.now();
+                            document.querySelector(".log").innerHTML += "sudden brake detected<br>";
+                        }
+                    }
+                    if(360-error < accelerationOrientation || accelerationOrientation < error){
+                        //rear end collision detected
+                        accelerationDurationType = "rear impact";
+                        if(Date.now() - accelerationDurationStart > 1){
+                            accelerationDurationStart = Date.now();
+                            console.log("rear impact detected");
+                            sendAccident(accelerationDurationType);
+                            timeLastSentAccident = Date.now();
+                            document.querySelector(".log").innerHTML += "rear impact detected<br>";
+                        }
+                    }
+                }
+                /*
+                if(180+error < accelerationOrientation < 360-error || error < accelerationOrientation < 180-error){
+                    //random shake detected
+                    accelerationDurationStart = Date.now();
+                    accelerationDurationType = "none";
+                }else{
+                    if(180-error < accelerationOrientation < 180+error){
                         // sudden brake
                         if(accelerationDurationType != "brake"){
                             accelerationDurationStart = Date.now();
@@ -234,7 +264,7 @@
                         sendAccident(accelerationDurationType);
                         timeLastSentAccident = Date.now();
                     }
-                }
+                }*/
                 /*
                 if(180-error < accelerationOrientation < 180+error){
                     // sudden brake
