@@ -233,6 +233,7 @@
                     }
                     if(Date.now() - accelerationDurationStart > 100){
                         console.log(`${accelerationDurationType} detected`);
+                        document.querySelector(".log").innerHTML += `${accelerationDurationType} detected<br>`;
                         sendAccident(accelerationDurationType);
                         timeLastSentAccident = Date.now();
                     }

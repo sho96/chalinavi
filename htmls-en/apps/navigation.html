@@ -218,20 +218,21 @@
                 }else{
                     if(180-error < accelerationOrientation && accelerationOrientation < 180+error){
                         // rear-end collision
-                        if(accelerationDurationType != "brake"){
-                            accelerationDurationStart = Date.now();
-                        }
-                        accelerationDurationType = "brake";
-                    }
-                    if(360-error < accelerationOrientation || accelerationOrientation < error){
-                        // sudden brake
                         if(accelerationDurationType != "rear impact"){
                             accelerationDurationStart = Date.now();
                         }
                         accelerationDurationType = "rear impact";
                     }
+                    if(360-error < accelerationOrientation || accelerationOrientation < error){
+                        // sudden brake
+                        if(accelerationDurationType != "brake"){
+                            accelerationDurationStart = Date.now();
+                        }
+                        accelerationDurationType = "brake";
+                    }
                     if(Date.now() - accelerationDurationStart > 100){
                         console.log(`${accelerationDurationType} detected`);
+                        document.querySelector(".log").innerHTML += `${accelerationDurationType} detected<br>`;
                         sendAccident(accelerationDurationType);
                         timeLastSentAccident = Date.now();
                     }
