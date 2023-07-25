@@ -303,10 +303,8 @@
                     waitTime = 1400;
                 }
                 navigator.vibrate(1000);
-                warningSoundToPlay.volume = 2;
                 warningSoundToPlay.play();
                 setTimeout(() => {
-                    distanceSoundToPlay.volume = 2;
                     distanceSoundToPlay.play();
                 }, waitTime);
             }
