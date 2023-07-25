@@ -399,6 +399,9 @@ app.get("/getDashboard", (req, resp) => {
     if(accidentLocations[i].time < (Date.now() - 1000*60*60*24 * 3)){
       continue;
     }
+    if(accidentLocations[i].user != username){
+      continue;
+    }
     if(accidentLocations[i].type == "brake"){
       countBrakes++;
     }else if(accidentLocations[i].type == "rear impact"){
