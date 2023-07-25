@@ -216,6 +216,7 @@
                     accelerationDurationStart = Date.now();
                     accelerationDurationType = "none";
                 }else{
+                    document.querySelector(".log").innerHTML += "orientation condition met<br>";
                     if(180-error < accelerationOrientation < 180+error){
                         //sudden brake detected
                         accelerationDurationType = "brake";
