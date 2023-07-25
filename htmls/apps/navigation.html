@@ -214,9 +214,11 @@
                 const error = 30;
                 if((180+error < accelerationOrientation && accelerationOrientation < 360-error) || (error < accelerationOrientation && accelerationOrientation < 180-error)){
                     //random shake detected
+                    document.querySelector(".log").innerHTML += "random shake<br>";
                     accelerationDurationStart = Date.now();
                     accelerationDurationType = "none";
                 }else{
+                    document.querySelector(".log").innerHTML += `${accelerationOrientation}<br>`;
                     if(180-error < accelerationOrientation && accelerationOrientation < 180+error){
                         // rear-end collision
                         document.querySelector(".accelerationType").innerHTML = "種類: rear impact";
