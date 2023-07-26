@@ -212,7 +212,7 @@
 
                 //error of 30 degrees
                 const error = 30;
-                if((180+error < accelerationOrientation && accelerationOrientation < 360-error) || (error < accelerationOrientation && accelerationOrientation < 180-error)){
+                if((180+error <= accelerationOrientation && accelerationOrientation <= 360-error) || (error <= accelerationOrientation && accelerationOrientation <= 180-error)){
                     //random shake detected
                     document.querySelector(".log").innerHTML += "random shake<br>";
                     accelerationDurationStart = Date.now();
