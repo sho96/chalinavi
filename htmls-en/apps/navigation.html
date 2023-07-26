@@ -223,15 +223,6 @@
                         return;
                     }
                     if(180-error < accelerationOrientation && accelerationOrientation < 180+error){
-                        // sudden brake
-                        document.querySelector(".accelerationType").innerHTML = "Type: brake";
-                        document.querySelector(".log").innerHTML += `B ${Date.now() - accelerationDurationStart}<br>`;
-                        if(accelerationDurationType != "brake"){
-                            accelerationDurationStart = Date.now();
-                        }
-                        accelerationDurationType = "brake";
-                    }
-                    if(360-error < accelerationOrientation || accelerationOrientation < error){
                         // rear-end collision
                         document.querySelector(".accelerationType").innerHTML = "Type: rear impact";
                         document.querySelector(".log").innerHTML += `R ${Date.now() - accelerationDurationStart}<br>`;
@@ -239,6 +230,15 @@
                             accelerationDurationStart = Date.now();
                         }
                         accelerationDurationType = "rear impact";
+                    }
+                    if(360-error < accelerationOrientation || accelerationOrientation < error){
+                        // sudden brake
+                        document.querySelector(".accelerationType").innerHTML = "Type: brake";
+                        document.querySelector(".log").innerHTML += `B ${Date.now() - accelerationDurationStart}<br>`;
+                        if(accelerationDurationType != "brake"){
+                            accelerationDurationStart = Date.now();
+                        }
+                        accelerationDurationType = "brake";
                     }
                     if(Date.now() - accelerationDurationStart > 100){
                         console.log(`${accelerationDurationType} detected`);
