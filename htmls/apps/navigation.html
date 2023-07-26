@@ -214,7 +214,7 @@
                 const error = 30;
                 if((180+error <= accelerationOrientation && accelerationOrientation <= 360-error) || (error <= accelerationOrientation && accelerationOrientation <= 180-error)){
                     //random shake detected
-                    document.querySelector(".log").innerHTML += "random shake<br>";
+                    //document.querySelector(".log").innerHTML += "random shake<br>";
                     accelerationDurationStart = Date.now();
                     accelerationDurationType = "none";
                 }else{
@@ -225,7 +225,7 @@
                     if(180-error < accelerationOrientation && accelerationOrientation < 180+error){
                         // rear-end collision
                         document.querySelector(".accelerationType").innerHTML = "Type: rear impact";
-                        document.querySelector(".log").innerHTML += `R ${Date.now() - accelerationDurationStart}<br>`;
+                        //document.querySelector(".log").innerHTML += `R ${Date.now() - accelerationDurationStart}<br>`;
                         if(accelerationDurationType != "rear impact"){
                             accelerationDurationStart = Date.now();
                         }
@@ -234,7 +234,7 @@
                     if(360-error < accelerationOrientation || accelerationOrientation < error){
                         // sudden brake
                         document.querySelector(".accelerationType").innerHTML = "Type: brake";
-                        document.querySelector(".log").innerHTML += `B ${Date.now() - accelerationDurationStart}<br>`;
+                        //document.querySelector(".log").innerHTML += `B ${Date.now() - accelerationDurationStart}<br>`;
                         if(accelerationDurationType != "brake"){
                             accelerationDurationStart = Date.now();
                         }
