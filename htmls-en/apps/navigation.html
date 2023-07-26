@@ -393,11 +393,11 @@
             function selectVehicle(vehicle){
                 askSensorPermission();
                 if (vehicle == "bike"){
-                    accelerationThreshold = 30;
-                    accelerationDurationThreshold = 150;
+                    accelerationThreshold = 25;
+                    accelerationDurationThreshold = 100;
                 }else{
                     accelerationThreshold = 10;
-                    accelerationDurationThreshold = 200;
+                    accelerationDurationThreshold = 150;
                 }
                 document.querySelector(".survey-container").hidden = true;
                 document.querySelector(".calibration-container").hidden = false;
