@@ -219,6 +219,9 @@
                     accelerationDurationType = "none";
                 }else{
                     document.querySelector(".log").innerHTML += `${accelerationOrientation}<br>`;
+                    if(accelerationOrientation == null){
+                        return;
+                    }
                     if(180-error < accelerationOrientation && accelerationOrientation < 180+error){
                         // rear-end collision
                         document.querySelector(".accelerationType").innerHTML = "種類: rear impact";
@@ -280,7 +283,7 @@
                     }
                     var location = locations[index];
                     distanceToAccident = getDistanceOnEarth(currentPosition.latitude, currentPosition.longitude, location.location.lat, location.location.lon);
-                    alertAccident(firstNDigits(distanceToAccident*1000, 2), convertToMessage[location.type], 5000, location.type);
+                    alertAccident(firstNDigits(distanceToAccident*1000, 2), convertToMessage[location.type], 7000, location.type);
                     //surroundingAccidents[index]["alerted"] = true;
                     var coordinate = location.location;
                     for(i in surroundingAccidents){
