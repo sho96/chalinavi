@@ -11,7 +11,7 @@ def sendhuge(client, data) -> None:
 def recvhuge(client) -> bytes:
     startTime = time.perf_counter()
     length = b""
-    while True:
+    while True: 
         if client.recv(1, socket.MSG_PEEK) == 0:
             continue
         recved = client.recv(1)
