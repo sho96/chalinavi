@@ -240,7 +240,7 @@
                         }
                         accelerationDurationType = "brake";
                     }
-                    if(Date.now() - accelerationDurationStart > 100){
+                    if(Date.now() - accelerationDurationStart > 150){
                         console.log(`${accelerationDurationType} detected`);
                         document.querySelector(".log").innerHTML += `${accelerationDurationType} detected<br>`;
                         sendAccident(accelerationDurationType);
