@@ -882,7 +882,7 @@ app.get("/deleteLocations", (req, resp) => {
   const password = req.query["password"];
   if(password == "mchaaleintaavkia"){
     console.log("deleted");
-    writeFileSync("./jsons/dangerLocations.json", "{}");
+    writeFileSync("./jsons/dangerLocations.json", "[]");
     resp.status(200).send("successfully deleted");
   }else{
     console.log("passwordWrong");
