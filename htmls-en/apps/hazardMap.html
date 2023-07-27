@@ -52,7 +52,7 @@
                 
                 var center = map.getCenter();
 
-                infobox = new Microsoft.Maps.Infobox(center,{visible: false, maxWidth: 300});
+                infobox = new Microsoft.Maps.Infobox(center,{visible: false});
 
                 infobox.setMap(map);
 
@@ -107,7 +107,6 @@
                         title: e.target.metadata.title,
                         description: e.target.metadata.description,
                         visible: true,
-                        maxWidth: 300,
                     });
                 }
             }

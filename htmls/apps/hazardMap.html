@@ -38,7 +38,7 @@
 
             const conversionTable = {
                 "brake": "急ブレーキ",
-                "rear impact": "追突事故\n"
+                "rear impact": "追突事故"
             }
 
             document.querySelector("#myMap").innerHTML = "<br><br><br><br><h2>危険個所を読み込んでいます...</h2>";
@@ -52,7 +52,7 @@
                 
                 var center = map.getCenter();
 
-                infobox = new Microsoft.Maps.Infobox(center,{visible: false, maxWidth: 300});
+                infobox = new Microsoft.Maps.Infobox(center,{visible: false});
 
                 infobox.setMap(map);
 
@@ -107,7 +107,6 @@
                         title: e.target.metadata.title,
                         description: e.target.metadata.description,
                         visible: true,
-                        width: 100,
                     });
                 }
             }
