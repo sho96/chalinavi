@@ -247,19 +247,6 @@
                         timeLastSentAccident = Date.now();
                     }
                 }
-                /*
-                if(180-error < accelerationOrientation < 180+error){
-                    // sudden brake
-                    console.log("180 degrees detected");
-                    sendAccident("brake");
-                    timeLastSentAccident = Date.now();
-                }
-                if(360-error < accelerationOrientation || accelerationOrientation < error){
-                    // rear-end collision
-                    console.log("0, 360 degrees detected");
-                    sendAccident("rear impact");
-                    timeLastSentAccident = Date.now();
-                }*/
             }
 
             //check for accidents in sight
