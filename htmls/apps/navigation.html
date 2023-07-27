@@ -240,7 +240,7 @@
                         }
                         accelerationDurationType = "brake";
                     }
-                    if(Date.now() - accelerationDurationStart > accelerationDurationThreshold){
+                    if(Date.now() - accelerationDurationStart > accelerationDurationThreshold && accelerationDurationType != "none"){
                         console.log(`${accelerationDurationType} detected`);
                         document.querySelector(".log").innerHTML += `${accelerationDurationType} detected<br>`;
                         sendAccident(accelerationDurationType);
