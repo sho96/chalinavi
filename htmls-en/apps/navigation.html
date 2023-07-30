@@ -207,7 +207,7 @@
                 document.querySelector(".accelerationOrientation").innerHTML = `Orientation: ${firstNDigits(accelerationOrientation, 3)}`;
                 document.querySelector(".accelerationType").innerHTML = `Type: ${accelerationDurationType}`;
                 if(currentSpeed < 6){
-                    //return;
+                    return;
                 }
 
                 //error of 30 degrees
@@ -257,8 +257,8 @@
                 let locations = findDangerLocationsWithinRange(
                     currentPosition, 
                     currentDirection, 
-                    getAngleFromDistanceOnEarth(currentPosition.latitude, boundWidth/100), 
-                    getAngleFromDistanceOnEarth(0, boundHeight/100),
+                    getAngleFromDistanceOnEarth(currentPosition.latitude, boundWidth/1000), 
+                    getAngleFromDistanceOnEarth(0, boundHeight/1000),
                     surroundingAccidents,
                 );
                 console.log(locations.length);
@@ -579,7 +579,8 @@
                 return d;
             }
             function getAngleFromDistanceOnEarth(latitude, distance){
-                return distance / (Math.cos(deg2rad(latitude)) * 12742 * Math.PI / 360);
+                //return distance / (Math.cos(deg2rad(latitude)) * 12742 * Math.PI / 360);
+                return (d * 180) / (6371 * Math.cos(deg2rad(latitude)) * Math.PI);
             }
             // code for detecting surrounding dangers
             const side = (origin, user_theta, w) => {
