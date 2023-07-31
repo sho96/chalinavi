@@ -580,7 +580,7 @@
             }
             function getAngleFromDistanceOnEarth(latitude, distance){
                 //return distance / (Math.cos(deg2rad(latitude)) * 12742 * Math.PI / 360);
-                return (d * 180) / (6371 * Math.cos(deg2rad(latitude)) * Math.PI);
+                return (distance * 180) / (6371 * Math.cos(deg2rad(latitude)) * Math.PI);
             }
             // code for detecting surrounding dangers
             const side = (origin, user_theta, w) => {
