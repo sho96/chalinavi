@@ -297,7 +297,13 @@ app.post("/apps/navigation/sendVehicleData", (req, resp) => {
   speed = req.body.speed;
   type = req.body.type;
   let vehicleDatas = JSON.parse(readFileSync("./jsons/activeVehicles.json", {encoding: "utf-8"}));
-  vehicleDatas[token] = {type: type, location: location, direction: direction, speed: speed};
+  vehicleDatas[token] = {type: type, location: location, direction: direction, speed: speed, time: Date.now()};
+  //delete un-updated vehicle datas
+  tokens = Object.keys(vehicleDatas);
+  picked = getRandomInt(tokens.length)
+  if (vehicleDatas[tokens[picked]].time < Date.now()-10000){
+    delete vehicleDatas[tokens[picked]];
+  }
   writeFileSync("./jsons/activeVehicles.json", JSON.stringify(vehicleDatas));
 });
 app.get("/apps/navigation/getVehicleData", (req, resp) => {
