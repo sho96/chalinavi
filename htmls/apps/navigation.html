@@ -260,18 +260,26 @@
                     if(Math.abs(currentDirection - vehicle.direction) % 180 > 50){
                         continue;
                     }
-                    if(!checkIntersection(
+
+                    const { doesIntersect, intersection } = checkIntersection(
                         [currentPosition.longitude, currentPosition.latitude],
                         currentDirection,
                         currentSpeed * 2.222,
                         [vehicle.lon, vehicle.lat],
                         vehicle.direction,
                         vehicle.speed * 2.222,
-                        )
-                    ){ continue; }
+                    );
+
+                    if(!doesIntersect){
+                        continue
+                    }
                     
                     //vehicle approaching
                     approachingDirection = Math.abs(vehicle.direction - currentDirection);
+                    distanceToIntersection = getDistanceOnEarth(
+                        currentPosition.latitude, currentPosition.longitude,
+                        intersection[1], intersection[0]
+                    )
                     if(Math.abs(approachingDirection - 270) < 45){
                         //from right
                         console.log("vehicle approaching from right")
