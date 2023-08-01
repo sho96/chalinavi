@@ -399,7 +399,7 @@
 
             // ----------------------------------- summary and leave -----------------------------------
             function summary(){
-                if(!confirm(`Distance Traveled: ${parseFloat(parseFloat((totalDistanceTraveled / 1000).toFixed(2)).toPrecision(3))} km`)){
+                if(!confirm(`走行距離： ${parseFloat(parseFloat((totalDistanceTraveled / 1000).toFixed(2)).toPrecision(3))} km`)){
                     return;
                 }
                 fetch("/apps/navigation/sendSummary", {
