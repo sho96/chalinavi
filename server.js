@@ -290,6 +290,31 @@ app.get("/apps/navigation/getData", (req, resp) => {
   resp.setHeader("Content-Type", "application/json");
   resp.end(JSON.stringify(dataToSend));
 });
+app.post("/apps/navigation/sendVehicleData", (req, resp) => {
+  token = req.body.token;
+  location = req.body.location;
+  direction = req.body.direction;
+  speed = req.body.speed;
+  type = req.body.type;
+  let vehicleDatas = JSON.parse(readFileSync("./jsons/activeVehicles.json", {encoding: "utf-8"}));
+  vehicleDatas[token] = {type: type, location: location, direction: direction, speed: speed};
+  writeFileSync("./jsons/activeVehicles.json", JSON.stringify(vehicleDatas));
+});
+app.get("/apps/navigation/getVehicleData", (req, resp) => {
+  lat = req.query.lat;
+  lon = req.query.lon;
+
+  const vehicleDatas = JSON.parse(readFileSync("./jsons/activeVehicles.json"));
+  dataToSend = {};
+  for(token in vehicleDatas){
+    data = vehicleDatas[token];
+    if(getDistanceOnEarth(lat, lon, data.location.lat, data.location.lon) < 3000){
+      dataToSend[token] = data;
+    }
+  }
+  resp.setHeader("Content-Type", "application/json");
+  resp.end(JSON.stringify(dataToSend));
+});
 app.post("/apps/navigation/sendSummary", (req, resp) => {
   const traveledDistance = req.body.distanceTraveled;
   const username = req.body.username;

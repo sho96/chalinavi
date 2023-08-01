@@ -107,6 +107,8 @@
             let surroundingAccidents;
             let locationOfLastSurroundingUpdate;
 
+            let surroundingVehicles;
+
             let totalDistanceTraveled = 0;
 
             let baseOrientation;
@@ -248,6 +250,54 @@
                     }
                 }
             }
+            //check for approaching vehicles
+            function checkForApproachingVehicles(){
+                for(i in surroundingVehicles){
+                    vehicle = surroundingVehicles[i];
+
+                    if(Math.abs(currentDirection - vehicle.direction) % 180 > 50){
+                        continue;
+                    }
+                    if(!checkIntersection(
+                        [currentPosition.longitude, currentPosition.latitude],
+                        currentDirection,
+                        currentSpeed * 2.222,
+                        [vehicle.lon, vehicle.lat],
+                        vehicle.direction,
+                        vehicle.speed * 2.222,
+                        )
+                    ){ continue; }
+                    
+                    //vehicle approaching
+                    approachingDirection = Math.abs(vehicle.direction - currentDirection);
+                    if(Math.abs(approachingDirection - 270) < 45){
+                        //from right
+                        console.log("vehicle approaching from right")
+                    }
+                    if(Math.abs(approachingDirection - 90) < 45){
+                        //from left
+                        console.log("vehicle approaching from left")
+                    }
+                }
+            }
+            function sendVehicleData(){
+                token = window.sessionStorage.token;
+                location = {lat: currentPosition.latitude, lon: currentPosition.longitude};
+                direction = currentDirection;
+                speed = currentSpeed;
+                fetch("/apps/navigation/sendVehicleData",{
+                    method: "POST",
+                    body:JSON.stringify({
+                        token: token,
+                        location: location,
+                        direction: direction,
+                        speed: speed
+                    }),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+            }
 
             //check for accidents in sight
             function checkForAccidents(){
@@ -316,7 +366,7 @@
             }
 
             //update surrounding accidents
-            async function updateSurroundings(){
+            async function updateDangerLocations(){
                 if(locationOfLastSurroundingUpdate == null){
                     const pos = (await getPos()).coords;
                     surroundingAccidents = await (await fetch(`/apps/navigation/getData?lat=${pos.latitude}&lon=${pos.longitude}`)).json();
@@ -329,6 +379,12 @@
                     return;
                 }
             }
+            async function updateVehicleDatas(){
+                if(currentPosition == null){
+                    currentPosition = (await getPos()).coords;
+                }
+                surroundingVehicles = await (await fetch(`/apps/navigation/getVehicleData?lat=${currentPosition.latitude}&lon=${currentPosition.longitude}`)).json();
+            }
             async function startMain(){
                 const settings = await (await fetch(`/getSettings?username=${window.sessionStorage.username}`)).json();
                 boundWidth = settings.detectionBoxWidth;
@@ -336,8 +392,9 @@
                 setInterval(updateMeasurements, 500);
                 setInterval(detectAccident);
                 setInterval(checkForAccidents, 1000);
-                updateSurroundings();
-                setInterval(updateSurroundings, 60000);
+                updateDangerLocations();
+                setInterval(updateDangerLocations, 60000);
+                setInterval(updateVehicleDatas, 2500);
             }
             
 
@@ -507,6 +564,7 @@
                         //console.log(currentDirection);
                         //console.log(`dist: ${distanceFromPreviousMeasurement}`);
                         //console.log(`speed: ${currentSpeed}`)
+                        sendVehicleData();
                     },
                     err => {
                         console.log(err)
@@ -667,6 +725,32 @@
                 const boundingBox = calcBoundingBox(userPos, angle, w, h);
                 return extractLocations(dangerLocations, boundingBox);
             }
+
+            function checkIntersection(p, a, length_p, q, b, length_q) {
+                // Generate equations of the two lines: y = m1*x + c1 and y = m2*x + c2
+                var m1 = Math.tan(deg2rad(a));  // Slope of the line extending from point P in direction a
+                var c1 = p[1] - m1*p[0];  // y-intercept = y - m*x
+                var m2 = Math.tan(deg2rad(b));  // Slope of the line extending from point Q in direction b
+                var c2 = q[1] - m2*q[0];  // y-intercept = y - m*x
+
+                // If the lines aren't parallel, they intersect
+                if (m1 !== m2) {
+                    var x = (c2 - c1) / (m1 - m2);
+                    var y = m1 * x + c1;
+
+                    // Check if intersection point is in the correct direction from each line's start point
+                    var direction_p = Math.sqrt(Math.pow((x - p[0]), 2) + Math.pow((y - p[1]), 2));
+                    var direction_q = Math.sqrt(Math.pow((x - q[0]), 2) + Math.pow((y - q[1]), 2));
+
+                    // Check if intersection point is within the specified lengths from each line's start point
+                    if (direction_p <= length_p && direction_q <= length_q) {
+                        return { doesIntersect: true, pointOfIntersection: [x, y] };
+                    }
+                }
+                
+                return { doesIntersect: false, pointOfIntersection: null };
+            }
+
             function deg2rad(deg) {
                 return deg * (Math.PI/180);
             }
