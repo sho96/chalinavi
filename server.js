@@ -302,7 +302,7 @@ app.post("/apps/navigation/sendVehicleData", (req, resp) => {
   //delete un-updated vehicle datas
   tokens = Object.keys(vehicleDatas);
   picked = getRandomInt(tokens.length)
-  if (vehicleDatas[tokens[picked]].time < Date.now()-10000){
+  if (vehicleDatas[tokens[picked]].time < Date.now()-120000){
     delete vehicleDatas[tokens[picked]];
   }
   writeFileSync("./jsons/activeVehicles.json", JSON.stringify(vehicleDatas));
