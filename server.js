@@ -207,29 +207,6 @@ app.get("/menu", (req, resp) => {
   }
 });
 
-// setting updates
-app.post("/updateSettings", (req, resp) => {
-  const settings = req.body;
-  console.log(settings);
-  const username = settings.username;
-  console.log(username);
-  delete settings.username;
-  const usersettings = JSON.parse(readFileSync("./jsons/userSettings.json", {encoding: "utf-8"}));
-  usersettings[username] = settings;
-  console.log(usersettings);
-  writeFileSync("./jsons/userSettings.json", JSON.stringify(usersettings));
-  console.log(`settings updated for user "${username}`);
-})
-app.get("/getSettings", (req, resp) => {
-  const username = req.query.username;
-  const userSettings = JSON.parse(readFileSync("./jsons/userSettings.json"));
-  const settings = userSettings[username];
-  console.log(`getSettings request from ${username}`);
-  resp.setHeader("Content-Type", "application/json");
-  resp.end(JSON.stringify(settings));
-})
-
-
 //-------------------------------- applications ----------------------------------
 //navigation page
 app.get("/apps/navigation", (req, resp) => {
@@ -417,7 +394,6 @@ app.get("/getDashboard", (req, resp) => {
   const username = req.query.username;
   const travelDatas = JSON.parse(readFileSync("./jsons/travelDatas.json", {encoding: "utf-8"}));
   console.log(username);
-  console.log(travelDatas);
   if(!(username in travelDatas)){
     resp.setHeader("Content-Type", "application/json");
     resp.end(JSON.stringify({totalDistanceTraveled:0, totalSuddenBrakes:0, totalRearImpacts:0}));
@@ -448,6 +424,26 @@ app.get("/getDashboard", (req, resp) => {
   resp.setHeader("Content-Type", "application/json");
   resp.end(JSON.stringify(data));
 });
+
+
+//-------------------------------- settings ----------------------------------
+app.post("/updateSettings", (req, resp) => {
+  const settings = req.body;
+  const username = settings.username;
+  delete settings.username;
+  const usersettings = JSON.parse(readFileSync("./jsons/userSettings.json", {encoding: "utf-8"}));
+  usersettings[username] = settings;
+  writeFileSync("./jsons/userSettings.json", JSON.stringify(usersettings));
+  console.log(`settings updated for user "${username}`);
+})
+app.get("/getSettings", (req, resp) => {
+  const username = req.query.username;
+  const userSettings = JSON.parse(readFileSync("./jsons/userSettings.json"));
+  const settings = userSettings[username];
+  console.log(`getSettings request from ${username}`);
+  resp.setHeader("Content-Type", "application/json");
+  resp.end(JSON.stringify(settings));
+})
 
 
 //--------------------------------- profile ----------------------------------
