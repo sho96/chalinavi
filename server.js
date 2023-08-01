@@ -309,6 +309,7 @@ app.post("/apps/navigation/sendVehicleData", (req, resp) => {
   resp.status(200).send();
 });
 app.get("/apps/navigation/getVehicleData", (req, resp) => {
+  console.log("get vehicle data request");
   lat = req.query.lat;
   lon = req.query.lon;
 

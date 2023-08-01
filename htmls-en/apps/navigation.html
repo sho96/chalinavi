@@ -91,6 +91,8 @@
             let boundWidth;
             let boundHeight;
 
+            let selectedVehicle;
+
             let accelerationThreshold = 0;
             let gravityVector;
 
@@ -288,6 +290,7 @@
                         location: {lat: currentPosition.latitude, lon: currentPosition.longitude},
                         direction: currentDirection,
                         speed: currentSpeed,
+                        type: vehicle
                     }),
                     headers: {
                         "Content-Type": "application/json"
@@ -432,10 +435,11 @@
 
             function selectVehicle(vehicle){
                 askSensorPermission();
+                selectedVehicle = vehicle;
                 if (vehicle == "bike"){
                     accelerationThreshold = 25;
                     accelerationDurationThreshold = 100;
-                }else{
+                }else if(vehicle == "car"){
                     accelerationThreshold = 10;
                     accelerationDurationThreshold = 150;
                 }

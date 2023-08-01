@@ -91,6 +91,8 @@
             let boundWidth;
             let boundHeight;
 
+            let selectedVehicle;
+
             let accelerationThreshold = 0;
             let gravityVector;
 
@@ -280,18 +282,15 @@
                     }
                 }
             }
-            function sendVehicleData(){
-                token = window.sessionStorage.token;
-                location = {lat: currentPosition.latitude, lon: currentPosition.longitude};
-                direction = currentDirection;
-                speed = currentSpeed;
+            async function sendVehicleData(){
                 fetch("/apps/navigation/sendVehicleData",{
                     method: "POST",
                     body:JSON.stringify({
-                        token: token,
-                        location: location,
-                        direction: direction,
-                        speed: speed
+                        token: window.sessionStorage.token,
+                        location: {lat: currentPosition.latitude, lon: currentPosition.longitude},
+                        direction: currentDirection,
+                        speed: currentSpeed,
+                        type: vehicle
                     }),
                     headers: {
                         "Content-Type": "application/json"
@@ -436,10 +435,11 @@
 
             function selectVehicle(vehicle){
                 askSensorPermission();
+                selectedVehicle = vehicle;
                 if (vehicle == "bike"){
                     accelerationThreshold = 25;
                     accelerationDurationThreshold = 100;
-                }else{
+                }else if(vehicle == "car"){
                     accelerationThreshold = 10;
                     accelerationDurationThreshold = 150;
                 }
