@@ -291,6 +291,7 @@ app.get("/apps/navigation/getData", (req, resp) => {
   resp.end(JSON.stringify(dataToSend));
 });
 app.post("/apps/navigation/sendVehicleData", (req, resp) => {
+  console.log("vehicle data sent");
   token = req.body.token;
   location = req.body.location;
   direction = req.body.direction;
