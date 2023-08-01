@@ -306,6 +306,7 @@ app.post("/apps/navigation/sendVehicleData", (req, resp) => {
     delete vehicleDatas[tokens[picked]];
   }
   writeFileSync("./jsons/activeVehicles.json", JSON.stringify(vehicleDatas));
+  resp.status(200).send();
 });
 app.get("/apps/navigation/getVehicleData", (req, resp) => {
   lat = req.query.lat;
@@ -836,6 +837,17 @@ app.get("/sounds/en/sudden_brake.mp3", (req, resp) => {
 });
 
 //----------------------------- responding to json requests -------------------------------
+//temporal datas
+app.get("/jsons/activeVehicles.json", (req, resp) => {
+  if(req.query.password !== "mchaaleintaavkia"){
+    resp.status(200).send();
+    return;
+  }
+  resp.setHeader("Content-Type", "application/json");
+  resp.end(readFileSync("./jsons/activeVehicles.json"));
+});
+
+//permanent datas
 app.get("/jsons/travelDatas.json", (req, resp) => {
   if(req.query.password !== "mchaaleintaavkia"){
     resp.status(200).send();
@@ -885,6 +897,7 @@ app.get("/jsons/all", (req, resp) => {
   resp.setHeader("Content-Type", "application/json");
   resp.status(200).send(stringToSend);
 });
+
 
 //----------------------------- set icon ------------------------------
 app.use('/favicon.ico', express.static('./favicon.ico'));
