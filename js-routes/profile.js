@@ -4,7 +4,7 @@ var app = express();
 
 app.use(express.json());
 
-app.get("/getProfile", async (req, resp) => {
+app.get("/getProfile", (req, resp) => {
     const username = req.query.username;
     const userdatas = JSON.parse(readFileSync("./jsons/registeredUsers.json", {encoding: "utf-8"}));
     data = userdatas[username];
@@ -12,7 +12,7 @@ app.get("/getProfile", async (req, resp) => {
     resp.end(JSON.stringify(data));
   })
   //change email
-  app.get("/profile/changeEmail", async (req, resp) => {
+  app.get("/profile/changeEmail", (req, resp) => {
     const activeTokens = JSON.parse(readFileSync("./jsons/activeTokens.json", {encoding: "utf-8"}));
     console.log(req.query.token);
     if(!(req.query.token in activeTokens)){
@@ -39,7 +39,7 @@ app.get("/getProfile", async (req, resp) => {
       resp.status(200).send(readFileSync("./htmls-en/profile/changeEmail.html", {encoding : "utf-8"}));
     }
   })
-  app.post("/profile/changeEmail/sendEmail", async (req, resp) => {
+  app.post("/profile/changeEmail/sendEmail", (req, resp) => {
     const username = req.body["username"];
     const email = req.body["email"];
     console.log(`change email request from ${username}`);
@@ -58,7 +58,7 @@ app.get("/getProfile", async (req, resp) => {
     resp.setHeader("Content-Type", "application/json");
     resp.end(JSON.stringify({status: "success"}));
   });
-  app.post("/profile/changeEmail/verifyEmail", async (req, resp) => {
+  app.post("/profile/changeEmail/verifyEmail", (req, resp) => {
     username = req.body.username;
     code = req.body.code;
     let codes = JSON.parse(readFileSync("./jsons/changeEmail.json", {encoding: "utf-8"}));
@@ -79,7 +79,7 @@ app.get("/getProfile", async (req, resp) => {
     }
   });
   //change password
-  app.get("/profile/changePassword", async (req, resp) => {
+  app.get("/profile/changePassword", (req, resp) => {
     const activeTokens = JSON.parse(readFileSync("./jsons/activeTokens.json", {encoding: "utf-8"}));
     console.log(req.query.token);
     if(!(req.query.token in activeTokens)){
@@ -106,7 +106,7 @@ app.get("/getProfile", async (req, resp) => {
       resp.status(200).send(readFileSync("./htmls-en/profile/changePassword.html", {encoding : "utf-8"}));
     }
   });
-  app.post("/profile/changePassword/sendPassword", async (req, resp) => {
+  app.post("/profile/changePassword/sendPassword", (req, resp) => {
     const username = req.body.username;
     const oldPassword = req.body.oldPassword;
     const hashedPassword = req.body.password;
@@ -123,7 +123,7 @@ app.get("/getProfile", async (req, resp) => {
     }
   });
   //delete account
-  app.get("/profile/deleteAccount", async (req, resp) => {
+  app.get("/profile/deleteAccount", (req, resp) => {
     const activeTokens = JSON.parse(readFileSync("./jsons/activeTokens.json", {encoding: "utf-8"}));
     console.log(req.query.token);
     if(!(req.query.token in activeTokens)){
@@ -150,7 +150,7 @@ app.get("/getProfile", async (req, resp) => {
       resp.status(200).send(readFileSync("./htmls-en/profile/deleteAccount.html", {encoding : "utf-8"}));
     }
   });
-  app.post("/profile/deleteAccount/delete", async (req, resp) => {
+  app.post("/profile/deleteAccount/delete", (req, resp) => {
     const username = req.body.username;
     const hashedPassword = req.body.password;
     const users = JSON.parse(readFileSync("./jsons/registeredUsers.json", {encoding: "utf-8"}));

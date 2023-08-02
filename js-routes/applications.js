@@ -5,9 +5,8 @@ var app = express();
 app.use(express.json());
 
 //navigation page
-app.get("/apps/navigation", async (req, resp) => {
+app.get("/apps/navigation", (req, resp) => {
     const activeTokens = JSON.parse(readFileSync("./jsons/activeTokens.json", {encoding: "utf-8"}));
-    console.log(req.query.token);
     if(!(req.query.token in activeTokens)){
       resp.redirect("/login");
       console.log("token doesn't exist")
@@ -32,7 +31,7 @@ app.get("/apps/navigation", async (req, resp) => {
       resp.status(200).send(readFileSync("./htmls-en/apps/navigation.html", {encoding : "utf-8"}));
     }
   });
-  app.post("/apps/navigation/sendData", async (req, resp) => {
+  app.post("/apps/navigation/sendData", (req, resp) => {
     const type = req.body.type;
     const location = req.body.location;
     const username = req.body.username;
@@ -45,12 +44,9 @@ app.get("/apps/navigation", async (req, resp) => {
     writeFileSync("./jsons/dangerLocations.json", JSON.stringify(dangerLocations));
     resp.status(200).send("recorded");
   });
-  app.get("/apps/navigation/getData", async (req, resp) => {
+  app.get("/apps/navigation/getData", (req, resp) => {
     lat = req.query.lat;
     lon = req.query.lon;
-  
-    console.log(lat); 
-    console.log(lon);
   
     const dangerLocations = JSON.parse(readFileSync("./jsons/dangerLocations.json"));
     dataToSend = [];
@@ -63,7 +59,7 @@ app.get("/apps/navigation", async (req, resp) => {
     resp.setHeader("Content-Type", "application/json");
     resp.end(JSON.stringify(dataToSend));
   });
-  app.post("/apps/navigation/sendVehicleData", async (req, resp) => {
+  app.post("/apps/navigation/sendVehicleData", (req, resp) => {
     token = req.body.token;
     location = req.body.location;
     direction = req.body.direction;
@@ -80,7 +76,7 @@ app.get("/apps/navigation", async (req, resp) => {
     writeFileSync("./jsons/activeVehicles.json", JSON.stringify(vehicleDatas));
     resp.status(200).send();
   });
-  app.get("/apps/navigation/getVehicleData", async (req, resp) => {
+  app.get("/apps/navigation/getVehicleData", (req, resp) => {
     lat = req.query.lat;
     lon = req.query.lon;
   
@@ -95,7 +91,7 @@ app.get("/apps/navigation", async (req, resp) => {
     resp.setHeader("Content-Type", "application/json");
     resp.end(JSON.stringify(dataToSend));
   });
-  app.post("/apps/navigation/sendSummary", async (req, resp) => {
+  app.post("/apps/navigation/sendSummary", (req, resp) => {
     const traveledDistance = req.body.distanceTraveled;
     const username = req.body.username;
     let travelDatas = JSON.parse(readFileSync("./jsons/travelDatas.json", {encoding: "utf-8"}));
@@ -108,9 +104,8 @@ app.get("/apps/navigation", async (req, resp) => {
   });
   
   //hazard map page
-  app.get("/apps/hazardMap", async (req, resp) => {
+  app.get("/apps/hazardMap", (req, resp) => {
     const activeTokens = JSON.parse(readFileSync("./jsons/activeTokens.json", {encoding: "utf-8"}));
-    console.log(req.query.token);
     if(!(req.query.token in activeTokens)){
       resp.redirect("/login");
       console.log("token doesn't exist")
@@ -135,16 +130,15 @@ app.get("/apps/navigation", async (req, resp) => {
       resp.status(200).send(readFileSync("./htmls-en/apps/hazardMap.html", {encoding : "utf-8"}));
     }
   });
-  app.get("/apps/hazardMap/getDangerLocations", async (req, resp) => {
+  app.get("/apps/hazardMap/getDangerLocations", (req, resp) => {
     const dangerLocations = JSON.parse(readFileSync("./jsons/dangerLocations.json", {encoding: "utf-8"}));
     resp.setHeader("Content-Type", "application/json");
     resp.end(JSON.stringify(dangerLocations));
   });
   
   //rating page
-  app.get("/apps/rate", async (req, resp) => {
+  app.get("/apps/rate", (req, resp) => {
     const activeTokens = JSON.parse(readFileSync("./jsons/activeTokens.json", {encoding: "utf-8"}));
-    console.log(req.query.token);
     if(!(req.query.token in activeTokens)){
       resp.redirect("/login");
       console.log("token doesn't exist")
@@ -169,13 +163,11 @@ app.get("/apps/navigation", async (req, resp) => {
       resp.status(200).send(readFileSync("./htmls-en/apps/rate.html", {encoding : "utf-8"}));
     }
   });
-  app.post("/apps/rate/submitRating", async (req, resp) => {
+  app.post("/apps/rate/submitRating", (req, resp) => {
     const goodPoints = req.body.goodPoints;
     const badPoints = req.body.badPoints;
-    console.log(goodPoints);
   
     ratings = JSON.parse(readFileSync("./jsons/userRatings.json", {encoding: "utf-8"}));
-    console.log(ratings);
     ratings[ratings.length] = {good: goodPoints, bad: badPoints};
     writeFile("./jsons/userRatings.json", JSON.stringify(ratings), err => {if(err) console.log(err)});
     sendEmailMultiple(["maetaka-2022066@edu-g.gsn.ed.jp", "maetaka-2023104@edu-g.gsn.ed.jp"], "rating was sent", `良い点: ${goodPoints}\n改善点: ${badPoints}`);

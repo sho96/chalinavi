@@ -5,7 +5,7 @@ var app = express();
 app.use(express.json());
 
 //temporal datas
-app.get("/jsons/activeVehicles.json", async (req, resp) => {
+app.get("/jsons/activeVehicles.json", (req, resp) => {
 if(req.query.password !== "mchaaleintaavkia"){
     resp.status(200).send();
     return;
@@ -15,7 +15,7 @@ resp.end(readFileSync("./jsons/activeVehicles.json"));
 });
 
 //permanent datas
-app.get("/jsons/travelDatas.json", async (req, resp) => {
+app.get("/jsons/travelDatas.json", (req, resp) => {
 if(req.query.password !== "mchaaleintaavkia"){
     resp.status(200).send();
     return;
@@ -23,7 +23,7 @@ if(req.query.password !== "mchaaleintaavkia"){
 resp.setHeader("Content-Type", "application/json");
 resp.end(readFileSync("./jsons/travelDatas.json"));
 });
-app.get("/jsons/dangerLocations.json", async (req, resp) => {
+app.get("/jsons/dangerLocations.json", (req, resp) => {
 if(req.query.password !== "mchaaleintaavkia"){
     resp.status(200).send();
     return;
@@ -31,7 +31,7 @@ if(req.query.password !== "mchaaleintaavkia"){
 resp.setHeader("Content-Type", "application/json");
 resp.end(readFileSync("./jsons/dangerLocations.json"));
 });
-app.get("/jsons/registeredUsers.json", async (req, resp) => {
+app.get("/jsons/registeredUsers.json", (req, resp) => {
 if(req.query.password !== "mchaaleintaavkia"){
     resp.status(200).send();
     return;
@@ -39,7 +39,7 @@ if(req.query.password !== "mchaaleintaavkia"){
 resp.setHeader("Content-Type", "application/json");
 resp.end(readFileSync("./jsons/registeredUsers.json"));
 });
-app.get("/jsons/userSettings.json", async (req, resp) => {
+app.get("/jsons/userSettings.json", (req, resp) => {
 if(req.query.password !== "mchaaleintaavkia"){
     resp.status(200).send();
     return;
@@ -47,7 +47,7 @@ if(req.query.password !== "mchaaleintaavkia"){
 resp.setHeader("Content-Type", "application/json");
 resp.end(readFileSync("./jsons/userSettings.json"));
 });
-app.get("/jsons/userRatings.json", async (req, resp) => {
+app.get("/jsons/userRatings.json", (req, resp) => {
 if(req.query.password !== "mchaaleintaavkia"){
     resp.status(200).send();
     return;
@@ -55,7 +55,7 @@ if(req.query.password !== "mchaaleintaavkia"){
 resp.setHeader("Content-Type", "application/json");
 resp.end(readFileSync("./jsons/userRatings.json"));
 });
-app.get("/jsons/all", async (req, resp) => {
+app.get("/jsons/all", (req, resp) => {
 if(req.query.password !== "mchaaleintaavkia"){
     resp.status(200).send();
     return;

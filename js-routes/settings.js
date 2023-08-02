@@ -4,7 +4,7 @@ var app = express();
 
 app.use(express.json());
 
-app.post("/updateSettings", async (req, resp) => {
+app.post("/updateSettings", (req, resp) => {
     const settings = req.body;
     const username = settings.username;
     delete settings.username;
@@ -13,7 +13,7 @@ app.post("/updateSettings", async (req, resp) => {
     writeFileSync("./jsons/userSettings.json", JSON.stringify(usersettings));
     console.log(`settings updated for user "${username}`);
   })
-  app.get("/getSettings", async (req, resp) => {
+  app.get("/getSettings", (req, resp) => {
     const username = req.query.username;
     const userSettings = JSON.parse(readFileSync("./jsons/userSettings.json"));
     const settings = userSettings[username];

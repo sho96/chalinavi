@@ -5,13 +5,13 @@ var app = express();
 app.use(express.json());
 
 // base
-app.get("/", async (req, resp) => {
+app.get("/", (req, resp) => {
     console.log("main request");
     resp.redirect("/login");
   });
   
   // log in functionalities
-  app.get("/login", async (req, resp) => {
+  app.get("/login", (req, resp) => {
     const lang = req.query["lang"];
     resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     resp.setHeader("Pragma", "no-cache");
@@ -24,7 +24,7 @@ app.get("/", async (req, resp) => {
       resp.status(200).send(readFileSync("./htmls-en/login.html", {encoding: "utf-8"}));
     }
   });
-  app.post("/sendLogin", async (req, resp) => {
+  app.post("/sendLogin", (req, resp) => {
     console.log("loginSent");
     username = req.body["username"];
     password = req.body["password"];
@@ -60,7 +60,7 @@ app.get("/", async (req, resp) => {
   })
   
   // sign up functionalities
-  app.get("/signup", async (req, resp) => {
+  app.get("/signup", (req, resp) => {
     console.log("signup request");
     const lang = req.query["lang"];
     resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
@@ -74,7 +74,7 @@ app.get("/", async (req, resp) => {
       resp.status(200).send(readFileSync("./htmls-en/signup.html", {encoding: "utf-8"}));
     }
   });
-  app.post("/verifyEmail", async (req, resp) => {
+  app.post("/verifyEmail", (req, resp) => {
     email = req.body["email"];
     verificationCode = req.body["code"];
     const codes = JSON.parse(readFileSync("./jsons/verificationCodes.json", {encoding : "utf-8"}));
@@ -114,7 +114,7 @@ app.get("/", async (req, resp) => {
       resp.end(JSON.stringify({status: "not verified"}));
     }
   });
-  app.post("/sendSignup", async (req, resp) => {
+  app.post("/sendSignup", (req, resp) => {
     const data = req.body;
     const username = data["username"];
     const password = data["password"];
