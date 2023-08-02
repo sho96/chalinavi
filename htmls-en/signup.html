@@ -163,7 +163,7 @@
                         const token = response.token;
                         window.sessionStorage.token = token;
                         window.sessionStorage.language = window.navigator.language.slice(0,2);
-                        window.location.href=`/menu?token=${token}?lang=${window.sessionStorage.language}`;
+                        window.location.href=`/menu?token=${token}&lang=${window.sessionStorage.language}`;
                     }else{
                         errMsgElement.innerHTML = "username and password doesn't match";
                     }

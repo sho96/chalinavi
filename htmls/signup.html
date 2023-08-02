@@ -39,7 +39,7 @@
             <button onclick="signup();"class="submit">作成</button>
             <br>
             <a href="/login">ログイン画面へ戻る</a>
-        </div>
+        </div>                                                                                
         <script>
             const fieldContainer = document.querySelector(".fields");
             const codeFieldContainer = document.querySelector(".codeFieldContainer");
@@ -159,7 +159,7 @@
                         const token = response.token;
                         window.sessionStorage.token = token;
                         window.sessionStorage.language = window.navigator.language.slice(0,2);
-                        window.location.href=`/menu?token=${token}?lang=${window.sessionStorage.language}`;
+                        window.location.href=`/menu?token=${token}&lang=${window.sessionStorage.language}`;
                     }else{
                         errMsgElement.innerHTML = "ユーザー名とパスワードが合いません";
                     }
