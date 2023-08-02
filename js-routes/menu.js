@@ -1,3 +1,4 @@
+const { readFile, readFileSync, writeFile, writeFileSync} = require("fs");
 var express = require('express');
 var app = express();
 
