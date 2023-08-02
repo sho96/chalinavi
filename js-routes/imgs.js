@@ -1,4 +1,5 @@
 const { readFile, readFileSync, writeFile, writeFileSync} = require("fs");
+var nodemailer = require('nodemailer');
 var express = require('express');
 var app = express();
 
