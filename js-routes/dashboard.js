@@ -4,7 +4,7 @@ var app = express();
 
 app.use(express.json());
 
-app.get("/getDashboard", (req, resp) => {
+app.get("/getDashboard", async (req, resp) => {
     const username = req.query.username;
     const travelDatas = JSON.parse(readFileSync("./jsons/travelDatas.json", {encoding: "utf-8"}));
     console.log(username);

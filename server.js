@@ -16,6 +16,7 @@ const mongoose = require("mongoose");
 var express = require('express');
 var app = express();
 // server routes
+const userDataManagementRouter = require("./js-routes/userDataManagement.js");
 const menuRouter = require("./js-routes/menu.js");
 const applicationsRouter = require("./js-routes/applications.js");
 const dashboardRouter = require("./js-routes/dashboard.js");
@@ -25,6 +26,7 @@ const imgsRouter = require("./js-routes/imgs.js");
 const soundsRouter = require("./js-routes/sounds.js");
 const jsonsRouter = require("./js-routes/jsons.js");
 
+app.use(userDataManagementRouter);
 app.use(menuRouter);
 app.use(applicationsRouter);
 app.use(dashboardRouter);
@@ -35,8 +37,11 @@ app.use(soundsRouter);
 app.use(jsonsRouter);
 
 app.use(express.json());
+
 console.log("express loaded");
 
+
+//------------ connecting to mongoDB ------------
 //username: chalinavi
 //password: maetakaKagakubuChalinavi
 mongoose.connect(
@@ -45,163 +50,10 @@ mongoose.connect(
 .then(() => console.log("connected to mongo db"))
 .catch(err => console.log(err));
 
+
+
 //------------------------------- user data managements --------------------------------
-// base
-app.get("/", (req, resp) => {
-  console.log("main request");
-  resp.redirect("/login");
-});
-
-// log in functionalities
-app.get("/login", (req, resp) => {
-  const lang = req.query["lang"];
-  resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-  resp.setHeader("Pragma", "no-cache");
-  resp.setHeader("Expires", "0");
-  if(lang == "en"){
-    resp.status(200).send(readFileSync("./htmls-en/login.html", {encoding: "utf-8"}));
-  }else if(lang == "ja"){
-    resp.status(200).send(readFileSync("./htmls/login.html", {encoding: "utf-8"}));
-  }else{
-    resp.status(200).send(readFileSync("./htmls-en/login.html", {encoding: "utf-8"}));
-  }
-});
-app.post("/sendLogin", (req, resp) => {
-  console.log("loginSent");
-  username = req.body["username"];
-  password = req.body["password"];
-  const users = JSON.parse(readFileSync("./jsons/registeredUsers.json", {encoding: "utf-8"}));
-  //console.log(users);
-  if(!(username in users)){
-    resp.setHeader("Content-Type", "application/json");
-    resp.end(JSON.stringify({status: "username and password don't match"}))
-  }
-  if(users[username]["password"] != password){
-    resp.setHeader("Content-Type", "application/json");
-    resp.end(JSON.stringify({status: "username and password don't match"}));
-    return;
-  } 
-  delete users;
-  const availableLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz0123456789-_";
-  const length = 20;
-  let token = "";
-  for(let i = 0; i < length; i++){
-    token += availableLetters[Math.floor(Math.random() * availableLetters.length)];
-  }
-  deleteOldTokens();
-  const tokens = JSON.parse(readFileSync("./jsons/activeTokens.json", {encoding: "utf-8"}));
-  tokens[token] = {due: Date.now() + 60000};
-  //console.log(tokens);
-  writeFileSync("./jsons/activeTokens.json", JSON.stringify(tokens));
-  delete tokens;
-  const settings = JSON.parse(readFileSync("./jsons/userSettings.json", {encoding: "utf-8"}));
-  resp.setHeader("Content-Type", "application/json");
-  resp.end(JSON.stringify({status: "success", token: token, language: settings[username].language}));
-  delete settings;
-  console.log(`token of "${token}" sent`);
-})
-
-// sign up functionalities
-app.get("/signup", (req, resp) => {
-  console.log("signup request");
-  const lang = req.query["lang"];
-  resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-  resp.setHeader("Pragma", "no-cache");
-  resp.setHeader("Expires", "0");
-  if(lang == "en"){
-    resp.status(200).send(readFileSync("./htmls-en/signup.html", {encoding: "utf-8"}));
-  }else if(lang == "ja"){
-    resp.status(200).send(readFileSync("./htmls/signup.html", {encoding: "utf-8"}));
-  }else{
-    resp.status(200).send(readFileSync("./htmls-en/signup.html", {encoding: "utf-8"}));
-  }
-});
-app.post("/verifyEmail", (req, resp) => {
-  email = req.body["email"];
-  verificationCode = req.body["code"];
-  const codes = JSON.parse(readFileSync("./jsons/verificationCodes.json", {encoding : "utf-8"}));
-  if (codes[email]["code"] == verificationCode){
-    //verified
-    if(codes[email].due <= Date.now()){
-      delete codes[email];
-      writeFileSync("./jsons/verificationCodes.json", JSON.stringify(codes));
-      resp.setHeader("Content-Type", "application/json");
-      resp.end(JSON.stringify({status: "expired"}));
-      return;
-    }
-    const users = JSON.parse(readFileSync("./jsons/registeredUsers.json", {encoding: "utf-8"}));
-    const settings = JSON.parse(readFileSync("./jsons/userSettings.json"), {encoding: "utf-8"});
-
-    const userdata = {password: codes[email]["password"], email: email};
-    const language = codes[email]["language"];
-    settings[codes[email]["username"]] = {detectionLevel: "5", detectionBoxWidth: 1, detectionBoxHeight: 40, language: language}; 
-    users[codes[email]["username"]] = userdata;
-
-    delete codes[email];
-
-    writeFileSync("./jsons/registeredUsers.json", JSON.stringify(users), err => {if(err) console.log(err)});
-    writeFileSync("./jsons/verificationCodes.json", JSON.stringify(codes), err => {if(err) console.log(err)});
-    writeFileSync("./jsons/userSettings.json", JSON.stringify(settings), err => {if(err) console.log(err)});
-
-    delete users;
-    delete settings;
-
-    resp.setHeader('Content-Type', 'application/json');
-    resp.end(JSON.stringify({status: "verified"}));
-    console.log(`verified ${email}`);
-  }else{
-    //not verified
-    console.log(`attempt on verifying ${email}`);
-    resp.setHeader('Content-Type', 'application/json');
-    resp.end(JSON.stringify({status: "not verified"}));
-  }
-});
-app.post("/sendSignup", (req, resp) => {
-  const data = req.body;
-  const username = data["username"];
-  const password = data["password"];
-  const email = data["email"];
-  const language = data["language"];
-  
-  const verificationCodes = JSON.parse(readFileSync("./jsons/verificationCodes.json"));
-  let usedUsernames = []
-  let i = 0;
-  for(const emailAddress in verificationCodes){
-    if(verificationCodes[emailAddress].due <= Date.now()){
-      delete verificationCodes[emailAddress];
-      continue;
-    }
-    usedUsernames[i] = verificationCodes[emailAddress]["username"];
-    i++;
-  }
-  writeFileSync("./jsons/verificationCodes.json", JSON.stringify(verificationCodes));
-  delete verificationCodes;
-  const registeredUsers = JSON.parse(readFileSync("./jsons/registeredUsers.json"));
-  for(const registeredUsername in registeredUsers){
-    usedUsernames[i] = registeredUsername;
-    i++;
-  }
-  delete registeredUsers;
-  
-  console.log(usedUsernames);
-
-  if(usedUsernames.includes(username)){
-    //username already taken
-    resp.setHeader("Content-Type", "application/json");
-    resp.end(JSON.stringify({status: "username already taken"}))
-    return;
-  }
-
-  const verificationCode = `${getRandomInt(9)+1}${getRandomInt(10)}${getRandomInt(10)}${getRandomInt(10)}${getRandomInt(10)}`;
-  const codes = JSON.parse(readFileSync("./jsons/verificationCodes.json", {encoding : "utf-8"}));
-  codes[email] = {code: verificationCode, username: username, password: password, language: language, due: Date.now()+600000};
-  sendCode(email, username, verificationCode, "Hi! Thank you for registering!");
-  writeFileSync("./jsons/verificationCodes.json", JSON.stringify(codes));
-  delete codes;
-  resp.setHeader("Content-Type", "application/json");
-  resp.end(JSON.stringify({status: "success"}))
-});
-
+//declared on the top
 
 //------------------------------- menu page --------------------------------
 //declared on the top
@@ -244,13 +96,6 @@ app.post("/logOut", (req, resp) => {
   delete tokens[req.body["token"]];
   writeFileSync("./jsons/activeTokens.json", JSON.stringify(tokens));
 })
-
-/*
-//reset user data
-app.get("/reset", (req, resp) => {
-  writeFileSync("./jsons/verificationCodes.json", "{}");
-  writeFileSync("./jsons/registeredUsers.json", "{}");
-})*/
 
 function getDistanceOnEarth(lat1,lon1,lat2,lon2) {
   var R = 6371; // Radius of the earth in km

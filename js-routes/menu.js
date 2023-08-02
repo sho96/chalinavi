@@ -5,7 +5,7 @@ var app = express();
 app.use(express.json());
 
 //menu page
-app.get("/menu", (req, resp) => {
+app.get("/menu", async (req, resp) => {
     const activeTokens = JSON.parse(readFileSync("./jsons/activeTokens.json", {encoding: "utf-8"}));
     console.log(req.query.token);
     if(!(req.query.token in activeTokens)){
