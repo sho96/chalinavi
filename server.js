@@ -25,6 +25,7 @@ const profileRouter = require("./js-routes/profile.js");
 const imgsRouter = require("./js-routes/imgs.js");
 const soundsRouter = require("./js-routes/sounds.js");
 const jsonsRouter = require("./js-routes/jsons.js");
+const tomaruRouter = require("./js-routes/tomaru-kun.js");
 
 app.use(userDataManagementRouter);
 app.use(menuRouter);
@@ -35,6 +36,7 @@ app.use(profileRouter);
 app.use(imgsRouter);
 app.use(soundsRouter);
 app.use(jsonsRouter);
+app.use(tomaruRouter);
 
 app.use(express.json());
 

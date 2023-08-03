@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="ja">
+        
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>チャリナビ</title>
+        <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+        <script>eruda.init();</script>
+    </head>
+    <body style="">
+        <div class="orientation-lock-warning-container bubble-container" hidden>
+            <h1>画面の向きがロックされているようです</h1>
+            <h3>画面のロックを解除してください</h3>
+
+            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">メニューに戻る</a>
+        </div>
+        <div class="permission-container bubble-container" hidden>
+            <h1>加速度センサーの利用を許可してください</h1>
+            <h3>この機能を利用するには加速度センサーの使用が必要です</h3>
+            <button class="allow-button" onclick="requestPermission()">許可する</button>
+            <br>
+            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">メニューに戻る</a>
+        </div>
+        <div class="orientation-warning-container bubble-container" hidden>
+            <h1>画面の向きが違うようです</h1>
+            <h3>画面を縦にしてください</h3>
+
+            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">メニューに戻る</a>
+        </div>
+        <div class="survey-container bubble-container" hidden>
+            <h1>車両を選んでください</h1>
+            <h3>何に乗っているかを選んでください</h3>
+            
+            <button class="bike" onclick="selectVehicle('bike')">自転車</button><br>
+            <button class="car" onclick="selectVehicle('car')">車</button><br>
+            
+            <br>
+            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">メニューに戻る</a>
+        </div>
+        <div class="calibration-container bubble-container" hidden>
+            <h1>センサーを補正</h1>
+            <h3>もう少し！</h3>
+            <h2>下のボタンを押して端末をできるだけ動かさずに3秒間センサーを補正してください</h2>
+            
+            <button class="calibrate-button" onclick="startCalibration()">補正</button><br>
+            
+            <br>
+            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">メニューに戻る</a>
+        </div>
+        <div class="main-container" hidden>
+            <div class="signal-meter" style="position: absolute; right: 20px; top: 10px;">
+                <div class="signal-meter-bars" style="display: flex; flex-direction: row;">
+                    <div class="signal-meter-0 signal-bar" style="height: 20px; margin-top: 30px;"></div>
+                    <div class="signal-meter-1 signal-bar" style="height: 30px; margin-top: 20px;"></div>
+                    <div class="signal-meter-2 signal-bar" style="height: 40px; margin-top: 10px;"></div>
+                    <div class="signal-meter-3 signal-bar" style="height: 50px; margin-top: 0px;"></div>
+                </div>
+                <h2 style="margin-top: 5px;">GPS</h2>
+            </div>
+            <h1 style="color: #bebebe;"><span class="speedometer" style="color: white; font-size: 10rem;">---</span> km/h</h1>
+            <h1 style="color: #bebebe;"><span class="compass" style="color: white; font-size: 5rem;">-- ---</span></h1>
+            <h1 style="color: #bebebe;"><span class="total-distance" style="color: white; font-size: 5rem;">---</span> km</h1>
+            <button onclick="summary();" class="done-button" style="font-size: 2rem; color: black;">終わる</button>
+            
+            <!--Delete on Deployment-->
+            <h4 class="gravityVector">重力ベクトル: ---</h4>
+            <h4 class="accelerationOrientation">加速度の向き: ---</h4>
+            <h4 class="accelerationType">種類: ---</h4>
+            <h4 class="log"></h4>
+            <!---->
+        </div>
+        <div class="alert-container" hidden>
+            <div class="alert-window" >
+                <div name="alert-distance" style="background-color: red;">
+                    <h1 style="font-size: 5rem; color: rgb(106, 255, 0);"><span class="alert-distance">100</span>m 先</h1>
+                </div>
+                
+                <div name="alert-content" class="alert-blink">
+                    <img src="/imgs/apps/navigation/warning.png" alt="warning sign" width="75%" style="margin-top: 20px;">
+                    <h1 class="alert-message" style="color: black; font-size: 4rem; margin-left: 15px; margin-right: 15px;"></h1>
+                </div>
+            </div>
+        </div>
+        <div class="link_toma-ru_container">
+            <button class="link_toma-ru">トマールくんと連携</button>
+        </div>
+        <script>
+            const speedometer = document.querySelector(".speedometer");
+            const compass = document.querySelector(".compass");
+            const totalDistanceMeter = document.querySelector(".total-distance");
+            
+            let boundWidth;
+            let boundHeight;
+
+            let selectedVehicle;
+
+            let accelerationThreshold = 0;
+            let gravityVector;
+
+            let currentAcceleration = {};
+            let currentAccelerationWtihGravity = {};
+            let currentSpeed = 0;
+            let currentDirection = 0;
+            let currentPosition;
+
+            let lastPosition;
+            let lastPositionUpdate = Date.now();
+            let positionUpdate = false;
+
+            let surroundingAccidents;
+            let locationOfLastSurroundingUpdate;
+
+            let surroundingVehicles;
+
+            let totalDistanceTraveled = 0;
+
+            let baseOrientation;
+
+            let timeLastSentAccident;
+
+            let accelerationDurationType = "none";
+            let accelerationDurationStart = 0;
+            let accelerationDurationThreshold = 0;
+
+            const distanceSounds = {
+                10: new Audio("/sounds/ja/10m.mp3"),
+                20: new Audio("/sounds/ja/20m.mp3"),
+                30: new Audio("/sounds/ja/30m.mp3"),
+                40: new Audio("/sounds/ja/40m.mp3"),
+                50: new Audio("/sounds/ja/50m.mp3"),
+                60: new Audio("/sounds/ja/60m.mp3"),
+                70: new Audio("/sounds/ja/70m.mp3"),
+                80: new Audio("/sounds/ja/80m.mp3"),
+                90: new Audio("/sounds/ja/90m.mp3"),
+                100: new Audio("/sounds/ja/100m.mp3"),
+            };
+            const suddenBrakeWarningSound = new Audio("/sounds/ja/sudden_brake.mp3");
+            const rearImpactWarningSound = new Audio("/sounds/ja/rear_impact.mp3");
+
+            // ---------------------------------- main process ----------------------------------
+            function updateMeasurements(){
+                conversionTable = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
+                compassSection = Math.floor((currentDirection + 22.5)/45) % 8;
+
+                speedometer.innerHTML = Math.round(currentSpeed);
+                compass.innerHTML = `${conversionTable[compassSection]} ${Math.round(currentDirection)}°`;
+                totalDistanceMeter.innerHTML = firstNDigits(totalDistanceTraveled/1000, 3);
+
+                const accuracy = currentPosition.accuracy;
+                const zero = document.querySelector(".signal-meter-0");
+                const one = document.querySelector(".signal-meter-1");
+                const two = document.querySelector(".signal-meter-2");
+                const three = document.querySelector(".signal-meter-3");
+                if(accuracy < 10){
+                    //4
+                    zero.style.opacity = "100%";
+                    one.style.opacity = "100%";
+                    two.style.opacity = "100%";
+                    three.style.opacity = "100%";
+                }else if(accuracy < 15){
+                    //3
+                    zero.style.opacity = "100%";
+                    one.style.opacity = "100%"; 
+                    two.style.opacity = "100%";
+                    three.style.opacity = "30%";
+                }else if(accuracy < 20){
+                    //2
+                    zero.style.opacity = "100%";
+                    one.style.opacity = "100%";
+                    two.style.opacity = "30%";
+                    three.style.opacity = "30%";
+                }else if(accuracy < 25){
+                    //1
+                    zero.style.opacity = "100%";
+                    one.style.opacity = "30%";
+                    two.style.opacity = "30%";
+                    three.style.opacity = "30%";
+                }else{
+                    //0
+                    zero.style.opacity = "30%";
+                    one.style.opacity = "30%";
+                    two.style.opacity = "30%";
+                    three.style.opacity = "30%";
+                }
+            }
+
+            //detect accidents
+            function detectAccident(){
+                if(currentAcceleration == null){
+                    return;
+                }
+
+                const calibrated = remapVector(currentAcceleration, baseOrientation);
+                const accelerationStrength = Math.sqrt(calibrated.y ** 2 + calibrated.z ** 2);
+
+                let accelerationOrientation;
+                if(calibrated.y < 0){
+                    accelerationOrientation = (Math.PI + Math.tan(calibrated.z / calibrated.y)) % (Math.PI*2);
+                }else{
+                    accelerationOrientation = Math.tan(calibrated.z / calibrated.y);
+                }
+                accelerationOrientation = (rad2deg(Math.PI*2+accelerationOrientation)+360) % 360;
+
+                // guard clauses to not let the bump get detected
+                if(accelerationStrength < accelerationThreshold){
+                    accelerationDurationStart = Date.now();
+                    return;
+                }
+                if(Date.now() - timeLastSentAccident < 3000){
+                    return;
+                }
+                document.querySelector(".accelerationOrientation").innerHTML = `加速度の向き: ${firstNDigits(accelerationOrientation, 3)}`;
+                document.querySelector(".accelerationType").innerHTML = `種類: ${accelerationDurationType}`;
+                if(currentSpeed < 6){
+                    return;
+                }
+
+                //error of 30 degrees
+                const error = 30;
+                if((180+error <= accelerationOrientation && accelerationOrientation <= 360-error) || (error <= accelerationOrientation && accelerationOrientation <= 180-error)){
+                    //random shake detected
+                    //document.querySelector(".log").innerHTML += "random shake<br>";
+                    accelerationDurationStart = Date.now();
+                    accelerationDurationType = "none";
+                }else{
+                    //document.querySelector(".log").innerHTML += `${accelerationOrientation}<br>`;
+                    if(accelerationOrientation == null){
+                        return;
+                    }
+                    if(180-error < accelerationOrientation && accelerationOrientation < 180+error){
+                        // rear-end collision
+                        document.querySelector(".accelerationType").innerHTML = "Type: rear impact";
+                        //document.querySelector(".log").innerHTML += `R ${Date.now() - accelerationDurationStart}<br>`;
+                        if(accelerationDurationType != "rear impact"){
+                            accelerationDurationStart = Date.now();
+                        }
+                        accelerationDurationType = "rear impact";
+                    }
+                    if(360-error < accelerationOrientation || accelerationOrientation < error){
+                        // sudden brake
+                        document.querySelector(".accelerationType").innerHTML = "Type: brake";
+                        //document.querySelector(".log").innerHTML += `B ${Date.now() - accelerationDurationStart}<br>`;
+                        if(accelerationDurationType != "brake"){
+                            accelerationDurationStart = Date.now();
+                        }
+                        accelerationDurationType = "brake";
+                    }
+                    if(Date.now() - accelerationDurationStart > accelerationDurationThreshold && accelerationDurationType != "none"){
+                        console.log(`${accelerationDurationType} detected`);
+                        document.querySelector(".log").innerHTML += `${accelerationDurationType} detected<br>`;
+                        sendAccident(accelerationDurationType);
+                        timeLastSentAccident = Date.now();
+                    }
+                }
+            }
+            //check for approaching vehicles
+            function checkForApproachingVehicles(){
+                for(i in surroundingVehicles){
+                    vehicle = surroundingVehicles[i];
+
+                    if(Math.abs(currentDirection - vehicle.direction) % 180 > 50){
+                        continue;
+                    }
+
+                    const { doesIntersect, intersection } = checkIntersection(
+                        [currentPosition.longitude, currentPosition.latitude],
+                        currentDirection,
+                        currentSpeed * 2.222,
+                        [vehicle.lon, vehicle.lat],
+                        vehicle.direction,
+                        vehicle.speed * 2.222,
+                    );
+
+                    if(!doesIntersect){
+                        continue
+                    }
+                    
+                    //vehicle approaching
+                    approachingDirection = Math.abs(vehicle.direction - currentDirection);
+                    distanceToIntersection = getDistanceOnEarth(
+                        currentPosition.latitude, currentPosition.longitude,
+                        intersection[1], intersection[0]
+                    )
+                    if(Math.abs(approachingDirection - 270) < 45){
+                        //from right
+                        console.log("vehicle approaching from right")
+                    }
+                    if(Math.abs(approachingDirection - 90) < 45){
+                        //from left
+                        console.log("vehicle approaching from left")
+                    }
+                }
+            }
+            async function sendVehicleData(){
+                fetch("/apps/navigation/sendVehicleData",{
+                    method: "POST",
+                    body:JSON.stringify({
+                        token: window.sessionStorage.token,
+                        location: {lat: currentPosition.latitude, lon: currentPosition.longitude},
+                        direction: currentDirection,
+                        speed: currentSpeed,
+                        type: selectedVehicle,
+                    }),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+            }
+
+            //check for accidents in sight
+            function checkForAccidents(){
+                if(currentPosition == null || currentDirection == null){
+                    return;
+                }
+                let locations = findDangerLocationsWithinRange(
+                    currentPosition, 
+                    currentDirection, 
+                    getAngleFromDistanceOnEarth(currentPosition.latitude, boundWidth/1000), 
+                    getAngleFromDistanceOnEarth(0, boundHeight/1000),
+                    surroundingAccidents,
+                );
+                console.log(locations.length);
+                const convertToMessage = {
+                    "brake": "There was an emergency brake",
+                    "rear impact": "There was a rear-end collision"
+                }
+                for(index in locations){
+                    if ('alerted' in locations[index]){
+                        continue;
+                    }
+                    var location = locations[index];
+                    distanceToAccident = getDistanceOnEarth(currentPosition.latitude, currentPosition.longitude, location.location.lat, location.location.lon);
+                    alertAccident(firstNDigits(distanceToAccident*1000, 2), convertToMessage[location.type], 7000, location.type);
+                    //surroundingAccidents[index]["alerted"] = true;
+                    var coordinate = location.location;
+                    for(i in surroundingAccidents){
+                        var loc = surroundingAccidents[i].location;
+                        if(getDistanceOnEarth(coordinate.lat, coordinate.lon, loc.lat, loc.lon)*1000 < 10){
+                            surroundingAccidents[i]["alerted"] = true;
+                        }
+                    }
+                }
+            }
+            
+            //function to alert the accident
+            function alertAccident(distance, message, duration, type){
+                document.querySelector(".alert-distance").innerHTML = distance;
+                document.querySelector(".alert-message").innerHTML = message;
+                document.querySelector(".alert-container").hidden = false;
+                const startBlink = Date.now();
+                const loop = setInterval(() => {
+                    document.querySelector(".alert-blink").hidden = !document.querySelector(".alert-blink").hidden;
+                    if(Date.now() - startBlink >= duration){
+                        document.querySelector(".alert-container").hidden = true;
+                        clearInterval(loop);
+                    }
+                }, 800);
+                const roundedDistance = Math.round(distance/10) * 10;
+                const distanceSoundToPlay = distanceSounds[roundedDistance];
+                let warningSoundToPlay;
+                let waitTime = 0;
+                if(type == "brake"){
+                    warningSoundToPlay = suddenBrakeWarningSound;
+                    waitTime = 1100;
+                }else if(type == "rear impact"){
+                    warningSoundToPlay = rearImpactWarningSound;
+                    waitTime = 1100;
+                }
+                navigator.vibrate(1000);
+                distanceSoundToPlay.play();
+                setTimeout(() => {
+                    warningSoundToPlay.play();
+                }, waitTime);
+            }
+
+            //update surrounding accidents
+            async function updateDangerLocations(){
+                if(locationOfLastSurroundingUpdate == null){
+                    const pos = (await getPos()).coords;
+                    surroundingAccidents = await (await fetch(`/apps/navigation/getData?lat=${pos.latitude}&lon=${pos.longitude}`)).json();
+                    locationOfLastSurroundingUpdate = pos;
+                    return;
+                }
+                if(getDistanceOnEarth(locationOfLastSurroundingUpdate.latitude, locationOfLastSurroundingUpdate.longitude, currentPosition.latitude, currentPosition.longitude) >= 5000){
+                    surroundingAccidents = await (await fetch(`/apps/navigation/getData?lat=${currentPosition.latitude}&lon=${currentPosition.longitude}`)).json();
+                    locationOfLastSurroundingUpdate = currentPosition;
+                    return;
+                }
+            }
+            async function updateVehicleDatas(){
+                if(currentPosition == null){
+                    currentPosition = (await getPos()).coords;
+                }
+                surroundingVehicles = await (await fetch(`/apps/navigation/getVehicleData?lat=${currentPosition.latitude}&lon=${currentPosition.longitude}`)).json();
+            }
+            async function startMain(){
+                const settings = await (await fetch(`/getSettings?username=${window.sessionStorage.username}`)).json();
+                boundWidth = settings.detectionBoxWidth;
+                boundHeight = settings.detectionBoxHeight;
+                setInterval(updateMeasurements, 500);
+                setInterval(detectAccident);
+                setInterval(checkForAccidents, 1000);
+                updateDangerLocations();
+                setInterval(updateDangerLocations, 60000);
+                setInterval(updateVehicleDatas, 2500);
+            }
+            
+
+            // ----------------------------------- summary and leave -----------------------------------
+            function summary(){
+                if(!confirm(`走行距離： ${parseFloat(parseFloat((totalDistanceTraveled / 1000).toFixed(2)).toPrecision(3))} km`)){
+                    return;
+                }
+                fetch("/apps/navigation/sendSummary", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        username: window.sessionStorage.username,
+                        distanceTraveled: totalDistanceTraveled
+                    }),
+                    headers:{
+                        "Content-Type": "application/json"
+                    }
+                });
+                window.location.href = `/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;
+            }
+
+            // ---------------------------------- system flow controls ----------------------------------
+            //check phone orientation
+            checkScreenOrientation();
+            function checkScreenOrientation(){
+                if(window.screen.width > window.screen.height){
+                    document.querySelector(".orientation-warning-container").hidden = false;
+                    const waitForOrientationCorrection = setInterval(() => {
+                        if(window.screen.width < window.screen.height){
+                            document.querySelector(".orientation-warning-container").hidden = true;
+                            document.querySelector(".survey-container").hidden = false;
+                            clearInterval(waitForOrientationCorrection);
+                        }
+                    });
+                }else{
+                    document.querySelector(".survey-container").hidden = false;
+                }
+            }
+
+            function selectVehicle(vehicle){
+                askSensorPermission();
+                selectedVehicle = vehicle;
+                if (vehicle == "bike"){
+                    accelerationThreshold = 25;
+                    accelerationDurationThreshold = 100;
+                }else if(vehicle == "car"){
+                    accelerationThreshold = 10;
+                    accelerationDurationThreshold = 150;
+                }
+                document.querySelector(".survey-container").hidden = true;
+                document.querySelector(".calibration-container").hidden = false;
+            }
+            function startCalibration(){
+                const button = document.querySelector(".calibrate-button");
+                button.disabled = true;
+                const startTime = Date.now()
+                let xTotal = 0;
+                let yTotal = 0;
+                let zTotal = 0;
+                let samples = 0;
+                const loop = setInterval(() => {
+                    if(Date.now() - startTime >= 3000){
+                        document.querySelector(".calibration-container").hidden = true;
+                        document.querySelector(".main-container").hidden = false;
+                        gravityVector = {x: xTotal / samples, y: yTotal / samples, z: zTotal / samples};
+                        baseOrientation = Math.PI/2 - Math.atan(zTotal / yTotal);
+                        if(gravityVector.y > 0){
+                            baseOrientation = (baseOrientation + Math.PI) % (2*Math.PI);
+                        }
+                        main();
+                        clearInterval(loop);
+                    }
+                    xTotal += currentAccelerationWtihGravity.x;
+                    yTotal += currentAccelerationWtihGravity.y;
+                    zTotal += currentAccelerationWtihGravity.z;
+                    samples += 1;
+                    button.innerHTML = Math.round((startTime + 3000 - Date.now())/100)/10;
+                }, 75);
+            }
+            function main(){
+                document.querySelector(".gravityVector").innerHTML = `重力ベクトル:<br>x: ${gravityVector.x}<br>y: ${gravityVector.y}<br>z: ${gravityVector.z}<br>`;
+                startMain();
+                console.log(`x: ${gravityVector.x}\ny: ${gravityVector.y}\nz: ${gravityVector.z}\n`);
+                console.log(`baseOrientation: ${rad2deg(baseOrientation)} deg`);
+            }
+
+            // ---------------------------------- update sensors -----------------------------------
+            async function askSensorPermission () {
+                if ( typeof( DeviceMotionEvent ) !== "undefined" && typeof( DeviceMotionEvent.requestPermission ) === "function" ) {
+                    console.log("ios device detected");
+                    // (optional) Do something before API request prompt.
+                    const response = await DeviceMotionEvent.requestPermission();
+                    console.log(response);
+                    if(response == "granted"){
+                        window.addEventListener("devicemotion",(event) => {
+                            currentAcceleration = {x: -event.acceleration.x, y: -event.acceleration.y, z: -event.acceleration.z};
+                            currentAccelerationWtihGravity = {x: -event.accelerationIncludingGravity.x, y: -event.accelerationIncludingGravity.y, z: -event.accelerationIncludingGravity.z};
+                        });
+                    }
+
+                    /*
+                    DeviceMotionEvent.requestPermission()
+                    .then( response => {
+                        console.log(response);
+                        // (optional) Do something after API prompt dismissed.
+                        if ( response == "granted" ) {
+                            window.addEventListener("devicemotion",(event) => {
+                                currentAcceleration = {x: -event.acceleration.x, y: -event.acceleration.y, z: -event.acceleration.z};
+                                currentAccelerationWtihGravity = {x: -event.accelerationIncludingGravity.x, y: -event.accelerationIncludingGravity.y, z: -event.accelerationIncludingGravity.z};
+                            });
+                        }
+                    })
+                    .catch(err => console.error(err));*/
+                } else {
+                    console.log("non ios device detected");
+                    window.addEventListener("devicemotion",(event) => {
+                        currentAcceleration = {x: -event.acceleration.x, y: -event.acceleration.y, z: -event.acceleration.z};
+                        currentAccelerationWtihGravity = {x: -event.accelerationIncludingGravity.x, y: -event.accelerationIncludingGravity.y, z: -event.accelerationIncludingGravity.z};
+                        //document.querySelector(".accelerationOrientation").innerHTML = `x: ${event.accelerationIncludingGravity.x}<br>y: ${event.accelerationIncludingGravity.y}<br>z: ${event.accelerationIncludingGravity.z}`;
+                    });
+                }
+                startSensors();
+            }
+            function startSensors(){
+                navigator.geolocation.watchPosition(
+                    pos => {
+                        deltaTime = (Date.now() - lastPositionUpdate)/1000
+                        if(deltaTime < 1){
+                            return;
+                        }
+
+                        currentPosition = pos.coords;
+                        
+                        if (lastPosition == null){
+                            lastPosition = currentPosition
+                            return;
+                        }
+                        distanceFromPreviousMeasurement  = getDistanceOnEarth(
+                            lastPosition.latitude,
+                            lastPosition.longitude,
+                            currentPosition.latitude,
+                            currentPosition.longitude,
+                        ) * 1000;
+
+                        if(currentSpeed == 0){
+                            if(distanceFromPreviousMeasurement > 4 * deltaTime){
+                                currentSpeed = (distanceFromPreviousMeasurement / deltaTime) * 3.6;
+                            }
+                        }else{
+                            currentSpeed = (distanceFromPreviousMeasurement / deltaTime) * 3.6;
+                        }
+    
+                        if(distanceFromPreviousMeasurement > deltaTime * 3){
+                            deltaLat = currentPosition.latitude - lastPosition.latitude;
+                            deltaLon = currentPosition.longitude - lastPosition.longitude;
+                            rawAngle = Math.atan2(deltaLat, deltaLon) * 180 / Math.PI;
+                            currentDirection = 360 - (rawAngle-90 + 360)%360;
+                        }
+                        if(distanceFromPreviousMeasurement > deltaTime * 1){
+                            totalDistanceTraveled += distanceFromPreviousMeasurement;
+                        }
+
+                        
+                        positionUpdate = true;
+                        lastPosition = currentPosition;
+                        lastPositionUpdate = Date.now();
+                        //console.log(accuracy);
+                        //console.log(currentDirection);
+                        //console.log(`dist: ${distanceFromPreviousMeasurement}`);
+                        //console.log(`speed: ${currentSpeed}`)
+                        sendVehicleData();
+                    },
+                    err => {
+                        console.log(err)
+                    },
+                    {
+                        enableHighAccuracy: true
+                    }
+                )
+            }
+
+            // ----------------------------------- general functions -------------------------------------
+            function remapVector(vec, radians){
+                x = vec.x;
+                y = vec.y;
+                z = vec.z;
+                newY = y * Math.cos(radians) - z * Math.sin(radians);
+                newZ = z * Math.cos(radians) + y * Math.sin(radians)
+                return {x: x, y: newY, z: newZ};
+            }
+            function sendAccident(type){
+                fetch("/apps/navigation/sendData", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        type: type,
+                        location: {
+                            lat: lastPosition.latitude,
+                            lon: lastPosition.longitude,
+                        },
+                        username: window.sessionStorage.username,
+                    }),
+                    headers:{
+                        "Content-Type": "application/json"
+                    }
+                });
+            }
+            function firstNDigits(val, digits) {
+                const valString = val.toString();
+                let result = "";
+                let decimalPassed = false;
+                for (let i = 0; i < valString.length; i++) {
+                    if (valString[i] === ".") {
+                        result += ".";
+                        decimalPassed = true;
+                    } else if (i >= digits + decimalPassed) {
+                        if (decimalPassed) {
+                            return result;
+                        }
+                        result += "0";
+                    } else {
+                        result += valString[i];
+                    }
+                }
+                return result;
+            }
+            function digitAt(val, index) {
+                return Math.floor(
+                    (
+                    val / Math.pow(10, Math.floor(Math.log(Math.abs(val)) / Math.LN10)-index)
+                    )
+                    % 10
+                );
+            };
+            function getDistanceOnEarth(lat1,lon1,lat2,lon2) {
+                var R = 6371; // Radius of the earth in km
+                var dLat = deg2rad(lat2-lat1);  // deg2rad below
+                var dLon = deg2rad(lon2-lon1); 
+                var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon/2) * Math.sin(dLon/2); 
+                var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+                var d = R * c; // Distance in km
+                return d;
+            }
+            function getAngleFromDistanceOnEarth(latitude, distance){
+                //return distance / (Math.cos(deg2rad(latitude)) * 12742 * Math.PI / 360);
+                return (distance * 180) / (6371 * Math.cos(deg2rad(latitude)) * Math.PI);
+            }
+            // code for detecting surrounding dangers
+            const side = (origin, user_theta, w) => {
+                const x1 = origin[0] + w*Math.round(Math.cos(deg2rad(user_theta)));
+                const y1 = origin[1] + w*Math.round(Math.sin(deg2rad(user_theta)));
+                const x2 = origin[0] - w*Math.round(Math.cos(deg2rad(user_theta)));
+                const y2 = origin[1] - w*Math.round(Math.sin(deg2rad(user_theta)));
+                const origin_a1 = [x1,y1];
+                const origin_a2 = [x2,y2];
+                const origin_a = [origin_a1,origin_a2];
+                return origin_a;
+            }
+
+            const shift = (origin, user_theta, h) => {
+                const x1 = origin[0] + h*Math.round(Math.cos(deg2rad(90-user_theta)));
+                const y1 = origin[1] + h*Math.round(Math.sin(deg2rad(90-user_theta)));
+                const origin_a = [x1,y1];
+                return origin_a;
+            }
+
+            const extractLocations = (locations, points) => {
+                //return locations.filter(location => countIntersections([location.location.lat, location.location.lon], points))
+                dataToKeep = {}
+                for(let i = 0; i < locations.length; i++ ){
+                    lat = locations[i].location.lat;
+                    lon = locations[i].location.lon;
+                    if(countIntersections([lon, lat], points)){
+                        dataToKeep[i] = locations[i];
+                    }
+                }
+                console.log(Object.keys(dataToKeep).length);
+                return dataToKeep;
+            }
+
+            const countIntersections = (origin, points) => {
+                let count = 0;
+                for (let i = 0; i < 4; i++) {
+                    const pt1 = points[i];
+                    const pt2 = points[i - 1 < 0 ? points.length - 1 : i - 1];
+                    if (isIntersecting(origin, pt1, pt2)) {
+                        count += 1;
+                    }
+                }
+                return count % 2 === 1;
+            }
+
+            const isIntersecting = (origin, pt1, pt2) => {
+                const [x1, y1] = pt1;
+                const [x2, y2] = pt2;
+                const [x, y] = origin;
+                if (x1 - x2 === 0) {
+                    return (y1 < y && y < y2  ||  y2 < y && y < y1) && x < x1;
+                } else if (y1 - y2 === 0) {
+                    return false;
+                } else {
+                    const A = (y1 - y2) / (x1 - x2);
+                    const B = y1 - A * x1;
+                    const X = (y - B) / A;
+                    const isYInRange = y1 < y && y < y2  ||  y2 < y && y < y1;
+                    const isXInRange = (x1 < X && X < x2  ||  x2 < X && X < x1)  &&  x < X;
+                    return isXInRange && isYInRange;
+                }
+            }
+
+            /*
+            points1 = side(user_loc,user_theta,w)
+            points2 = shift(user_loc,user_theta,h)
+            points3 = side(points2,user_theta,w)
+            points =(points1[0],points1[1],points3[1],points3[0])
+            */
+
+            const calcBoundingBox = (userPosition, angle, w, h) => {
+                const points1 = side(userPosition, angle, w);
+                //console.log(points1);
+                const points2 = shift(userPosition, angle, h);
+                //console.log(points2);
+                const points3 = side(points2, angle, w);
+                //console.log(points3);
+                return [points1[0], points1[1], points3[1], points3[0]];
+            }
+
+            const findDangerLocationsWithinRange = (userPos, angle, w, h, dangerLocations) => {
+                userPos = [userPos.longitude, userPos.latitude];
+                const boundingBox = calcBoundingBox(userPos, angle, w, h);
+                return extractLocations(dangerLocations, boundingBox);
+            }
+
+            function checkIntersection(p, a, length_p, q, b, length_q) {
+                // Generate equations of the two lines: y = m1*x + c1 and y = m2*x + c2
+                var m1 = Math.tan(deg2rad(a));  // Slope of the line extending from point P in direction a
+                var c1 = p[1] - m1*p[0];  // y-intercept = y - m*x
+                var m2 = Math.tan(deg2rad(b));  // Slope of the line extending from point Q in direction b
+                var c2 = q[1] - m2*q[0];  // y-intercept = y - m*x
+
+                // If the lines aren't parallel, they intersect
+                if (m1 !== m2) {
+                    var x = (c2 - c1) / (m1 - m2);
+                    var y = m1 * x + c1;
+
+                    // Check if intersection point is in the correct direction from each line's start point
+                    var direction_p = Math.sqrt(Math.pow((x - p[0]), 2) + Math.pow((y - p[1]), 2));
+                    var direction_q = Math.sqrt(Math.pow((x - q[0]), 2) + Math.pow((y - q[1]), 2));
+
+                    // Check if intersection point is within the specified lengths from each line's start point
+                    if (direction_p <= length_p && direction_q <= length_q) {
+                        return { doesIntersect: true, pointOfIntersection: [x, y] };
+                    }
+                }
+                
+                return { doesIntersect: false, pointOfIntersection: null };
+            }
+
+            function deg2rad(deg) {
+                return deg * (Math.PI/180);
+            }
+            function rad2deg(rad) {
+                return rad * (180/Math.PI);
+            }
+            function getPos(){
+                return new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject, {enableHighAccuracy:true}));
+            }
+            function back(){
+                alert(`You've traveled for ${(totalDistanceTraveled/1000).toPrecision(3)}km`);
+                window.location.href = `/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;
+            }
+            function sleep(miliseconds) {
+                var currentTime = new Date().getTime();
+                while (currentTime + miliseconds >= new Date().getTime()) { }
+            }
+            setInterval(()=>{
+                fetch("/updateToken",{
+                    method: "POST",
+                    body: JSON.stringify({
+                        token: window.sessionStorage.token
+                    }),
+                    headers:{
+                        "Content-Type": "application/json"
+                    }
+                });
+            }, 20000);
+            fetch("/updateToken",{
+                method: "POST",
+                body: JSON.stringify({
+                    token: window.sessionStorage.token
+                }),
+                headers:{
+                    "Content-Type": "application/json"
+                }
+            });
+        </script>
+
+        <style>
+            body{
+                font-family: Arial;
+                height: 100vh;
+                background: rgb(0,156,161);
+                background: linear-gradient(90deg, rgba(0,156,161,1) 0%, rgba(22,147,94,1) 74%, rgba(23,176,72,1) 100%);
+            }
+            a{
+                color: dodgerblue;
+                text-decoration: none;
+            }
+            a:hover{
+                color: dodgerblue;
+                text-decoration: underline;
+            }
+            h1{
+                margin: 0px;
+                color: whitesmoke;
+            }
+            h3{
+                margin: 0;
+                margin-bottom: 10px;
+                color: gray;
+            }
+            h2{
+                color: rgb(215, 215, 215);
+            }
+            .bike{
+                background-color: aquamarine;
+                height:100px;
+                color:black;
+                font-size: 60px;
+            }
+            .bike:hover{
+                background-color: rgb(185, 255, 232);
+                border: thin solid rgb(4, 0, 255);
+            }
+            .calibrate-button{
+                background-color: aquamarine;
+                height:100px;
+                color:black;
+                font-size: 60px;
+            }
+            .calibrate-button:hover{
+                background-color: rgb(185, 255, 232);
+                border: thin solid rgb(4, 0, 255);
+            }
+            .calibrate-button:disabled{
+                background-color: gray;
+            }
+            .car{
+                background-color: aquamarine;
+                height:100px;
+                color:black;
+                font-size: 60px;
+            }
+            .car:hover{
+                background-color: rgb(185, 255, 232);
+                border: thin solid rgb(4, 0, 255)
+            }
+            .allow-button{
+                background-color: aquamarine;
+                height: 100px;
+                width: 250px;
+                color:black;
+                font-size: 60px;
+            }
+            .allow-button:hover{
+                background-color: rgb(185, 255, 232);
+                border: thin solid rgb(4, 0, 255)
+            }
+            .bubble-container {
+                margin: 0;
+                padding: 20px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                -ms-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+                background-color: rgb(22, 22, 22);
+                border-radius: 10px;
+                text-align: center;
+                width: 350px;
+            }
+            .main-container{
+                text-align: center;
+            }
+            .textField{
+                margin-bottom: 10px;
+                border-radius: 20px;
+                width: 230px;
+                height: 30px;
+                background-color: black;
+                border-color: gray;
+                border: thin solid gray;
+                color: white;
+                text-align: center;
+                transition: border 0.25s;
+                transition: width, 0.25s;
+            }
+            .textField:focus{
+                width: 270px;
+                border: thin solid greenyellow;
+            }
+            .textField::-webkit-outer-spin-button, .textField::-webkit-inner-spin-button{
+                -webkit-appearance: none;
+            }
+            .textField[type=number]{
+                -moz-appearance: textfield;
+            }
+            .done-button{
+                margin-top: 100px;
+                bottom: 200px;
+                background-color: #f9c452;
+                color: white;
+                border: thin solid gray;
+                border-radius: 15px;
+                transition: border 0.125s;
+                transition: background-color 0.1s;
+                width: 300px;
+                height: 100px;
+                margin-bottom: 10px;
+                margin-top: 10px;
+            }
+            .done-button:hover{
+                border: thin solid #a98537;
+                background: #e4b34a;
+            }
+            button{
+                background-color:skyblue;
+                color: white;
+                border: thin solid gray;
+                border-radius: 15px;
+                transition: border 0.125s;
+                transition: background-color 0.1s;
+                width: 300px;
+                height: 50px;
+                margin-bottom: 10px;
+                margin-top: 10px;
+            }
+            button:disabled{
+                background-color: gray;
+            }
+            /*button:hover:not([disabled]){
+                border: thin solid rgb(255, 34, 34);
+            }
+            button:active:not([disabled]){
+                background-color: rgb(255, 96, 96);
+            }*/
+            textarea:focus, input:focus{
+                outline: none;
+            }
+            .field{
+                margin: 20px;
+                color: rgb(176, 176, 176);
+            }
+            .field h4{
+                margin: 0px;
+            }
+            .errMsg{
+                color: red;
+            }
+            .signal-bar{
+                background-color: white; 
+                width:10px; 
+                margin-left: 5px;
+            }
+            .alert-container{
+                position: absolute;
+                height: 100vh;
+                width: 90vw;
+                left: 5%;
+                top: 0;
+            }
+            .alert-window{
+                position: relative;
+                width: 80vw;
+                height: 80vh;
+                background-color: yellow;
+                border-radius: 20px;
+                opacity: 95%;
+                overflow: hidden;
+                text-align: center;
+                top: 20%;
+                left: 50%;
+                -ms-transform: translate(-50%, -20%);
+                transform: translate(-50%, -20%);
+            }
+            .link_toma-ru{
+                color: black;
+                background-color: white;
+                width: auto;
+                
+            }
+            .link_toma-ru_container{
+                position: absolute;
+                top: 100%;
+                right: 0%;
+            }
+        </style>
+    </body>
+</html>
