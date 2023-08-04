@@ -17,6 +17,33 @@ const upload = multer({storage: storage})
 
 app.use(express.json());
 
+app.get("/apps/navigation-tomaruKun", (req, resp) => {
+  const activeTokens = JSON.parse(readFileSync("./jsons/activeTokens.json", {encoding: "utf-8"}));
+  if(!(req.query.token in activeTokens)){
+    resp.redirect("/login");
+    console.log("token doesn't exist")
+    return;
+  }
+  if(activeTokens[req.query.token]["due"] <= Date.now()){
+    delete activeTokens[req.query.token];3
+    writeFileSync("./jsons/activeTokens.json", JSON.stringify(activeTokens));
+    resp.redirect("/login");
+    console.log("token expired");  
+    return;
+  }
+  const lang = req.query["lang"];
+  resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  resp.setHeader("Pragma", "no-cache");
+  resp.setHeader("Expires", "0");
+  if(lang == "en"){
+    resp.status(200).send(readFileSync("./htmls-en/apps/navigation-tomaruKun.html", {encoding : "utf-8"}));
+  }else if(lang == "ja"){
+    resp.status(200).send(readFileSync("./htmls/apps/navigation-tomaruKun.html", {encoding : "utf-8"}));
+  }else{
+    resp.status(200).send(readFileSync("./htmls-en/apps/navigation-tomaruKun.html", {encoding : "utf-8"}));
+  }
+});
+
 //----------------------------- unlinked -----------------------------
 app.post("/tomaru-kun/unlinked/register", (req, resp) => {
   name = req.body.name;

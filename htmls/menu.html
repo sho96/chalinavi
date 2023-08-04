@@ -570,6 +570,8 @@
                 headers:{
                     "Content-Type": "application/json"
                 }
+            }).then(resp => {
+                window.location.href = `/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;
             });
         }
 
