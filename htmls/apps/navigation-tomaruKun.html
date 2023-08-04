@@ -15,7 +15,7 @@
 
             
             <button class="registered_toma-ru" onclick="" hidden>---</button><br>
-            <button class="new_toma-ru" onclick="link_tomaru_new()">+新しく連携する</button><br>
+            <button class="new_toma-ru" onclick="link_tomaru_new()">＋新しく連携する</button><br>
             
             <br>
             <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">メニューに戻る</a>
@@ -41,7 +41,7 @@
             <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">メニューに戻る</a>
 
         </div>
-        <div class="wait_verify bubble-container">
+        <div class="wait_verify bubble-container" hidden>
             <h1>認証を待っています...</h1>
             <h2 style="color: rgb(202, 201, 201);">トマール君に表示されているコードが下記のコードかを確かめてください：</h2>
             <h2 style="color: rgb(202, 201, 201); text-decoration: underline;" class="tokenCode">____________________</h2>
@@ -119,7 +119,7 @@
                 </div>
             </div>
         </div>
-        <div class="link_toma-ru_container">
+        <div class="unlink_toma-ru_container">
             <button onclick="window.location.href=`/apps/navigation?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`"  class="link_toma-ru">トマールくんと連携解除</button>
         </div>
         <script>
@@ -488,14 +488,14 @@
                 document.querySelector(".toma-ru_link").hidden = true;
                 document.querySelector(".link").hidden = false;
             }
-            function submitTomaruData(){
+            async function submitTomaruData(){
                 tomaruName = document.querySelector(".toma-ru_nameField").value;
                 password = document.querySelector(".toma-ru_passwordField").value;
                 fetch("/tomaru-kun/unlinked/login",{
                     method:"POST",
                     body: JSON.stringify({
                         name: tomaruName,
-                        password: digestMessage(password),
+                        password: await digestMessage(password),
                         token: window.sessionStorage.token,
                     }),
                     headers: {
@@ -1088,10 +1088,10 @@
                 width: auto;
                 
             }
-            .link_toma-ru_container{
+            .unlink_toma-ru_container{
                 position: absolute;
-                top: 80%;
-                right: 0%;
+                bottom: 10%;
+                right: 1%;
             }
             input{
                 margin-bottom: 10px;
