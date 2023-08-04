@@ -508,23 +508,26 @@
                         document.querySelector(".tokenCode").innerHTML = window.sessionStorage.token;
                         document.querySelector(".link").hidden = true;
                         document.querySelector(".wait_verify").hidden = false;
+                        waitForVerification();
                     }else{
                         document.querySelector(".errMsg").innerHTML = "*トマール君名とパスワードが合いません";
                     }
                 });
             }
             function waitForVerification(){
-                setInterval(
+                const waitForVerificationLoop = setInterval(
                     async () => {
                         result = await (await fetch(`/tomaru-kun/unlinked/getMessage?name=${tomaruName}&type=status`)).json()
                         console.log(result);
                         if (result["message"] == "verified"){
                             document.querySelector(".wait_verify").hidden = true;
                             document.querySelector(".survey-container").hidden = false;
+                            clearInterval(waitForVerificationLoop);
                         }else if(result["message"] == "denied"){
                             alert("認証が拒否されました");
                             document.querySelector(".wait_verify").hidden = true;
                             document.querySelector(".link").hidden = false;
+                            clearInterval(waitForVerificationLoop);
                         }
                     }
                 , 2000)
