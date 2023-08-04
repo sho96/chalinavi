@@ -517,10 +517,10 @@
                 setInterval(
                     async () => {
                         result = await (await fetch(`/tomaru-kun/unlinked/getMessage?name=${tomaruName}&type=status`)).json()
-                        if (result["status"] == "success"){
+                        if (result["message"] == "verified"){
                             document.querySelector(".wait_verify").hidden = true;
                             document.querySelector(".survey-container").hidden = false;
-                        }else if(result["status"] == "denied"){
+                        }else if(result["message"] == "denied"){
                             alert("認証が拒否されました");
                             document.querySelector(".wait_verify").hidden = true;
                             document.querySelector(".link").hidden = false;
