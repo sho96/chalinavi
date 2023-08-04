@@ -73,6 +73,7 @@ app.post("/tomaru-kun/unlinked/login", (req, resp) => {
   }
   //login accepted
   queue[name].com["token"] = token;
+  writeFileSync("./jsons/tomaruQueue.json", JSON.stringify(queue));
   resp.setHeader("Content-Type", "application/json");
   resp.end(JSON.stringify({"status": "success"}));
 });
