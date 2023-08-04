@@ -10,6 +10,42 @@
         <script>eruda.init();</script>
     </head>
     <body style="">
+        <div class="toma-ru_link bubble-container" hidden>
+            <h1>トマールくんと連携しましょう！</h1>
+
+            
+            <button class="registered_toma-ru" onclick="" hidden>---</button><br>
+            <button class="new_toma-ru" onclick="link_tomaru_new()">+新しく連携する</button><br>
+            
+            <br>
+            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">メニューに戻る</a>
+
+        </div>
+        <div class="link bubble-container" hidden>
+            <h1>連携を始める</h1>
+            <h3>ユーザー名とパスワードを入力してください</h3>
+            <form id="login-form">
+                <div class="fields">
+                    <div class="field">
+                        <h3>トマールくん名</h3>
+                        <input type="text" placeholder="トマールくん名..." class="toma-ru_nameField">
+                    </div>
+                    <div class="field">
+                        <h3>パスワード</h3>
+                        <input type="password" placeholder="パスワード..." class="toma-ru_passwordField">
+                    </div>
+                </div>
+            </form>
+            <p class="errMsg"></p>
+            <button onclick="submitTomaruData();"class="submit">連携</button><br>
+            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">メニューに戻る</a>
+
+        </div>
+        <div class="wait_verify bubble-container">
+            <h1>認証を待っています...</h1>
+            <h2 style="color: rgb(202, 201, 201);">トマール君に表示されているコードが下記のコードかを確かめてください：</h2>
+            <h2 style="color: rgb(202, 201, 201); text-decoration: underline;" class="tokenCode">____________________</h2>
+        </div>
         <div class="orientation-lock-warning-container bubble-container" hidden>
             <h1>画面の向きがロックされているようです</h1>
             <h3>画面のロックを解除してください</h3>
@@ -84,7 +120,7 @@
             </div>
         </div>
         <div class="link_toma-ru_container">
-            <button class="link_toma-ru">トマールくんと連携</button>
+            <button onclick="window.location.href=`/apps/navigation?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`"  class="link_toma-ru">トマールくんと連携解除</button>
         </div>
         <script>
             const speedometer = document.querySelector(".speedometer");
@@ -123,6 +159,8 @@
             let accelerationDurationType = "none";
             let accelerationDurationStart = 0;
             let accelerationDurationThreshold = 0;
+
+            let tomaruName;
 
             const distanceSounds = {
                 10: new Audio("/sounds/ja/10m.mp3"),
@@ -435,15 +473,61 @@
                     const waitForOrientationCorrection = setInterval(() => {
                         if(window.screen.width < window.screen.height){
                             document.querySelector(".orientation-warning-container").hidden = true;
-                            document.querySelector(".survey-container").hidden = false;
+                            //document.querySelector(".survey-container").hidden = false;
+                            //toma-ru_link
+                            document.querySelector(".toma-ru_link").hidden = false;
                             clearInterval(waitForOrientationCorrection);
                         }
                     });
                 }else{
-                    document.querySelector(".survey-container").hidden = false;
+                    //document.querySelector(".survey-container").hidden = false;
+                    document.querySelector(".toma-ru_link").hidden = false;
                 }
             }
-
+            function link_tomaru_new(){
+                document.querySelector(".toma-ru_link").hidden = true;
+                document.querySelector(".link").hidden = false;
+            }
+            function submitTomaruData(){
+                tomaruName = document.querySelector(".toma-ru_nameField").value;
+                password = document.querySelector(".toma-ru_passwordField").value;
+                fetch("/tomaru-kun/unlinked/login",{
+                    method:"POST",
+                    body: JSON.stringify({
+                        name: tomaruName,
+                        password: digestMessage(password),
+                        token: window.sessionStorage.token,
+                    }),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                }).then(resp => resp.json())
+                .then(resp => {
+                    status = resp.status;
+                    if (status == "success"){
+                        document.querySelector(".tokenCode").innerHTML = window.sessionStorage.token;
+                        document.querySelector(".link").hidden = true;
+                        document.querySelector(".wait_verify").hidden = false;
+                    }else{
+                        document.querySelector(".errMsg").innerHTML = "*トマール君名とパスワードが合いません";
+                    }
+                });
+            }
+            function waitForVerification(){
+                setInterval(
+                    async () => {
+                        result = await (await fetch(`/tomaru-kun/unlinked/getMessage?name=${tomaruName}&type=status`)).json()
+                        if (result["status"] == "success"){
+                            document.querySelector(".wait_verify").hidden = true;
+                            document.querySelector(".survey-container").hidden = false;
+                        }else if(result["status"] == "denied"){
+                            alert("認証が拒否されました");
+                            document.querySelector(".wait_verify").hidden = true;
+                            document.querySelector(".link").hidden = false;
+                        }
+                    }
+                , 2000)
+            }
             function selectVehicle(vehicle){
                 askSensorPermission();
                 selectedVehicle = vehicle;
@@ -779,6 +863,15 @@
                 var currentTime = new Date().getTime();
                 while (currentTime + miliseconds >= new Date().getTime()) { }
             }
+            async function digestMessage(message) {
+                const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array
+                const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8); // hash the message
+                const hashArray = Array.from(new Uint8Array(hashBuffer)); // convert buffer to byte array
+                const hashHex = hashArray
+                  .map((b) => b.toString(16).padStart(2, "0"))
+                  .join(""); // convert bytes to hex string
+                return hashHex;
+            }
             setInterval(()=>{
                 fetch("/updateToken",{
                     method: "POST",
@@ -997,8 +1090,31 @@
             }
             .link_toma-ru_container{
                 position: absolute;
-                top: 100%;
+                top: 80%;
                 right: 0%;
+            }
+            input{
+                margin-bottom: 10px;
+                border-radius: 20px;
+                width: 230px;
+                height: 30px;
+                background-color: black;
+                border-color: gray;
+                border: thin solid gray;
+                color: white;
+                text-align: center;
+                transition: border 0.25s;
+                transition: width, 0.25s;
+            }
+            input:focus{
+                width: 270px;
+                border: thin solid greenyellow;
+            }
+            input::-webkit-outer-spin-button, input::-webkit-inner-spin-button{
+                -webkit-appearance: none;
+            }
+            input[type=number]{
+                -moz-appearance: textfield;
             }
         </style>
     </body>

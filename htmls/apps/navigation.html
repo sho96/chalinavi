@@ -29,13 +29,16 @@
 
             <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">メニューに戻る</a>
         </div>
-        <div class="survey-container bubble-container" hidden>
+        <div class="survey-container bubble-container">
             <h1>車両を選んでください</h1>
             <h3>何に乗っているかを選んでください</h3>
             
             <button class="bike" onclick="selectVehicle('bike')">自転車</button><br>
             <button class="car" onclick="selectVehicle('car')">車</button><br>
             
+            <button class="tomaru-link-button" onclick="window.location.href=`/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`">
+                トマールくんと連携
+            </button>
             <br>
             <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">メニューに戻る</a>
         </div>
@@ -985,6 +988,11 @@
                 left: 50%;
                 -ms-transform: translate(-50%, -20%);
                 transform: translate(-50%, -20%);
+            }
+            .tomaru-link-button{
+                background-color: white;
+                color: black;
+                width: 50%
             }
         </style>
     </body>

@@ -36,6 +36,9 @@
             <button class="bike" onclick="selectVehicle('bike')">Bike</button><br>
             <button class="car" onclick="selectVehicle('car')">Car</button><br>
             
+            <button class="tomaru-link-button" onclick="window.location.href=`/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`">
+                Link with Tomaru Kun
+            </button>
             <br>
             <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">Back to Menu</a>
         </div>
@@ -985,6 +988,11 @@
                 left: 50%;
                 -ms-transform: translate(-50%, -20%);
                 transform: translate(-50%, -20%);
+            }
+            .tomaru-link-button{
+                background-color: white;
+                color: black;
+                width: 50%
             }
         </style>
     </body>

@@ -1,96 +1,159 @@
 const { readFile, readFileSync, writeFile, writeFileSync} = require("fs");
 var nodemailer = require('nodemailer');
+var multer = require("multer");
 var express = require('express');
 var app = express();
 
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./imgs/apps/hazardMap/")
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  }
+})
+
+const upload = multer({storage: storage})
+
 app.use(express.json());
 
-app.get("/tomaru-kun/register", (req, resp) => {
-    const queue = JSON.parse(readFileSync("./jsons/tomaruQueue.json"));
-    code = 
+//----------------------------- unlinked -----------------------------
+app.post("/tomaru-kun/unlinked/register", (req, resp) => {
+  name = req.body.name;
+  password = req.body.password;
+  console.log(name);
+  console.log(password);
+  const queue = JSON.parse(readFileSync("./jsons/tomaruQueue.json", {encoding: "utf-8"}));
+  queue[name] = {password: password, time: Date.now(), com: {}};
+  writeFileSync("./jsons/tomaruQueue.json", JSON.stringify(queue));
+  resp.status(200).send();
+});
+app.post("/tomaru-kun/unlinked/login", (req, resp) => {
+  name = req.body.name;
+  password = req.body.password;
+  token = req.body.token;
+  const queue = JSON.parse(readFileSync("./jsons/tomaruQueue.json", {encoding: "utf-8"}));
+  //login failed guard clauses
+  if(!queue.hasOwnProperty(name)){
+    resp.setHeader("Content-Type", "application/json");
+    resp.end(JSON.stringify({"status": "failed"}));
+    return;
+  }
+  if(queue[name].password != password){
+    resp.setHeader("Content-Type", "application/json");
+    resp.end(JSON.stringify({"status": "failed"}));
+    return;
+  }
+  //login accepted
+  queue[name].com["token"] = token;
+  resp.setHeader("Content-Type", "application/json");
+  resp.end(JSON.stringify({"status": "success"}));
+});
+app.get("/tomaru-kun/unlinked/getMessage", (req, resp) => {
+  name = req.query.name;
+  type = req.query.type;
+  const queue = JSON.parse(readFileSync("./jsons/tomaruQueue.json", {encoding: "utf-8"}));
+  msg = queue[name].com[type];
+  delete queue[name].com[type];
+  writeFileSync("./jsons/tomaruQueue.json", JSON.stringify(queue));
+  //console.log(msg);
+  resp.setHeader("Content-Type", "application/json");
+  if(msg == null){
+    resp.end(JSON.stringify({message: ""}));
+    return;
+  }
+  resp.end(JSON.stringify({message: msg}));
+});
+app.post("/tomaru-kun/unlinked/setMessage", (req, resp) => {
+  content = req.body.message;
+  name = req.body.name;
+  const queue = JSON.parse(readFileSync("./jsons/tomaruQueue.json", {encoding: "utf-8"}));
+  queue[name].com = {
+    ...queue[name].com,
+    ...content
+  }
+  writeFileSync("./jsons/tomaruQueue.json", JSON.stringify(queue));
+  resp.status(200).send();
+});
+app.post("/tomaru-kun/unlinked/updateTimestamp", (req, resp) => {
+  name = req.body.name;
+  const queue = JSON.parse(readFileSync("./jsons/tomaruQueue.json", {encoding: "utf-8"}));
+  queue[name].time = Date.now();
+  names = Object.keys(queue);
+  chosen = names[getRandomInt(names.length)];
+  if(queue[chosen].time < Date.now() - 60000){
+    delete queue[chosen];
+  }
+  writeFileSync("./jsons/tomaruQueue.json", JSON.stringify(queue));
+  resp.status(200).send();
+});
+
+//----------------------------- linked -----------------------------
+app.get("/tomaru-kun/linked/getCommand", (req, resp) => {
+  name = req.query.name;
+  const data = JSON.parse(readFileSync("./jsons/tomaruLink.json", {encoding: "utf-8"}))
+  if (!data.hasOwnProperty(name)){
+    resp.setHeader("Content-Type", "application/json");
+    resp.end("[]");
+    return;
+  }
+  cmds = data[name].cmd
+  data[name].cmd = []
+  writeFileSync("./jsons/tomaruLink.json", JSON.stringify(data));
+  resp.setHeader("Content-Type", "application/json");
+  resp.end(JSON.stringify(cmds));
+});
+app.post("/tomaru-kun/linked/setCommand", (req, resp) => {
+  name = req.body.name;
+  cmd = req.body.cmd;
+  const data = JSON.parse(readFileSync("./jsons/tomaruLink.json", {encoding: "utf-8"}));
+  data[name].cmd[data[name].cmd.length] = cmd;
+  writeFileSync("./jsons/tomaruLink.json", JSON.stringify(data));
+  resp.status(200).send()
+});
+app.post("/tomaru-kun/linked/disconnect", (req, resp) => {
+  name = req.body.name;
+  password = req.body.password;
+  const data = JSON.parse(readFileSync("./jsons/tomaruLink.json", {encoding: "utf-8"}));
+  delete data[name];
+  writeFileSync("./jsons/tomaruLink.json", JSON.stringify(data));
+  const queue = JSON.parse(readFileSync("./jsons/tomaruQueue.json", {encoding: "utf-8"}));
+  queue[name] = {password: password, time: Date.now(), com: {}};
+  writeFileSync("./jsons/tomaruQueue.json", JSON.stringify(queue));
+  resp.status(200).send()
+});
+app.post("/tomaru-kun/linked/sendPic", upload.single("file"), (req, resp) => {
+  console.log(req.file.originalname);
+  resp.send()
+});
+app.post("/tomaru-kun/linked/updateTimestamp", (req, resp) => {
+  name = req.body.name;
+  const data = JSON.parse(readFileSync("./jsons/tomaruLink.json", {encoding: "utf-8"}));
+  data[name].time = Date.now();
+  names = Object.keys(data);
+  chosen = names[getRandomInt(names.length)];
+  if(data[chosen].time < Date.now() - 60000){
+    delete data[chosen];
+  }
+  writeFileSync("./jsons/tomaruLink.json", JSON.stringify(data));
+  resp.status(200).send();
 });
 
 function getDistanceOnEarth(lat1,lon1,lat2,lon2) {
-    var R = 6371; // Radius of the earth in km
-    var dLat = deg2rad(lat2-lat1);  // deg2rad below
-    var dLon = deg2rad(lon2-lon1); 
-    var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon/2) * Math.sin(dLon/2); 
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-    var d = R * c; // Distance in km
-    return d;
-  }
-  function deg2rad(deg) {
-    return deg * (Math.PI/180);
-  }
-  
-  function deleteOldTokens(){
-    tokens = JSON.parse(readFileSync("./jsons/activeTokens.json", {encoding: "utf-8"}));
-    updated = {};
-    for(token in tokens){
-      if(tokens[token]["due"] >= Date.now()){
-        updated[token] = {due: tokens[token]["due"]};
-      }
-    }
-    writeFileSync("./jsons/activeTokens.json", JSON.stringify(updated));
-  }
-  
-  function getRandomInt(max) {
-      return Math.floor(Math.random() * max);
-  }
-  
-  function sendCode(toEmailAddress, username, verificationCode, message) {
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: 'chalinavimailer@gmail.com',
-        pass: 'pqntqgngxjteqber'
-      }
-    });
-  
-    const mailOptions = {
-      from: 'chalinavimailer@gmail.com',
-      to: toEmailAddress,
-      subject: `Email verification for ${username}`,
-      text: `${message}\nHere's the verification code: ${verificationCode}`
-    };
-  
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.error(error);
-      } else {
-        console.log('Email sent: ' + info.response);
-      }
-    });
-  }
-  
-  function sendEmail(toEmailAddress, subject, content){
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: 'chalinavimailer@gmail.com',
-        pass: 'pqntqgngxjteqber'
-      }
-    });
-  
-    const mailOptions = {
-      from: 'chalinavimailer@gmail.com',
-      to: toEmailAddress,
-      subject: subject,
-      text: content,
-    };
-  
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.error(error);
-      } else {
-        console.log('Email sent: ' + info.response);
-      }
-    });
-  }
-  function sendEmailMultiple(toEmailAddresses, subject, content){
-    for(const addr in toEmailAddresses){
-      sendEmail(toEmailAddresses[addr], subject, content);
-    }
-  }
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(lat2-lat1);  // deg2rad below
+  var dLon = deg2rad(lon2-lon1); 
+  var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon/2) * Math.sin(dLon/2); 
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+  var d = R * c; // Distance in km
+  return d;
+}
+function deg2rad(deg) {
+  return deg * (Math.PI/180);
+}
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
 
 module.exports = app;

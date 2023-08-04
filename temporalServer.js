@@ -18,11 +18,19 @@ console.log("express loaded");
 
 //base
 app.get("/", (req, resp) => {
-    resp.status(200).send(readFileSync("./htmls/navigation-tomaruKun.html", {encoding: "utf-8"}));
+    resp.status(200).send(readFileSync("./htmls/apps/navigation-tomaruKun.html", {encoding: "utf-8"}));
 });
 
 app.get("/imgs/menu/x.png", (req, resp) => {
     resp.status(200).send(readFileSync("./imgs/menu/x.png"));
+});
+
+app.post('/upload', (req, res) => {
+    // Log the files to the console
+    console.log(req.files);
+
+    // All good
+    res.sendStatus(200);
 });
 
 /*
@@ -30,5 +38,5 @@ var httpsServer = https.createServer(credentials, app);
 httpsServer.listen(32415);
 console.log("https listening");*/
 var httpServer = http.createServer(app);
-httpServer.listen(32415);
+httpServer.listen(15243);
 console.log("http listening");
