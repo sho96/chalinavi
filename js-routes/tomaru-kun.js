@@ -103,6 +103,17 @@ app.post("/tomaru-kun/unlinked/setMessage", (req, resp) => {
   writeFileSync("./jsons/tomaruQueue.json", JSON.stringify(queue));
   resp.status(200).send();
 });
+app.post("/tomaru-kun/unlinked/link", (req, resp) => {
+  name = req.body.name;
+  const queue = JSON.parse(readFileSync("./jsons/tomaruQueue.json", {encoding: "utf-8"}));
+  delete queue[name];
+  writeFileSync("./jsons/tomaruQueue.json", JSON.stringify(queue));
+  const data = JSON.parse(readFileSync("./jsons/tomaruLink.json", {encoding: "utf-8"}));
+  data[name].cmd = [];
+  data[name].time = Date.now();
+  writeFileSync("./jsons/tomaruLink.json", JSON.stringify(data));
+  resp.status(200).send();
+});
 app.post("/tomaru-kun/unlinked/updateTimestamp", (req, resp) => {
   name = req.body.name;
   const queue = JSON.parse(readFileSync("./jsons/tomaruQueue.json", {encoding: "utf-8"}));
