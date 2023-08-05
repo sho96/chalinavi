@@ -711,16 +711,7 @@
 
             // ----------------------------------- general functions -------------------------------------
             function disconnect(){
-                fetch("/tomaru-kun/linked/setCommand", {
-                    method:"POST",
-                    body: JSON.stringify({
-                        name: tomaruName,
-                        password: tomaruPassword
-                    }),
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                })
+                sendCommand("disconnect");
             }
             function sendCommand(command){
                 fetch("/tomaru-kun/linked/setCommand",{

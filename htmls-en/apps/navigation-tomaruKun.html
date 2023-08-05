@@ -723,16 +723,7 @@
                 })
             }
             function sendCommand(command){
-                fetch("/tomaru-kun/linked/setCommand",{
-                    method: "POST",
-                    body: JSON.stringify({
-                        name:  tomaruName,
-                        cmd: command,
-                    }),
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                })
+                sendCommand("disconnect");
             }
             function remapVector(vec, radians){
                 x = vec.x;
