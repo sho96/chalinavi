@@ -24,7 +24,7 @@
         <div class="link bubble-container" hidden>
             <h1>連携を始める</h1>
             <h3>ユーザー名とパスワードを入力してください</h3>
-            <form id="login-form">
+            <form id="tomaru-form">
                 <div class="fields">
                     <div class="field">
                         <h3>トマールくん名</h3>
@@ -510,7 +510,7 @@
                         document.querySelector(".wait_verify").hidden = false;
                         waitForVerification();
                     }else{
-                        document.querySelector(".errMsg").innerHTML = "*トマール君名とパスワードが合いません";
+                        document.querySelector(".errMsg").innerHTML = "*トマール君名とパスワードが合いません<br>トマール君が起動していることを確認してください";
                     }
                 });
             }
@@ -524,7 +524,7 @@
                             document.querySelector(".survey-container").hidden = false;
                             clearInterval(waitForVerificationLoop);
                         }else if(result["message"] == "denied"){
-                            alert("認証が拒否されました");
+                            alert("接続が拒否されました");
                             document.querySelector(".wait_verify").hidden = true;
                             document.querySelector(".link").hidden = false;
                             clearInterval(waitForVerificationLoop);
@@ -675,6 +675,18 @@
             }
 
             // ----------------------------------- general functions -------------------------------------
+            function sendCommand(command){
+                fetch("/tomaru-kun/linked/setCommand",{
+                    method: "POST",
+                    body: JSON.stringify({
+                        name:  tomaruName,
+                        cmd: command,
+                    }),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+            }
             function remapVector(vec, radians){
                 x = vec.x;
                 y = vec.y;

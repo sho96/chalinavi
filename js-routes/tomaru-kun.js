@@ -152,7 +152,7 @@ app.post("/tomaru-kun/linked/disconnect", (req, resp) => {
 });
 app.post("/tomaru-kun/linked/sendPic", upload.single("file"), (req, resp) => {
   console.log(req.file.originalname);
-  resp.send()
+  resp.send();
 });
 app.post("/tomaru-kun/linked/updateTimestamp", (req, resp) => {
   name = req.body.name;
@@ -166,7 +166,6 @@ app.post("/tomaru-kun/linked/updateTimestamp", (req, resp) => {
   writeFileSync("./jsons/tomaruLink.json", JSON.stringify(data));
   resp.status(200).send();
 });
-
 function getDistanceOnEarth(lat1,lon1,lat2,lon2) {
   var R = 6371; // Radius of the earth in km
   var dLat = deg2rad(lat2-lat1);  // deg2rad below
