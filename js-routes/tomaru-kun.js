@@ -109,8 +109,7 @@ app.post("/tomaru-kun/unlinked/link", (req, resp) => {
   delete queue[name];
   writeFileSync("./jsons/tomaruQueue.json", JSON.stringify(queue));
   const data = JSON.parse(readFileSync("./jsons/tomaruLink.json", {encoding: "utf-8"}));
-  data[name].cmd = [];
-  data[name].time = Date.now();
+  data[name] = {cmd: [], time: Date.now()};
   writeFileSync("./jsons/tomaruLink.json", JSON.stringify(data));
   resp.status(200).send();
 });
