@@ -38,5 +38,8 @@ var httpsServer = https.createServer(credentials, app);
 httpsServer.listen(32415);
 console.log("https listening");*/
 var httpServer = http.createServer(app);
-httpServer.listen(15243);
-console.log("http listening");
+
+let port = process.env.PORT || 15243;
+httpServer.listen(port, () => {
+  console.log(`server listening on port ${port}`);
+});

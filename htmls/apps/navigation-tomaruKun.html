@@ -523,6 +523,18 @@
                             document.querySelector(".wait_verify").hidden = true;
                             document.querySelector(".survey-container").hidden = false;
                             clearInterval(waitForVerificationLoop);
+                            setInterval(() => {
+                                fetch("/tomaru-kun/linked/setCommand", {
+                                    method: "POST",
+                                    body:JSON.stringify({
+                                        name: tomaruName,
+                                        cmd: "updateClientTimestamp"
+                                    }),
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    }
+                                })
+                            }, 10000);
                         }else if(result["message"] == "denied"){
                             alert("接続が拒否されました");
                             document.querySelector(".wait_verify").hidden = true;
