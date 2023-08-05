@@ -51,6 +51,9 @@
             <h3>画面のロックを解除してください</h3>
 
             <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">メニューに戻る</a>
+            <div class="unlink_toma-ru_container">
+                <button onclick="disconnect();window.location.href=`/apps/navigation?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`"  class="link_toma-ru">トマールくんと連携解除</button>
+            </div>
         </div>
         <div class="permission-container bubble-container" hidden>
             <h1>加速度センサーの利用を許可してください</h1>
@@ -58,12 +61,18 @@
             <button class="allow-button" onclick="requestPermission()">許可する</button>
             <br>
             <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">メニューに戻る</a>
+            <div class="unlink_toma-ru_container">
+                <button onclick="disconnect();window.location.href=`/apps/navigation?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`"  class="link_toma-ru">トマールくんと連携解除</button>
+            </div>
         </div>
         <div class="orientation-warning-container bubble-container" hidden>
             <h1>画面の向きが違うようです</h1>
             <h3>画面を縦にしてください</h3>
 
             <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">メニューに戻る</a>
+            <div class="unlink_toma-ru_container">
+                <button onclick="disconnect();window.location.href=`/apps/navigation?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`"  class="link_toma-ru">トマールくんと連携解除</button>
+            </div>
         </div>
         <div class="survey-container bubble-container" hidden>
             <h1>車両を選んでください</h1>
@@ -74,6 +83,9 @@
             
             <br>
             <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">メニューに戻る</a>
+            <div class="unlink_toma-ru_container">
+                <button onclick="disconnect();window.location.href=`/apps/navigation?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`"  class="link_toma-ru">トマールくんと連携解除</button>
+            </div>
         </div>
         <div class="calibration-container bubble-container" hidden>
             <h1>センサーを補正</h1>
@@ -84,6 +96,9 @@
             
             <br>
             <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">メニューに戻る</a>
+            <div class="unlink_toma-ru_container">
+                <button onclick="disconnect();window.location.href=`/apps/navigation?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`"  class="link_toma-ru">トマールくんと連携解除</button>
+            </div>
         </div>
         <div class="main-container" hidden>
             <div class="signal-meter" style="position: absolute; right: 20px; top: 10px;">
@@ -118,9 +133,6 @@
                     <h1 class="alert-message" style="color: black; font-size: 4rem; margin-left: 15px; margin-right: 15px;"></h1>
                 </div>
             </div>
-        </div>
-        <div class="unlink_toma-ru_container">
-            <button onclick="window.location.href=`/apps/navigation?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`"  class="link_toma-ru">トマールくんと連携解除</button>
         </div>
         <script>
             const speedometer = document.querySelector(".speedometer");
@@ -161,6 +173,7 @@
             let accelerationDurationThreshold = 0;
 
             let tomaruName;
+            let tomaruPassword;
 
             const distanceSounds = {
                 10: new Audio("/sounds/ja/10m.mp3"),
@@ -451,6 +464,7 @@
                 if(!confirm(`走行距離： ${parseFloat(parseFloat((totalDistanceTraveled / 1000).toFixed(2)).toPrecision(3))} km`)){
                     return;
                 }
+                disconnect()
                 fetch("/apps/navigation/sendSummary", {
                     method: "POST",
                     body: JSON.stringify({
@@ -490,12 +504,12 @@
             }
             async function submitTomaruData(){
                 tomaruName = document.querySelector(".toma-ru_nameField").value;
-                password = document.querySelector(".toma-ru_passwordField").value;
+                tomaruPassword = await digestMessage(document.querySelector(".toma-ru_passwordField").value);
                 fetch("/tomaru-kun/unlinked/login",{
                     method:"POST",
                     body: JSON.stringify({
                         name: tomaruName,
-                        password: await digestMessage(password),
+                        password: tomaruPassword,
                         token: window.sessionStorage.token,
                     }),
                     headers: {
@@ -696,6 +710,18 @@
             }
 
             // ----------------------------------- general functions -------------------------------------
+            function disconnect(){
+                fetch("/tomaru-kun/linked/setCommand", {
+                    method:"POST",
+                    body: JSON.stringify({
+                        name: tomaruName,
+                        password: tomaruPassword
+                    }),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+            }
             function sendCommand(command){
                 fetch("/tomaru-kun/linked/setCommand",{
                     method: "POST",
