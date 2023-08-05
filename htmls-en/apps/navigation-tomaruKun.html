@@ -523,6 +523,15 @@
                             document.querySelector(".wait_verify").hidden = true;
                             document.querySelector(".survey-container").hidden = false;
                             clearInterval(waitForVerificationLoop);
+                            fetch("/tomaru-kun/unlinked/link",{
+                                method: "POST",
+                                body: JSON.stringify({
+                                    name: tomaruName,
+                                }),
+                                headers: {
+                                    "Content-Type": "application/json"
+                                }
+                            })
                             setInterval(() => {
                                 fetch("/tomaru-kun/linked/setCommand", {
                                     method: "POST",
