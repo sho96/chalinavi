@@ -711,19 +711,19 @@
 
             // ----------------------------------- general functions -------------------------------------
             function disconnect(){
-                fetch("/tomaru-kun/linked/setCommand", {
-                    method:"POST",
+                sendCommand("disconnect");
+            }
+            function sendCommand(command){
+                fetch("/tomaru-kun/linked/setCommand",{
+                    method: "POST",
                     body: JSON.stringify({
                         name: tomaruName,
-                        password: tomaruPassword
+                        cmd: command,
                     }),
                     headers: {
                         "Content-Type": "application/json"
                     }
                 })
-            }
-            function sendCommand(command){
-                sendCommand("disconnect");
             }
             function remapVector(vec, radians){
                 x = vec.x;
