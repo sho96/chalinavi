@@ -59,7 +59,7 @@
                 var randomLocations = []
                 dangerLocationDatas = await (await fetch("/apps/hazardMap/getDangerLocations")).json();
                 for (let j = 0; j < dangerLocationDatas.length; j++){
-                    randomLocations[randomLocations.length] = {location: new Microsoft.Maps.Location(dangerLocationDatas[j].location.lat, dangerLocationDatas[j].location.lon), time: dangerLocationDatas[j].time, type: dangerLocationDatas[j].type};
+                    randomLocations[randomLocations.length] = {location: new Microsoft.Maps.Location(dangerLocationDatas[j].location.lat, dangerLocationDatas[j].location.lon), time: dangerLocationDatas[j].time, type: dangerLocationDatas[j].type, img: dangerLocationDatas[j].img};
                 }
 
                 for (let i = 0; i < randomLocations.length; i++) {
@@ -73,7 +73,7 @@
                     //Store some metadata with the pushpin.
                     pin.metadata = {
                         title: conversionTable[randomLocations[i].type],
-                        description: timeString,
+                        description: `${timeString}<br><img src="http://106.155.187.46:32415/getPic/${randomLocations[i].img}">`,
                     };
 
                     //Add a click event handler to the pushpin.
