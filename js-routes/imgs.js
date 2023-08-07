@@ -23,8 +23,8 @@ app.get("/imgs/apps/navigation/warning.png", (req, resp) => {
 app.get("/imgs/apps/rate/rate.png", (req, resp) => {
     resp.status(200).send(readFileSync("./imgs/apps/rate/rate.png"));
 });
-app.get("/imgs/apps/hazardMap/getImage", (req, resp) => {
-    filename = req.query.filename;
+app.get("/imgs/apps/hazardMap/:filename", (req, resp) => {
+    filename = req.params.filename;
     resp.status(200).send(readFileSync(`./imgs/apps/hazardMap/${filename}`));
 });
 
