@@ -299,9 +299,14 @@
                         accelerationDurationType = "brake";
                     }
                     if(Date.now() - accelerationDurationStart > accelerationDurationThreshold && accelerationDurationType != "none"){
+                        let imgName = "";
+                        if(accelerationDurationType == "brake"){
+                            imgName = `${window.sessionStorage.username}${timestamp}`
+                            sendCommand(`takePic ${imgName}`)
+                        }
                         console.log(`${accelerationDurationType} detected`);
                         document.querySelector(".log").innerHTML += `${accelerationDurationType} detected<br>`;
-                        sendAccident(accelerationDurationType);
+                        sendAccident(accelerationDurationType, imgName);
                         timeLastSentAccident = Date.now();
                     }
                 }
@@ -733,7 +738,7 @@
                 newZ = z * Math.cos(radians) + y * Math.sin(radians)
                 return {x: x, y: newY, z: newZ};
             }
-            function sendAccident(type){
+            function sendAccident(type, image=""){
                 fetch("/apps/navigation/sendData", {
                     method: "POST",
                     body: JSON.stringify({
@@ -743,6 +748,7 @@
                             lon: lastPosition.longitude,
                         },
                         username: window.sessionStorage.username,
+                        img: image
                     }),
                     headers:{
                         "Content-Type": "application/json"
