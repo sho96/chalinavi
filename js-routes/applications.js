@@ -36,11 +36,12 @@ app.post("/apps/navigation/sendData", (req, resp) => {
   const type = req.body.type;
   const location = req.body.location;
   const username = req.body.username;
+  const img = req.body.img;
 
   console.log(`received accident: ${type}`);
   
   const dangerLocations = JSON.parse(readFileSync("./jsons/dangerLocations.json"));
-  dangerLocations[dangerLocations.length] = {type: type, time: Date.now(), location: {lat: location.lat, lon: location.lon}, user: username};
+  dangerLocations[dangerLocations.length] = {type: type, time: Date.now(), location: {lat: location.lat, lon: location.lon}, user: username, img:img};
   
   writeFileSync("./jsons/dangerLocations.json", JSON.stringify(dangerLocations));
   resp.status(200).send("recorded");
