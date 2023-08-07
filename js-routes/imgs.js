@@ -1,4 +1,5 @@
 const { readFile, readFileSync, writeFile, writeFileSync} = require("fs");
+const fs = require("fs");
 var nodemailer = require('nodemailer');
 var express = require('express');
 var app = express();
@@ -30,6 +31,12 @@ app.get("/imgs/apps/hazardMap/:filename", (req, resp) => {
 app.get("/apps/hazardMap/imgs/:filename", (req, resp) => {
     filename = req.params.filename;
     resp.status(200).send(`<img src="/imgs/apps/hazardMap/${filename}" alt="not found...">`);
+});
+app.get("/apps/hazardMap/listImgs", (req, resp) => {
+    fs.readdir("./imgs/apps/hazardMap/", (err, files) => {
+        resp.setHeader("Content-Type", "application/json")
+        resp.end(JSON.stringify(files));
+    });
 });
 
 module.exports = app;
