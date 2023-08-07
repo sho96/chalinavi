@@ -27,5 +27,9 @@ app.get("/imgs/apps/hazardMap/:filename", (req, resp) => {
     filename = req.params.filename;
     resp.status(200).send(readFileSync(`./imgs/apps/hazardMap/${filename}`));
 });
+app.get("/apps/hazardMap/imgs/:filename", (req, resp) => {
+    filename = req.params.filename;
+    resp.status(200).send(`<img src="/imgs/apps/hazardMap/${filename}" alt="not found...">`);
+});
 
 module.exports = app;
