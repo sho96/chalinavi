@@ -299,6 +299,8 @@
                         accelerationDurationType = "brake";
                     }
                     if(Date.now() - accelerationDurationStart > accelerationDurationThreshold && accelerationDurationType != "none"){
+                        let imgName = "";
+                        const timestamp = Date.now();
                         if(accelerationDurationType == "brake"){
                             imgName = `${window.sessionStorage.username}${timestamp}`
                             sendCommand(`takePic ${imgName}`)

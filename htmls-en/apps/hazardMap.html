@@ -70,7 +70,7 @@
                     timestamp = new Date(randomLocations[i].time);
                     timeString = `${timestamp.getHours()}:${("0" + timestamp.getMinutes()).slice(-2)}`;
 
-                    if(randomLocations[i].img == ""){
+                    if(randomLocations[i].img == "" || randomlocations.img == null){
                         pin.metadata = {
                             title: conversionTable[randomLocations[i].type],
                             description: `${timeString}`,
