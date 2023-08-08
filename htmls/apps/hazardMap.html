@@ -70,17 +70,24 @@
                     timestamp = new Date(randomLocations[i].time);
                     timeString = `${timestamp.getHours()}:${("0" + timestamp.getMinutes()).slice(-2)}`;
 
-                    if(randomLocations[i].img == "" || randomlocations.img == null){
-                        pin.metadata = {
-                            title: conversionTable[randomLocations[i].type],
-                            description: `${timeString}`,
-                        };
+                    let description = "";
+                    if(randomLocations[i].img == ""){
+                        description = `${timeString}`;
                     }else{
-                        pin.metadata = {
-                            title: conversionTable[randomLocations[i].type],
-                            description: `${timeString}<br><img src="http://106.155.187.46:32415/getPic/${randomLocations[i].img}.jpg">`,
-                        };
+                        description = `${timeString}<br><img src="http://106.155.187.46:32415/getPic/${randomLocations[i].img}">`;
                     }
+
+                    //Store some metadata with the pushpin.
+                    pin.metadata = {
+                        title: conversionTable[randomLocations[i].type],
+                        description: `${timeString}<br><img src="http://106.155.187.46:32415/getPic/${randomLocations[i].img}">`,
+                    };
+
+                    //Store some metadata with the pushpin.
+                    pin.metadata = {
+                        title: conversionTable[randomLocations[i].type],
+                        description: description,
+                    };
 
                     //Add a click event handler to the pushpin.
                     Microsoft.Maps.Events.addHandler(pin, 'click', pushpinClicked);
