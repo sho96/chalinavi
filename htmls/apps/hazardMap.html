@@ -71,7 +71,7 @@
                     timeString = `${timestamp.getHours()}:${("0" + timestamp.getMinutes()).slice(-2)}`;
 
                     let description = "";
-                    if(randomLocations[i].img == ""){
+                    if(randomLocations[i].img == "" || randomLocations[i].img == null){
                         description = `${timeString}`;
                     }else{
                         description = `${timeString}<br><img src="http://106.155.187.46:32415/getPic/${randomLocations[i].img}">`;
