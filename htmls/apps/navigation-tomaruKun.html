@@ -418,6 +418,7 @@
                 const distanceSoundToPlay = distanceSounds[roundedDistance];
                 let warningSoundToPlay;
                 let waitTime = 0;
+                sendCommand("brake");
                 if(type == "brake"){
                     warningSoundToPlay = suddenBrakeWarningSound;
                     waitTime = 1100;
