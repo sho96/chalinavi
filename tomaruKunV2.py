@@ -5,9 +5,9 @@ from hashlib import sha256
 import time
 import cv2
 import numpy as np
-#import RPi.##GPIO as ##GPIO
+import RPi.GPIO as GPIO
 
-##GPIO.setmode(#GPIO.BOARD)
+GPIO.setmode(GPIO.BOARD)
 
 tomaruName = "toma-ruKun"
 password = sha256(b"abcdefg").hexdigest()
@@ -21,18 +21,18 @@ acceptButton = 15
 rejectButton = 13
 statusLed = 11
 
-#GPIO.setup(acceptButton, #GPIO.IN)
-#GPIO.setup(rejectButton, #GPIO.IN)
-#GPIO.setup(statusLed, #GPIO.OUT)
+GPIO.setup(acceptButton, GPIO.IN)
+GPIO.setup(rejectButton, GPIO.IN)
+GPIO.setup(statusLed, GPIO.OUT)
 
 camera = cv2.VideoCapture(0)
 ret, frame = camera.read()
 
 def blinkLed(pin, interval, cycles):
     for _ in range(cycles):
-        #GPIO.output(pin, True)
+        GPIO.output(pin, True)
         time.sleep(interval)
-        #GPIO.output(pin, False)
+        GPIO.output(pin, False)
         time.sleep(interval)
 
 def brake():
@@ -84,7 +84,7 @@ def waitForConnection():
             continue
         print(token)
         print("led on")
-        #GPIO.output(statusLed, True)
+        GPIO.output(statusLed, True)
         answer = input("? ->")
         while True:
             accepted = answer == "y"
@@ -103,7 +103,7 @@ def waitForConnection():
                 jsonPOST(f"/tomaru-kun/unlinked/setMessage", {"name": tomaruName, "message": {"status": "denied"}})
                 blinkLed(statusLed, 0.3, 3)
                 break
-        #GPIO.output(statusLed, False)
+        GPIO.output(statusLed, False)
 
 def main():
     global currentState
