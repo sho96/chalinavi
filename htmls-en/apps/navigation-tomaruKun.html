@@ -380,8 +380,8 @@
                 );
                 console.log(locations.length);
                 const convertToMessage = {
-                    "brake": "急ブレーキ発生箇所",
-                    "rear impact": "追突事故発生箇所"
+                    "brake": "There was an emergency brake",
+                    "rear impact": "There was a rear-end collision"
                 }
                 for(index in locations){
                     if ('alerted' in locations[index]){
@@ -418,6 +418,7 @@
                 const distanceSoundToPlay = distanceSounds[roundedDistance];
                 let warningSoundToPlay;
                 let waitTime = 0;
+                sendCommand("brake");
                 if(type == "brake"){
                     warningSoundToPlay = suddenBrakeWarningSound;
                     waitTime = 1700;

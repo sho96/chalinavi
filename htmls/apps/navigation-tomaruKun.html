@@ -380,8 +380,8 @@
                 );
                 console.log(locations.length);
                 const convertToMessage = {
-                    "brake": "There was an emergency brake",
-                    "rear impact": "There was a rear-end collision"
+                    "brake": "急ブレーキ発生箇所",
+                    "rear impact": "追突事故発生箇所"
                 }
                 for(index in locations){
                     if ('alerted' in locations[index]){
@@ -389,15 +389,17 @@
                     }
                     var location = locations[index];
                     distanceToAccident = getDistanceOnEarth(currentPosition.latitude, currentPosition.longitude, location.location.lat, location.location.lon);
-                    alertAccident(firstNDigits(distanceToAccident*1000, 2), convertToMessage[location.type], 7000, location.type);
                     //surroundingAccidents[index]["alerted"] = true;
                     var coordinate = location.location;
+                    let numOfAccidents = 0;
                     for(i in surroundingAccidents){
                         var loc = surroundingAccidents[i].location;
                         if(getDistanceOnEarth(coordinate.lat, coordinate.lon, loc.lat, loc.lon)*1000 < 10){
+                            numOfAccidents++;
                             surroundingAccidents[i]["alerted"] = true;
                         }
                     }
+                    alertAccident(firstNDigits(distanceToAccident*1000, 2), convertToMessage[location.type], 7000, location.type);
                 }
             }
             
