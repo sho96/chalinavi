@@ -21,11 +21,11 @@ app.get("/imgs/menu/rateThisSystem.jpg", (req, resp) => {
 app.get("/imgs/apps/navigation/warning.png", (req, resp) => {
     resp.status(200).send(readFileSync("./imgs/apps/navigation/warning.png"));
 });
-app.get("/imgs/apps/rate/rate-jp.png", (req, resp) => {
-    resp.status(200).send(readFileSync("./imgs/apps/rate/rate-jp.png"));
+app.get("/imgs/apps/rate/rate-jp.jpg", (req, resp) => {
+    resp.status(200).send(readFileSync("./imgs/apps/rate/rate-jp.jpg"));
 });
-app.get("/imgs/apps/rate/rate-en.png", (req, resp) => {
-    resp.status(200).send(readFileSync("./imgs/apps/rate/rate-en.png"));
+app.get("/imgs/apps/rate/rate-en.jpg", (req, resp) => {
+    resp.status(200).send(readFileSync("./imgs/apps/rate/rate-en.jpg"));
 });
 app.get("/imgs/apps/hazardMap/:filename", (req, resp) => {
     filename = req.params.filename;
