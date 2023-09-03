@@ -5,7 +5,8 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>チャリナビ</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+        <title>マモールくん</title>
         <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
         <script>eruda.init();</script>
     </head>
@@ -37,7 +38,11 @@
             <button class="car" onclick="selectVehicle('car')">車</button><br>
             
             <button class="tomaru-link-button" onclick="window.location.href=`/apps/navigation-tomaruKun?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`">
-                トマールくんと連携
+                <span class="material-symbols-outlined">smartphone</span>
+                <span class="material-symbols-outlined">link</span>
+                <span class="material-symbols-outlined">pedal_bike</span>
+                <br>
+                トマール君と連携
             </button>
             <br>
             <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">メニューに戻る</a>
