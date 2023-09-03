@@ -29,7 +29,7 @@
                 </nav>
             </div>
         </div>
-        <div class="container" id="apps">
+        <div class="container" id="apps" hidden>
             <div class="title">
                 <h1>アプリ</h1>
             </div>
@@ -48,20 +48,20 @@
                 </div>
             </div>
         </div>
-        <div class="container" id="dashboard" hidden>
+        <div class="container" id="dashboard">
             <div class="title">
                 <h1>ダッシュボード</h1>
             </div>
             <div class="subcontainer dashboard-container">
-                <div class="dashboard-bubble totalDistanceTraveled" style="background-color: #90e0ef;">
+                <div class="dashboard-bubble totalDistanceTraveled" style="background-color: ;">
                     <h2 style="font-size: 4vw;">総走行距離</h2>
                     <h1 style="font-size: 3rem; color: rgb(69, 69, 69); "><span style="font-size: 10vh; color: black;" class="totalDistanceTraveledField">0</span>km</h1>
                 </div>
-                <div class="dashboard-bubble totalSuddenBrakes" style="background-color: #90e0ef;">
+                <div class="dashboard-bubble totalSuddenBrakes" style="background-color: ;">
                     <h2 style="font-size: 4vw;">過去三日間の急ブレーキ数</h2>
                     <h1 style="font-size: 3rem; color: rgb(69, 69, 69);"><span style="font-size: 10vh; color: black;" class="totalSuddenBrakesField">0</span> 回</h1>
                 </div>
-                <div class="dashboard-bubble totalRearImpacts" style="background-color: #90e0ef;">
+                <div class="dashboard-bubble totalRearImpacts" style="background-color: ;">
                     <h2 style="font-size: 4vw;">過去三日間の追突事故回数</h2>
                     <h1 style="font-size: 3rem; color: rgb(69, 69, 69);"><span style="font-size: 10vh; color: black;" class="totalRearImpactsField">0</span> 回</h1>
                 </div>
@@ -183,10 +183,12 @@
         }
         .title{
             background-color: rgb(255, 241, 210);
+            background-color: rgb(88, 88, 217);
             margin: 0;
             width: 100vw - 50px;
             padding: 5px;
-            color: black;
+            color: rgb(205, 230, 255);
+            text-align: center;
         }
         .subcontainer{
             padding-left: 10px;
@@ -222,8 +224,9 @@
             height: 20vh;
             margin-left: auto;
             margin-right: auto;
-            border-radius: 10px;
+            border-radius: 100px;
             color:black;
+            box-shadow: 12px 12px 2px 1px rgba(0, 0, 255, .2);;
         }
         .whole{
            /* display: flex;*/
@@ -241,6 +244,8 @@
             background-color: white;
             background-color: #0e0b55;
             background-color: #1a028f;
+            background-color: #624cab; /* during night time */
+
             color: rgb(205, 230, 255);
             /*width: 100vw;*/
             height: 100vh;

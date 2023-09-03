@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>chalinavi menu</title>
+    <title>Menu</title>
 </head>
 <body>
     <div class="whole">
@@ -20,11 +20,11 @@
             <div class="sidemenu">
                 <nav>
                     <ul>
-                        <li class="menu-option" onclick="openContainer(0);"><a>apps</a></li>
-                        <li class="menu-option" onclick="openContainer(1);"><a>dashbord</a></li>
-                        <li class="menu-option" onclick="openContainer(2);"><a>setting</a></li>
-                        <li class="menu-option" onclick="openContainer(3);"><a>profile</a></li>
-                        <li class="menu-option" onclick="logOut();"><a>logout</a></li>
+                        <li class="menu-option" onclick="openContainer(0);"><a>Apps</a></li>
+                        <li class="menu-option" onclick="openContainer(1);"><a>Dashboard</a></li>
+                        <li class="menu-option" onclick="openContainer(2);"><a>Settings</a></li>
+                        <li class="menu-option" onclick="openContainer(3);"><a>Profile</a></li>
+                        <li class="menu-option" onclick="logOut();"><a>Log Out</a></li>
                     </ul>
                 </nav>
             </div>
@@ -36,7 +36,7 @@
             <div class="subcontainer app-container">
                 <div class="app" onclick="openApp('/apps/navigation')">
                     <img class="app-img" src="/imgs/menu/chalinavi.jpg">
-                    <p>チャリナビ</p>
+                    <p>Mamo-ruKun</p>
                 </div>
                 <div class="app" onclick="openApp('/apps/hazardMap')">
                     <img class="app-img" src="/imgs/menu/hazardMap.jpg">
@@ -44,7 +44,7 @@
                 </div>
                 <div class="app" onclick="openApp('/apps/rate')">
                     <img class="app-img" src="/imgs/menu/rateThisSystem.jpg">
-                    <p>Rate this system</p>
+                    <p>Rate</p>
                 </div>
             </div>
         </div>
@@ -53,17 +53,17 @@
                 <h1>Dashboard</h1>
             </div>
             <div class="subcontainer dashboard-container">
-                <div class="dashboard-bubble totalDistanceTraveled" style="background-color: #798dc5;">
-                    <h2>Total Distance Traveled</h2>
-                    <h1 style="font-size: 3rem; color: rgb(69, 69, 69);"><span style="font-size: 8rem; color: black;" class="totalDistanceTraveledField">---</span>km</h1>
+                <div class="dashboard-bubble totalDistanceTraveled" style="background-color: #90e0ef;">
+                    <h2 style="font-size: 4vw;">Total Distance Traveled</h2>
+                    <h1 style="font-size: 3rem; color: rgb(69, 69, 69); "><span style="font-size: 10vh; color: black;" class="totalDistanceTraveledField">0</span>km</h1>
                 </div>
-                <div class="dashboard-bubble totalSuddenBrakes" style="background-color: #798dc5;">
-                    <h2>Sudden Brakes for Past 3 days</h2>
-                    <h1 style="font-size: 3rem; color: rgb(69, 69, 69);"><span style="font-size: 8rem; color: black;" class="totalSuddenBrakesField">---</span> times</h1>
+                <div class="dashboard-bubble totalSuddenBrakes" style="background-color: #90e0ef;">
+                    <h2 style="font-size: 4vw;">Sudden Brakes for Past 3 days</h2>
+                    <h1 style="font-size: 3rem; color: rgb(69, 69, 69);"><span style="font-size: 10vh; color: black;" class="totalSuddenBrakesField">0</span> times</h1>
                 </div>
-                <div class="dashboard-bubble totalRearImpacts" style="background-color: #798dc5;">
-                    <h2>Total Reat Impacts for Past 3 days</h2>
-                    <h1 style="font-size: 3rem; color: rgb(69, 69, 69);"><span style="font-size: 8rem; color: black;" class="totalRearImpactsField">---</span> times</h1>
+                <div class="dashboard-bubble totalRearImpacts" style="background-color: #90e0ef;">
+                    <h2 style="font-size: 4vw;">Reat Impacts for Past 3 days</h2>
+                    <h1 style="font-size: 3rem; color: rgb(69, 69, 69);"><span style="font-size: 10vh; color: black;" class="totalRearImpactsField">0</span> times</h1>
                 </div>
                 <!--
                 <div class="dashboard-bubble totalDistanceTraveled" style="background-color: #798dc5;">
@@ -85,6 +85,16 @@
             <div class="title">
                 <h1>Settings</h1>
             </div>
+            <div style="margin: 10px;">
+                <form>
+                    <span style="font-size: 20px;">Language: </span>
+                    <select id="language-selection" style="font-size: 20px; width: 100px; height: 30px; border-radius: 10px; background-color: white;">
+                        <option value="en">English</option>
+                        <option value="ja">Japanese</option>
+                    </select>
+                </form>
+            </div>
+            
             <div class="subcontainer">
                 <h2 class="detection-level-label" style="margin:0; margin-top: 10px; margin-bottom: 5px;">Detection Level: 5</h2>
                 <p style="margin-left: 10px; margin-top: 0;">Determines how far of dangers we should notify you</p>
@@ -94,13 +104,12 @@
                     <label>10</label>
                 </div>
                 <button class="save-changes-button" onclick="updateSettings();">Save Changes</button>
-            
             </div>
             <br>
             <br>
             <table border="1">
                 <tr>
-                  <td>level</th>
+                  <td>Level</th>
                   <td>1</td>
                   <td>2</td>
                   <td>3</td>
@@ -113,7 +122,7 @@
                   <td>10</td>
                 </tr>
                 <tr>
-                    <td>height(m)</th>
+                    <td>Distance(m)</th>
                     <td>10</td>
                     <td>20</td>
                     <td>30</td>
@@ -126,7 +135,7 @@
                     <td>100</td>
                 </tr>
                 <tr>
-                    <td>width(m)</th>
+                    <td>Width(m)</th>
                     <td>1</td>
                     <td>1</td>
                     <td>1</td>
@@ -149,13 +158,14 @@
                 <h2 class="profile-emailText">Email: ---</h2>
                 <br>
                 <h2>Change Email</h2>
-                <button class="account-edit-button" onclick="window.location.href = `/profile/changeEmail?token=${window.sessionStorage.token}`;">Change Email</button>
+                <button class="account-edit-button" onclick="window.location.href = `/profile/changeEmail?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">Change Email</button>
                 <h2>Change Password</h2>
-                <button class="account-edit-button" onclick="window.location.href = `/profile/changePassword?token=${window.sessionStorage.token}`;">Change Password</button>
+                <button class="account-edit-button" onclick="window.location.href = `/profile/changePassword?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">Change Password</button>
                 <h2>Delete Account</h2>
-                <button class="account-edit-button-dangerous" onclick="window.location.href = `/profile/deleteAccount?token=${window.sessionStorage.token}`;">Delete Account</button>
+                <button class="account-edit-button-dangerous" onclick="window.location.href = `/profile/deleteAccount?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">Delete Account</button>
             </div>
         </div>
+        <svg xmlns:xlink="http://www.w3.org/1999/xlink" style="position: absolute; left:50px; bottom:0px;" height="15%" viewBox="0 0 1440 190" version="1.1" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="sw-gradient-0" x1="0" x2="0" y1="1" y2="0"><stop stop-color="rgba(62, 99.619, 243, 1)" offset="0%"/><stop stop-color="rgba(11, 185.497, 255, 1)" offset="100%"/></linearGradient></defs><path style="transform:translate(0, 0px); opacity:1" fill="url(#sw-gradient-0)" d="M0,76L10.4,76C20.9,76,42,76,63,79.2C83.5,82,104,89,125,95C146.1,101,167,108,188,101.3C208.7,95,230,76,250,63.3C271.3,51,292,44,313,38C333.9,32,355,25,376,41.2C396.5,57,417,95,438,107.7C459.1,120,480,108,501,114C521.7,120,543,146,563,152C584.3,158,605,146,626,126.7C647,108,668,82,689,85.5C709.6,89,730,120,751,117.2C772.2,114,793,76,814,57C834.8,38,856,38,877,60.2C897.4,82,918,127,939,123.5C960,120,981,70,1002,44.3C1022.6,19,1043,19,1064,34.8C1085.2,51,1106,82,1127,101.3C1147.8,120,1169,127,1190,114C1210.4,101,1231,70,1252,69.7C1273,70,1294,101,1315,95C1335.7,89,1357,44,1377,28.5C1398.3,13,1419,25,1440,34.8C1460.9,44,1482,51,1492,53.8L1502.6,57L1502.6,190L1492.2,190C1481.7,190,1461,190,1440,190C1419.1,190,1398,190,1377,190C1356.5,190,1336,190,1315,190C1293.9,190,1273,190,1252,190C1231.3,190,1210,190,1190,190C1168.7,190,1148,190,1127,190C1106.1,190,1085,190,1064,190C1043.5,190,1023,190,1002,190C980.9,190,960,190,939,190C918.3,190,897,190,877,190C855.7,190,835,190,814,190C793,190,772,190,751,190C730.4,190,710,190,689,190C667.8,190,647,190,626,190C605.2,190,584,190,563,190C542.6,190,522,190,501,190C480,190,459,190,438,190C417.4,190,397,190,376,190C354.8,190,334,190,313,190C292.2,190,271,190,250,190C229.6,190,209,190,188,190C167,190,146,190,125,190C104.3,190,83,190,63,190C41.7,190,21,190,10,190L0,190Z"/><defs><linearGradient id="sw-gradient-1" x1="0" x2="0" y1="1" y2="0"><stop stop-color="rgba(62, 191.251, 250, 1)" offset="0%"/><stop stop-color="rgba(11, 226.357, 255, 1)" offset="100%"/></linearGradient></defs><path style="transform:translate(0, 50px); opacity:0.9" fill="url(#sw-gradient-1)" d="M0,38L10.4,44.3C20.9,51,42,63,63,57C83.5,51,104,25,125,41.2C146.1,57,167,114,188,114C208.7,114,230,57,250,28.5C271.3,0,292,0,313,28.5C333.9,57,355,114,376,126.7C396.5,139,417,108,438,82.3C459.1,57,480,38,501,31.7C521.7,25,543,32,563,47.5C584.3,63,605,89,626,101.3C647,114,668,114,689,117.2C709.6,120,730,127,751,120.3C772.2,114,793,95,814,79.2C834.8,63,856,51,877,50.7C897.4,51,918,63,939,72.8C960,82,981,89,1002,85.5C1022.6,82,1043,70,1064,76C1085.2,82,1106,108,1127,101.3C1147.8,95,1169,57,1190,44.3C1210.4,32,1231,44,1252,69.7C1273,95,1294,133,1315,126.7C1335.7,120,1357,70,1377,41.2C1398.3,13,1419,6,1440,31.7C1460.9,57,1482,114,1492,142.5L1502.6,171L1502.6,190L1492.2,190C1481.7,190,1461,190,1440,190C1419.1,190,1398,190,1377,190C1356.5,190,1336,190,1315,190C1293.9,190,1273,190,1252,190C1231.3,190,1210,190,1190,190C1168.7,190,1148,190,1127,190C1106.1,190,1085,190,1064,190C1043.5,190,1023,190,1002,190C980.9,190,960,190,939,190C918.3,190,897,190,877,190C855.7,190,835,190,814,190C793,190,772,190,751,190C730.4,190,710,190,689,190C667.8,190,647,190,626,190C605.2,190,584,190,563,190C542.6,190,522,190,501,190C480,190,459,190,438,190C417.4,190,397,190,376,190C354.8,190,334,190,313,190C292.2,190,271,190,250,190C229.6,190,209,190,188,190C167,190,146,190,125,190C104.3,190,83,190,63,190C41.7,190,21,190,10,190L0,190Z"/></svg>
     </div>
     <style>
         body{
@@ -172,10 +182,11 @@
             margin-top: 5px;
         }
         .title{
-            background-color: rgb(216, 140, 0);
+            background-color: rgb(255, 241, 210);
             margin: 0;
             width: 100vw - 50px;
             padding: 5px;
+            color: black;
         }
         .subcontainer{
             padding-left: 10px;
@@ -212,14 +223,25 @@
             margin-left: auto;
             margin-right: auto;
             border-radius: 10px;
+            color:black;
         }
         .whole{
            /* display: flex;*/
             flex-direction: row;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            /*border-radius: 10px;*/
         }
         .container{
             position: relative;
-            background: linear-gradient(70deg, rgb(0, 255, 128), rgb(0, 128, 255));
+            /*background: linear-gradient(0deg, rgb(0, 166, 255), rgb(21, 0, 112), rgb(21, 0, 112), rgb(28, 0, 79));*/
+            background-color: #0d1879;
+            background-color: white;
+            background-color: #0e0b55;
+            background-color: #1a028f;
+            color: rgb(205, 230, 255);
             /*width: 100vw;*/
             height: 100vh;
             margin-left: 50px;
@@ -301,18 +323,13 @@
         [hidden]{
             display: none !important;
         }
+        /* hamburger menu */
         body,ul,li,h1,p {margin: 0;padding: 0;}
 		a {text-decoration: none; color: #000;}
 		li {list-style-type: none;}
-		/*------------------------------------
-		汎用 ↓
-		------------------------------------*/
 		.flex {display: flex;}
 		.aic {align-items: center;}
 		.jcb {justify-content: space-between;}
-		/*------------------------------------
-		ヘッダー a hover:下線アンダーライン ↓
-		------------------------------------*/
 		header ul li a {
 		  position: relative;
 		  display: inline-block;
@@ -337,9 +354,6 @@
 		  transform-origin: left top;
 		  transform: scale(1, 1);
 		}
-		/*------------------------------------
-		ヘッダー pcハンバーガーメニュー ↓
-		------------------------------------*/
 		header {
 		  font-weight: 700;
 		}
@@ -354,9 +368,6 @@
 		header .pc_nav div .crumbs ul li:last-of-type {
 		  margin-left: 0;
 		}
-		/*------------------------------------
-		ヘッダー spハンバーガーメニュー ↓
-		------------------------------------*/
 		header .sp_nav {
 		  text-align: center;
 		}
@@ -364,12 +375,12 @@
 		  height: 100vh;
 		  padding-top: 50px;
 		  position: fixed;
-		  left: -60%; /*メニュー幅*/
+		  left: -60%;
 		  transition: all 0.5s;
 		  top: 0;
-		  width: 40%; /*メニュー幅*/
+		  width: 40%; 
 		  z-index: 2;
-		  background-color: #fff;
+		  background-color: white;
           text-align: center;
 		}
 		.sidemenu nav ul li {
@@ -387,7 +398,7 @@
 		  z-index: 3;
 		}
 		.hamburger span {
-		  background-color: #000;
+		  background-color: #000000;
 		  height: 4px;
 		  left: 15px;
 		  position: absolute;
@@ -403,9 +414,6 @@
 		.hamburger_linebottom {
 		  top: 38px;
 		}
-		/*------------------------------------
-		メニュークリックした後 ↓
-		------------------------------------*/
 		.nav_open .sidemenu {
 		  left: 0;
 		}
@@ -425,9 +433,6 @@
 		  opacity: 0.8;
 		  visibility: visible;
 		}
-		/*------------------------------------
-		メニュークリック後メニュー外の背景 ↓
-		------------------------------------*/
 		.overlay {
 		  background-color: #000;
 		  cursor: pointer;
@@ -441,16 +446,13 @@
 		  width: 100vw;
 		  z-index: 1;
 		}
-		/*------------------------------------
-		@media screen 1000px~999px ↓
-		------------------------------------*/
 		@media screen and (max-width: 1000px) {
 		  .sp_no {
 			 display: none;
 		  }
 		  .sidemenu {
-			 right: -50%; /*メニュー幅*/
-			 width: 50%; /*メニュー幅*/
+			 right: -50%; 
+			 width: 50%; 
 		  }
 		}
 		@media screen and (min-width: 999px) {
@@ -470,7 +472,6 @@
 
         const profileUsernameText = document.querySelector(".profile-usernameText");
         const profileEmailText = document.querySelector(".profile-emailText");
-
         const detectionLevelSlider = document.querySelector(".detection-level-slider");
         const detectionLevelLabel = document.querySelector(".detection-level-label");
 
@@ -520,6 +521,7 @@
                 const settings = resp;
                 detectionLevelLabel.innerHTML = `Detection Level: ${settings.detectionLevel}`;
                 detectionLevelSlider.value = settings.detectionLevel;
+                document.querySelector("#language-selection").value = settings.language;
             });
         }
         async function loadDashboard(){
@@ -527,7 +529,7 @@
             const totalDistanceTraveled = dashboard.totalDistanceTraveled;
             const totalSuddenBrakes = dashboard.totalSuddenBrakes;
             const totalRearImpacts = dashboard.totalRearImpacts;
-            document.querySelector(".totalDistanceTraveledField").innerHTML = totalDistanceTraveled;
+            document.querySelector(".totalDistanceTraveledField").innerHTML = Math.round(totalDistanceTraveled/1000 * 100) / 100;
             document.querySelector(".totalSuddenBrakesField").innerHTML = totalSuddenBrakes;
             document.querySelector(".totalRearImpactsField").innerHTML = totalRearImpacts;
         }
@@ -542,6 +544,8 @@
             detectionLevelLabel.innerHTML = `Detection Level: ${detectionLevelSlider.value}`;
         }
         function updateSettings(){
+            const languageSelectionMenu = document.getElementById("language-selection");
+            const language = languageSelectionMenu.value;
             const level = detectionLevelSlider.value;
             const width = conversionTable[detectionLevelSlider.value].w;
             const height = conversionTable[detectionLevelSlider.value].h;
@@ -549,19 +553,23 @@
                 username: window.sessionStorage.username,
                 detectionLevel: level,
                 detectionBoxWidth: width,
-                detectionBoxHeight: height
+                detectionBoxHeight: height,
+                language: language
             };
+            window.sessionStorage.language = language;
             fetch("/updateSettings",{
                 method: "POST",
                 body:JSON.stringify(settings),
                 headers:{
                     "Content-Type": "application/json"
                 }
+            }).then(resp => {
+                window.location.href = `/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;
             });
         }
 
         function openApp(appURL){
-            window.location.href = `${appURL}?token=${window.sessionStorage.token}`;
+            window.location.href = `${appURL}?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;
         }
 
         function switchMenu(){
