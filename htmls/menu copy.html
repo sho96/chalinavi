@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <title>メニュー</title>
 </head>
 <body>
@@ -13,7 +12,7 @@
             <div class="overlay" id="js_overlay">
                 
             </div>
-            <div class="hamburger" id="js_hamburger" style="position: absolute;">
+            <div class="hamburger" id="js_hamburger">
                 <span class="hamburger_linetop"></span>
                 <span class="hamburger_linecenter"></span>
                 <span class="hamburger_linebottom"></span>
@@ -30,128 +29,87 @@
                 </nav>
             </div>
         </div>
-        <div class="container" id="apps">
+        <div class="container" id="apps" hidden>
             <div class="title">
-                <h1 style="margin-top: 50px; margin-left: 20px; font-size: 7vw; text-align: left;">アプリ</h1>
+                <h1>アプリ</h1>
             </div>
             <div class="subcontainer app-container">
                 <div class="app" onclick="openApp('/apps/navigation')">
-                    <!--<img class="app-img" src="/imgs/menu/chalinavi.jpg">!-->
-                    <span class="material-symbols-outlined" style="font-size: 100px; color: white;">shield_with_heart</span>
-                    <p>マモールくん</p>
+                    <img class="app-img" src="/imgs/menu/chalinavi.jpg">
+                    <p style="font-size: 90%;">マモールくん</p>
                 </div>
                 <div class="app" onclick="openApp('/apps/hazardMap')">
-                    <!--<img class="app-img" src="/imgs/menu/hazardMap.jpg">!-->
-                    <span class="material-symbols-outlined" style="font-size: 100px; color: white;">pin_drop</span>
-                    <p>ハザードマップ</p>
+                    <img class="app-img" src="/imgs/menu/hazardMap.jpg">
+                    <p style="font-size: 90%;">ハザードマップ</p>
                 </div>
                 <div class="app" onclick="openApp('/apps/rate')">
-                    <!--<img class="app-img" src="/imgs/menu/rateThisSystem.jpg">!-->
-                    <span class="material-symbols-outlined" style="font-size: 100px; color: white;">reviews</span>
-                    <p>評価</p>
+                    <img class="app-img" src="/imgs/menu/rateThisSystem.jpg">
+                    <p style="font-size: 90%;">評価</p>
                 </div>
             </div>
         </div>
-        <div class="container" id="dashboard" hidden>
+        <div class="container" id="dashboard">
             <div class="title">
-                <h1 style="margin-top: 50px; margin-left: 20px; font-size: 7vw; text-align: left;">ダッシュボード</h1>
+                <h1>ダッシュボード</h1>
             </div>
             <div class="subcontainer dashboard-container">
-                <div class="dashboard-bubble totalDistanceTraveled" style="background-color: rgba(255,255,255,0.12);">
-                    <h2 style="font-size: 4vw; color: rgb(205, 230, 255); padding-top: 30px; margin-bottom: 0;">走行距離</h2>
-                    <h1 style="font-size: 3rem; color: rgb(205, 230, 255); padding: 0;"><span style="font-size: 10vh; color: rgb(255, 255, 255);" class="totalDistanceTraveledField">0</span>km</h1>
+                <div class="dashboard-bubble totalDistanceTraveled" style="background-color: ;">
+                    <h2 style="font-size: 4vw;">総走行距離</h2>
+                    <h1 style="font-size: 3rem; color: rgb(69, 69, 69); "><span style="font-size: 10vh; color: black;" class="totalDistanceTraveledField">0</span>km</h1>
                 </div>
-                <div class="dashboard-bubble totalSuddenBrakes" style="background-color: rgba(255,255,255,0.12);">
-                    <h2 style="font-size: 4vw; color: rgb(205, 230, 255); padding-top: 30px; margin-bottom: 0;">過去3日間の急ブレーキ</h2>
-                    <h1 style="font-size: 3rem; color: rgb(205, 230, 255);"><span style="font-size: 10vh; color: rgb(255, 255, 255);" class="totalSuddenBrakesField">0</span> times</h1>
+                <div class="dashboard-bubble totalSuddenBrakes" style="background-color: ;">
+                    <h2 style="font-size: 4vw;">過去三日間の急ブレーキ数</h2>
+                    <h1 style="font-size: 3rem; color: rgb(69, 69, 69);"><span style="font-size: 10vh; color: black;" class="totalSuddenBrakesField">0</span> 回</h1>
                 </div>
-                <div class="dashboard-bubble totalRearImpacts" style="background-color: rgba(255,255,255,0.12);">
-                    <h2 style="font-size: 4vw; color: rgb(205, 230, 255); padding-top: 30px; margin-bottom: 0;">過去三日間の追突事故</h2>
-                    <h1 style="font-size: 3rem; color: rgb(205, 230, 255);"><span style="font-size: 10vh; color: rgb(255, 255, 255);" class="totalRearImpactsField">0</span> times</h1>
+                <div class="dashboard-bubble totalRearImpacts" style="background-color: ;">
+                    <h2 style="font-size: 4vw;">過去三日間の追突事故回数</h2>
+                    <h1 style="font-size: 3rem; color: rgb(69, 69, 69);"><span style="font-size: 10vh; color: black;" class="totalRearImpactsField">0</span> 回</h1>
                 </div>
                 <!--
-                <div class="dashboard-bubble totalDistanceTraveled" style="background-color: #798dc5;">
-                    <h2>Total number of sudden brake for 3 days</h2>
-                </div>
-                <div class="dashboard-bubble totalDistanceTraveled" style="background-color: #ffc300;">
-                    <h2>Total Distance Traveled</h2>
-                </div>
-                <div class="dashboard-bubble totalDistanceTraveled" style="background-color: #f935f9;">
-                    <h2>Total Distance Traveled</h2>
-                </div>
-                <div class="dashboard-bubble totalDistanceTraveled" style="background-color: #234858;">
-                    <h2>Total Distance Traveled</h2>
-                </div>
+                    <div class="dashboard-bubble totalDistanceTraveled" style="background-color: #798dc5;">
+                        <h2>Total number of sudden brake for 3 days</h2>
+                    </div>
+                    <div class="dashboard-bubble totalDistanceTraveled" style="background-color: #ffc300;">
+                        <h2>Total Distance Traveled</h2>
+                    </div>
+                    <div class="dashboard-bubble totalDistanceTraveled" style="background-color: #f935f9;">
+                        <h2>Total Distance Traveled</h2>
+                    </div>
+                    <div class="dashboard-bubble totalDistanceTraveled" style="background-color: #234858;">
+                        <h2>Total Distance Traveled</h2>
+                    </div>
                 -->
             </div>
         </div>
         <div class="container" id="settings" hidden>
             <div class="title">
-                <h1 style="margin-top: 50px; margin-left: 20px; font-size: 7vw; text-align: left;">設定</h1>
+                <h1>設定</h1>
             </div>
-            <!--<div class="subcontainer">
-                <div style="margin: 10px;">
-                    <form>
-                        <select id="language-selection" class="dashboard-bubble" style="height: 15vh; background-color: rgba(255,255,255,0.12); border: none; color: white; font-size: 13vw;">
-                            <option value="en">English</option>
-                            <option value="ja">Japanese</option>
-                        </select>
-                    </form>
-                </div>
-                <h2 class="detection-level-label" style="margin:0; margin-top: 10px; margin-bottom: 5px;">Detection Distance: 5</h2>
-                <p style="margin-left: 10px; margin-top: 0;">Determines how far of dangers we should notify you</p>
+            <div style="margin: 10px;">
+                <form>
+                    <span style="font-size: 20px;">言語：</span>
+                    <select id="language-selection" style="font-size: 20px; width: 100px; height: 30px; border-radius: 10px; background-color: white;">
+                        <option value="ja">日本語</option>
+                        <option value="en">英語</option>
+                    </select>
+                </form>
+            </div>
+            
+            <div class="subcontainer">
+                <h2 class="detection-level-label" style="margin:0; margin-top: 10px; margin-bottom: 5px;">検出レベル: 5</h2>
+                <p style="margin-left: 10px; margin-top: 0;">どこまで遠くの危険箇所を知らせるべきかを決定</p>
                 <div style="margin-bottom: 15px;">
                     <label>1</label>
                     <input class="detection-level-slider" type="range" id="volume" min="1" max="10" onchange="refreshSettingValues();" style="width: 250px; height: 30px;">
                     <label>10</label>
                 </div>
-                <button class="save-changes-button" onclick="updateSettings();">Save Changes</button>
-            </div>!-->
-            <div class="subcontainer">
-                <div style="margin-top: 20px; text-align: center;">
-                    <h1 style="font-size: 6vw; text-align: left; margin-left: 10vw; margin-bottom: 20px;"><span class="material-symbols-outlined" style="font-size: 6vw;">language</span> 言語</h1>
-                    <form>
-                        <select onchange="updateSettings();" id="language-selection" class="dashboard-bubble" style="height: 15vh; background-color: rgba(255,255,255,0.12); border: none; color: white; font-size: 7vw; text-align: center;">
-                            <option value="en">英語</option>
-                            <option value="ja">日本語</option>
-                        </select>
-                    </form>
-                </div>
-                <div style="margin-top: 40px; text-align: center;">
-                    <h1 style="font-size: 6vw; text-align: left; margin-left: 10vw; margin-bottom: 20px;"><span class="material-symbols-outlined" style="font-size: 6vw;">square_foot</span> 危険検出距離*</h1>
-                    <form>
-                        <select onchange="updateSettings();" id="detection-distance-selection" class="dashboard-bubble" style="height: 15vh; background-color: rgba(255,255,255,0.12); border: none; color: white; font-size: 7vw; text-align: center;">
-                            <option value="1">10m</option>
-                            <option value="2">20m</option>
-                            <option value="3">30m</option>
-                            <option value="4">40m</option>
-                            <option value="5">50m</option>
-                            <option value="6">60m</option>
-                            <option value="7">70m</option>
-                            <option value="8">80m</option>
-                            <option value="9">90m</option>
-                            <option value="10">100m</option>
-                        </select>
-                    </form>
-                </div>
-                <p style="margin-left: 10vw; margin-top: 30px; font-size: 20px;">*近くの危険なポイントを知らせる距離</p>
-
-
-                <!--
-                <h2 hidden class="detection-level-label" style="margin:0; margin-top: 10px; margin-bottom: 5px;">Detection Distance: 5</h2>
-                <div hidden style="margin-bottom: 15px;">
-                    <label>1</label>
-                    <input class="detection-level-slider" type="range" id="volume" min="1" max="10" onchange="refreshSettingValues();" style="width: 250px; height: 30px;">
-                    <label>10</label>
-                </div>
-                <button class="save-changes-button" >Save Changes</button>!-->
+                <button class="save-changes-button" onclick="updateSettings();">保存</button>
             </div>
-            <!--
             <br>
             <br>
-            <table hidden border="1">
+            <table border="1">
                 <tr>
-                  <td>Level</th>
+                  <td>レベル</th>
                   <td>1</td>
                   <td>2</td>
                   <td>3</td>
@@ -164,7 +122,7 @@
                   <td>10</td>
                 </tr>
                 <tr>
-                    <td>Distance(m)</th>
+                    <td>遠さ(m)</th>
                     <td>10</td>
                     <td>20</td>
                     <td>30</td>
@@ -177,7 +135,7 @@
                     <td>100</td>
                 </tr>
                 <tr>
-                    <td>Width(m)</th>
+                    <td>横幅(m)</th>
                     <td>1</td>
                     <td>1</td>
                     <td>1</td>
@@ -189,30 +147,25 @@
                     <td>1</td>
                     <td>1</td>
                 </tr>
-              </table>!-->
+              </table>
         </div>
         <div class="container" id="profile" hidden>
             <div class="title">
-                <h1 style="margin-top: 50px; margin-left: 20px; font-size: 7vw; text-align: left;">プロフィール</h1>
+                <h1>プロフィール</h1>
             </div>
-            <div class="subcontainer dashboard-container">
-                <div class="dashboard-bubble" style="background-color: rgba(255,255,255,0.12); height: 13vh;">
-                    <h2 style="font-size: 4vw; color: rgb(205, 230, 255); padding-top: 30px; margin-bottom: 0;">ユーザー名</h2>
-                    <h1 class="profile-usernameText" style="font-size: 5.5vw; color: rgb(255, 255, 255); padding: 0;">---</h1>
-                </div>
-                <div class="dashboard-bubble" style="background-color: rgba(255,255,255,0.12); height: 13vh;" onclick="window.location.href = `/profile/changeEmail?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">
-                    <h2 style="font-size: 4vw; color: rgb(205, 230, 255); padding-top: 30px; margin-bottom: 0;">Eメール  <span class="material-symbols-outlined" style="color: rgb(217, 217, 217); font-size: 4vw;">edit</span></h2>
-                    <h1 class="profile-emailText" style="font-size: 5vw; color: rgb(255, 255, 255);">---</h1>
-                </div>
-                <div class="dashboard-bubble" style="background-color: rgba(255,255,255,0.12); height: 13vh;" onclick="window.location.href = `/profile/changePassword?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">
-                    <h2 style="font-size: 4vw; color: rgb(205, 230, 255); padding-top: 30px; margin-bottom: 0;">パスワード  <span class="material-symbols-outlined" style="color: rgb(217, 217, 217); font-size: 4vw;">edit</span></h2>
-                    <h1 class="profile-emailText" style="font-size: 5vw; color: rgb(205, 230, 255);">*表示不可</h1>
-                </div>
-                <br><br>
-                <button style="position: absolute; right: 10px;" class="account-edit-button-dangerous" onclick="window.location.href = `/profile/deleteAccount?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">アカウント削除</button>
+            <div class="subcontainer">
+                <h2 class="profile-usernameText">ユーザー名: ---</h2>
+                <h2 class="profile-emailText">Eメール: ---</h2>
+                <br>
+                <h2>Eメール変更</h2>
+                <button class="account-edit-button" onclick="window.location.href = `/profile/changeEmail?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">Eメール変更</button>
+                <h2>パスワード変更</h2>
+                <button class="account-edit-button" onclick="window.location.href = `/profile/changePassword?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">パスワード変更</button>
+                <h2>アカウント削除</h2>
+                <button class="account-edit-button-dangerous" onclick="window.location.href = `/profile/deleteAccount?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">アカウント削除</button>
             </div>
         </div>
-        <svg xmlns:xlink="http://www.w3.org/1999/xlink" style="position: absolute; bottom:0px;" height="30%" viewBox="0 0 1440 190" version="1.1" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="sw-gradient-0" x1="0" x2="0" y1="1" y2="0"><stop stop-color="rgba(62, 99.619, 243, 1)" offset="0%"/><stop stop-color="rgba(11, 185.497, 255, 1)" offset="100%"/></linearGradient></defs><path style="transform:translate(0, 0px); opacity:1" fill="url(#sw-gradient-0)" d="M0,76L10.4,76C20.9,76,42,76,63,79.2C83.5,82,104,89,125,95C146.1,101,167,108,188,101.3C208.7,95,230,76,250,63.3C271.3,51,292,44,313,38C333.9,32,355,25,376,41.2C396.5,57,417,95,438,107.7C459.1,120,480,108,501,114C521.7,120,543,146,563,152C584.3,158,605,146,626,126.7C647,108,668,82,689,85.5C709.6,89,730,120,751,117.2C772.2,114,793,76,814,57C834.8,38,856,38,877,60.2C897.4,82,918,127,939,123.5C960,120,981,70,1002,44.3C1022.6,19,1043,19,1064,34.8C1085.2,51,1106,82,1127,101.3C1147.8,120,1169,127,1190,114C1210.4,101,1231,70,1252,69.7C1273,70,1294,101,1315,95C1335.7,89,1357,44,1377,28.5C1398.3,13,1419,25,1440,34.8C1460.9,44,1482,51,1492,53.8L1502.6,57L1502.6,190L1492.2,190C1481.7,190,1461,190,1440,190C1419.1,190,1398,190,1377,190C1356.5,190,1336,190,1315,190C1293.9,190,1273,190,1252,190C1231.3,190,1210,190,1190,190C1168.7,190,1148,190,1127,190C1106.1,190,1085,190,1064,190C1043.5,190,1023,190,1002,190C980.9,190,960,190,939,190C918.3,190,897,190,877,190C855.7,190,835,190,814,190C793,190,772,190,751,190C730.4,190,710,190,689,190C667.8,190,647,190,626,190C605.2,190,584,190,563,190C542.6,190,522,190,501,190C480,190,459,190,438,190C417.4,190,397,190,376,190C354.8,190,334,190,313,190C292.2,190,271,190,250,190C229.6,190,209,190,188,190C167,190,146,190,125,190C104.3,190,83,190,63,190C41.7,190,21,190,10,190L0,190Z"/><defs><linearGradient id="sw-gradient-1" x1="0" x2="0" y1="1" y2="0"><stop stop-color="rgba(62, 191.251, 250, 1)" offset="0%"/><stop stop-color="rgba(11, 226.357, 255, 1)" offset="100%"/></linearGradient></defs><path style="transform:translate(0, 50px); opacity:0.9" fill="url(#sw-gradient-1)" d="M0,38L10.4,44.3C20.9,51,42,63,63,57C83.5,51,104,25,125,41.2C146.1,57,167,114,188,114C208.7,114,230,57,250,28.5C271.3,0,292,0,313,28.5C333.9,57,355,114,376,126.7C396.5,139,417,108,438,82.3C459.1,57,480,38,501,31.7C521.7,25,543,32,563,47.5C584.3,63,605,89,626,101.3C647,114,668,114,689,117.2C709.6,120,730,127,751,120.3C772.2,114,793,95,814,79.2C834.8,63,856,51,877,50.7C897.4,51,918,63,939,72.8C960,82,981,89,1002,85.5C1022.6,82,1043,70,1064,76C1085.2,82,1106,108,1127,101.3C1147.8,95,1169,57,1190,44.3C1210.4,32,1231,44,1252,69.7C1273,95,1294,133,1315,126.7C1335.7,120,1357,70,1377,41.2C1398.3,13,1419,6,1440,31.7C1460.9,57,1482,114,1492,142.5L1502.6,171L1502.6,190L1492.2,190C1481.7,190,1461,190,1440,190C1419.1,190,1398,190,1377,190C1356.5,190,1336,190,1315,190C1293.9,190,1273,190,1252,190C1231.3,190,1210,190,1190,190C1168.7,190,1148,190,1127,190C1106.1,190,1085,190,1064,190C1043.5,190,1023,190,1002,190C980.9,190,960,190,939,190C918.3,190,897,190,877,190C855.7,190,835,190,814,190C793,190,772,190,751,190C730.4,190,710,190,689,190C667.8,190,647,190,626,190C605.2,190,584,190,563,190C542.6,190,522,190,501,190C480,190,459,190,438,190C417.4,190,397,190,376,190C354.8,190,334,190,313,190C292.2,190,271,190,250,190C229.6,190,209,190,188,190C167,190,146,190,125,190C104.3,190,83,190,63,190C41.7,190,21,190,10,190L0,190Z"/></svg>
+        <svg xmlns:xlink="http://www.w3.org/1999/xlink" style="position: absolute; left:50px; bottom:0px;" height="15%" viewBox="0 0 1440 190" version="1.1" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="sw-gradient-0" x1="0" x2="0" y1="1" y2="0"><stop stop-color="rgba(62, 99.619, 243, 1)" offset="0%"/><stop stop-color="rgba(11, 185.497, 255, 1)" offset="100%"/></linearGradient></defs><path style="transform:translate(0, 0px); opacity:1" fill="url(#sw-gradient-0)" d="M0,76L10.4,76C20.9,76,42,76,63,79.2C83.5,82,104,89,125,95C146.1,101,167,108,188,101.3C208.7,95,230,76,250,63.3C271.3,51,292,44,313,38C333.9,32,355,25,376,41.2C396.5,57,417,95,438,107.7C459.1,120,480,108,501,114C521.7,120,543,146,563,152C584.3,158,605,146,626,126.7C647,108,668,82,689,85.5C709.6,89,730,120,751,117.2C772.2,114,793,76,814,57C834.8,38,856,38,877,60.2C897.4,82,918,127,939,123.5C960,120,981,70,1002,44.3C1022.6,19,1043,19,1064,34.8C1085.2,51,1106,82,1127,101.3C1147.8,120,1169,127,1190,114C1210.4,101,1231,70,1252,69.7C1273,70,1294,101,1315,95C1335.7,89,1357,44,1377,28.5C1398.3,13,1419,25,1440,34.8C1460.9,44,1482,51,1492,53.8L1502.6,57L1502.6,190L1492.2,190C1481.7,190,1461,190,1440,190C1419.1,190,1398,190,1377,190C1356.5,190,1336,190,1315,190C1293.9,190,1273,190,1252,190C1231.3,190,1210,190,1190,190C1168.7,190,1148,190,1127,190C1106.1,190,1085,190,1064,190C1043.5,190,1023,190,1002,190C980.9,190,960,190,939,190C918.3,190,897,190,877,190C855.7,190,835,190,814,190C793,190,772,190,751,190C730.4,190,710,190,689,190C667.8,190,647,190,626,190C605.2,190,584,190,563,190C542.6,190,522,190,501,190C480,190,459,190,438,190C417.4,190,397,190,376,190C354.8,190,334,190,313,190C292.2,190,271,190,250,190C229.6,190,209,190,188,190C167,190,146,190,125,190C104.3,190,83,190,63,190C41.7,190,21,190,10,190L0,190Z"/><defs><linearGradient id="sw-gradient-1" x1="0" x2="0" y1="1" y2="0"><stop stop-color="rgba(62, 191.251, 250, 1)" offset="0%"/><stop stop-color="rgba(11, 226.357, 255, 1)" offset="100%"/></linearGradient></defs><path style="transform:translate(0, 50px); opacity:0.9" fill="url(#sw-gradient-1)" d="M0,38L10.4,44.3C20.9,51,42,63,63,57C83.5,51,104,25,125,41.2C146.1,57,167,114,188,114C208.7,114,230,57,250,28.5C271.3,0,292,0,313,28.5C333.9,57,355,114,376,126.7C396.5,139,417,108,438,82.3C459.1,57,480,38,501,31.7C521.7,25,543,32,563,47.5C584.3,63,605,89,626,101.3C647,114,668,114,689,117.2C709.6,120,730,127,751,120.3C772.2,114,793,95,814,79.2C834.8,63,856,51,877,50.7C897.4,51,918,63,939,72.8C960,82,981,89,1002,85.5C1022.6,82,1043,70,1064,76C1085.2,82,1106,108,1127,101.3C1147.8,95,1169,57,1190,44.3C1210.4,32,1231,44,1252,69.7C1273,95,1294,133,1315,126.7C1335.7,120,1357,70,1377,41.2C1398.3,13,1419,6,1440,31.7C1460.9,57,1482,114,1492,142.5L1502.6,171L1502.6,190L1492.2,190C1481.7,190,1461,190,1440,190C1419.1,190,1398,190,1377,190C1356.5,190,1336,190,1315,190C1293.9,190,1273,190,1252,190C1231.3,190,1210,190,1190,190C1168.7,190,1148,190,1127,190C1106.1,190,1085,190,1064,190C1043.5,190,1023,190,1002,190C980.9,190,960,190,939,190C918.3,190,897,190,877,190C855.7,190,835,190,814,190C793,190,772,190,751,190C730.4,190,710,190,689,190C667.8,190,647,190,626,190C605.2,190,584,190,563,190C542.6,190,522,190,501,190C480,190,459,190,438,190C417.4,190,397,190,376,190C354.8,190,334,190,313,190C292.2,190,271,190,250,190C229.6,190,209,190,188,190C167,190,146,190,125,190C104.3,190,83,190,63,190C41.7,190,21,190,10,190L0,190Z"/></svg>
     </div>
     <style>
         body{
@@ -229,13 +182,13 @@
             margin-top: 5px;
         }
         .title{
-            background-color: #5523a7;
+            background-color: rgb(255, 241, 210);
+            background-color: rgb(88, 88, 217);
             margin: 0;
             width: 100vw - 50px;
             padding: 5px;
+            color: rgb(205, 230, 255);
             text-align: center;
-            font-size: 2vw;
-            color: white;
         }
         .subcontainer{
             padding-left: 10px;
@@ -271,8 +224,9 @@
             height: 20vh;
             margin-left: auto;
             margin-right: auto;
-            border-radius: 15vw;
+            border-radius: 100px;
             color:black;
+            box-shadow: 12px 12px 2px 1px rgba(0, 0, 255, .2);;
         }
         .whole{
            /* display: flex;*/
@@ -289,11 +243,13 @@
             background-color: #0d1879;
             background-color: white;
             background-color: #0e0b55;
-            background-color: #5523a7;
+            background-color: #1a028f;
+            background-color: #624cab; /* during night time */
+
             color: rgb(205, 230, 255);
             /*width: 100vw;*/
             height: 100vh;
-            /*margin-left: 50px;*/
+            margin-left: 50px;
         }
         .menu-switch{
             background-color: rgb(26, 129, 232);
@@ -374,7 +330,7 @@
         }
         /* hamburger menu */
         body,ul,li,h1,p {margin: 0;padding: 0;}
-		a {text-decoration: none; color: white;}
+		a {text-decoration: none; color: #000;}
 		li {list-style-type: none;}
 		.flex {display: flex;}
 		.aic {align-items: center;}
@@ -429,7 +385,7 @@
 		  top: 0;
 		  width: 40%; 
 		  z-index: 2;
-		  background-color: #5523a7;
+		  background-color: white;
           text-align: center;
 		}
 		.sidemenu nav ul li {
@@ -447,8 +403,7 @@
 		  z-index: 3;
 		}
 		.hamburger span {
-		  background-color: rgba(62, 191.251, 250, 1);
-		  background-color: white;
+		  background-color: #000000;
 		  height: 4px;
 		  left: 15px;
 		  position: absolute;
@@ -522,7 +477,7 @@
 
         const profileUsernameText = document.querySelector(".profile-usernameText");
         const profileEmailText = document.querySelector(".profile-emailText");
-        const detectionLevelSlider = document.querySelector("#detection-distance-selection");
+        const detectionLevelSlider = document.querySelector(".detection-level-slider");
         const detectionLevelLabel = document.querySelector(".detection-level-label");
 
         const conversionTable = {
@@ -569,7 +524,7 @@
             .then(resp => resp.json())
             .then(resp => {
                 const settings = resp;
-                detectionLevelLabel.innerHTML = `Detection Level: ${settings.detectionLevel}`;
+                detectionLevelLabel.innerHTML = `検出レベル: ${settings.detectionLevel}`;
                 detectionLevelSlider.value = settings.detectionLevel;
                 document.querySelector("#language-selection").value = settings.language;
             });
@@ -585,15 +540,14 @@
         }
         async function loadProfile(){
             const profile = await (await fetch(`/getProfile?username=${window.sessionStorage.username}`)).json();
-            profileUsernameText.innerHTML = `${window.sessionStorage.username}`;
-            profileEmailText.innerHTML = `${profile["email"]}`;
+            profileUsernameText.innerHTML = `ユーザー名: <br>${window.sessionStorage.username}`;
+            profileEmailText.innerHTML = `Eメール: <br>${profile["email"]}`;
             console.log(profile);
         }
 
-        /* not needed as the code is new
         function refreshSettingValues(){
-            detectionLevelLabel.innerHTML = `Detection Distance: ${detectionLevelSlider.value}`;
-        }*/
+            detectionLevelLabel.innerHTML = `検出レベル: ${detectionLevelSlider.value}`;
+        }
         function updateSettings(){
             const languageSelectionMenu = document.getElementById("language-selection");
             const language = languageSelectionMenu.value;

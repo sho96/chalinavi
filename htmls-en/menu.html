@@ -37,24 +37,24 @@
             <div class="subcontainer app-container">
                 <div class="app" onclick="openApp('/apps/navigation')">
                     <!--<img class="app-img" src="/imgs/menu/chalinavi.jpg">!-->
-                    <span class="material-symbols-outlined" style="font-size: 100px;">shield_with_heart</span>
+                    <span class="material-symbols-outlined" style="font-size: 100px; color: white;">shield_with_heart</span>
                     <p>Mamo-ruKun</p>
                 </div>
                 <div class="app" onclick="openApp('/apps/hazardMap')">
                     <!--<img class="app-img" src="/imgs/menu/hazardMap.jpg">!-->
-                    <span class="material-symbols-outlined" style="font-size: 100px;">pin_drop</span>
+                    <span class="material-symbols-outlined" style="font-size: 100px; color: white;">pin_drop</span>
                     <p>Hazard Map</p>
                 </div>
                 <div class="app" onclick="openApp('/apps/rate')">
                     <!--<img class="app-img" src="/imgs/menu/rateThisSystem.jpg">!-->
-                    <span class="material-symbols-outlined" style="font-size: 100px;">reviews</span>
+                    <span class="material-symbols-outlined" style="font-size: 100px; color: white;">reviews</span>
                     <p>Rate</p>
                 </div>
             </div>
         </div>
         <div class="container" id="dashboard" hidden>
             <div class="title">
-                <h1 style="margin-top: 50px; margin-left: 20px; font-size: 7vw; text-align: left; color: white;">Dashboard</h1>
+                <h1 style="margin-top: 50px; margin-left: 20px; font-size: 7vw; text-align: left;">Dashboard</h1>
             </div>
             <div class="subcontainer dashboard-container">
                 <div class="dashboard-bubble totalDistanceTraveled" style="background-color: rgba(255,255,255,0.12);">
@@ -198,11 +198,11 @@
             <div class="subcontainer dashboard-container">
                 <div class="dashboard-bubble" style="background-color: rgba(255,255,255,0.12); height: 13vh;">
                     <h2 style="font-size: 4vw; color: rgb(205, 230, 255); padding-top: 30px; margin-bottom: 0;">Username</h2>
-                    <h1 class="profile-usernameText" style="font-size: 5.5vw; color: rgb(255, 255, 255); padding: 0;">Sho</h1>
+                    <h1 class="profile-usernameText" style="font-size: 5.5vw; color: rgb(255, 255, 255); padding: 0;">--</h1>
                 </div>
                 <div class="dashboard-bubble" style="background-color: rgba(255,255,255,0.12); height: 13vh;" onclick="window.location.href = `/profile/changeEmail?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">
                     <h2 style="font-size: 4vw; color: rgb(205, 230, 255); padding-top: 30px; margin-bottom: 0;">Email  <span class="material-symbols-outlined" style="color: rgb(217, 217, 217); font-size: 4vw;">edit</span></h2>
-                    <h1 class="profile-emailText" style="font-size: 5vw; color: rgb(255, 255, 255);">shizuka112996@gmail.com</h1>
+                    <h1 class="profile-emailText" style="font-size: 5vw; color: rgb(255, 255, 255);">---</h1>
                 </div>
                 <div class="dashboard-bubble" style="background-color: rgba(255,255,255,0.12); height: 13vh;" onclick="window.location.href = `/profile/changePassword?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">
                     <h2 style="font-size: 4vw; color: rgb(205, 230, 255); padding-top: 30px; margin-bottom: 0;">Password  <span class="material-symbols-outlined" style="color: rgb(217, 217, 217); font-size: 4vw;">edit</span></h2>
@@ -235,6 +235,7 @@
             padding: 5px;
             text-align: center;
             font-size: 2vw;
+            color: white;
         }
         .subcontainer{
             padding-left: 10px;
@@ -373,7 +374,7 @@
         }
         /* hamburger menu */
         body,ul,li,h1,p {margin: 0;padding: 0;}
-		a {text-decoration: none; color: #000;}
+		a {text-decoration: none; color: white;}
 		li {list-style-type: none;}
 		.flex {display: flex;}
 		.aic {align-items: center;}
@@ -428,7 +429,7 @@
 		  top: 0;
 		  width: 40%; 
 		  z-index: 2;
-		  background-color: rgb(255, 255, 255);
+		  background-color: #5523a7;
           text-align: center;
 		}
 		.sidemenu nav ul li {
@@ -447,6 +448,7 @@
 		}
 		.hamburger span {
 		  background-color: rgba(62, 191.251, 250, 1);
+		  background-color: white;
 		  height: 4px;
 		  left: 15px;
 		  position: absolute;
