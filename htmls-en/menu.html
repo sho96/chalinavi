@@ -569,7 +569,7 @@
             .then(resp => resp.json())
             .then(resp => {
                 const settings = resp;
-                detectionLevelLabel.innerHTML = `Detection Level: ${settings.detectionLevel}`;
+                //detectionLevelLabel.innerHTML = `Detection Level: ${settings.detectionLevel}`;
                 detectionLevelSlider.value = settings.detectionLevel;
                 document.querySelector("#language-selection").value = settings.language;
             });
