@@ -11,8 +11,8 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     </head>
     <body onload="getMap();">
-        <button style="margin: 5px;" onclick="window.location.href = `/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;"><span class="material-symbols-outlined" style="font-size: 1rem;">arrow_back</span>戻る</button>
-        <div id="myMap" style="width: 100vw; height: 100vh; text-align: center;"></div>
+        <button style="margin: 5px; border: none; background-color: white;" onclick="window.location.href = `/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;"><span class="material-symbols-outlined" style="font-size: 1.2rem;">arrow_back</span></button>
+        <div id="myMap" style="width: 100vw; height: 100vh; text-align: center; color: white;"></div>
         <script>
             setInterval(()=>{
                 fetch("/updateToken",{
@@ -114,6 +114,7 @@
             body{
                 margin: 0;
                 font-family: Arial;
+                background-color: white;
             }
         </style>
     </body>

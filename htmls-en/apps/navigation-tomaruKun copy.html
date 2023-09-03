@@ -1,56 +1,104 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
         
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>チャリナビ</title>
+        <title>Chalinavi</title>
         <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
         <script>eruda.init();</script>
     </head>
     <body style="">
-        <div class="orientation-lock-warning-container bubble-container" hidden>
-            <h1>画面の向きがロックされているようです</h1>
-            <h3>画面のロックを解除してください</h3>
+        <div class="toma-ru_link bubble-container" hidden>
+            <h1>Link with Tomaru Kun</h1>
 
-            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">メニューに戻る</a>
+            
+            <button class="registered_toma-ru" onclick="" hidden>---</button><br>
+            <button class="new_toma-ru" onclick="link_tomaru_new()">＋New Connection</button><br>
+            
+            <br>
+            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">Back to Menu</a>
+
+        </div>
+        <div class="link bubble-container" hidden>
+            <h1>Start Connecting</h1>
+            <h3>Start off by entering the fields below</h3>
+            <form id="tomaru-form">
+                <div class="fields">
+                    <div class="field">
+                        <h3>The name of Tomaru Kun</h3>
+                        <input type="text" placeholder="name of Tomaru Kun..." class="toma-ru_nameField">
+                    </div>
+                    <div class="field">
+                        <h3>Password</h3>
+                        <input type="password" placeholder="password..." class="toma-ru_passwordField">
+                    </div>
+                </div>
+            </form>
+            <p class="errMsg"></p>
+            <button onclick="submitTomaruData();"class="submit">Link</button><br>
+            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">Back to Menu</a>
+
+        </div>
+        <div class="wait_verify bubble-container" hidden>
+            <h1>Waiting for Tomaru Kun to accept the connection...</h1>
+            <h2 style="color: rgb(202, 201, 201);">Check if the code below matches what's shown on Tomaru Kun: </h2>
+            <h2 style="color: rgb(202, 201, 201); text-decoration: underline;" class="tokenCode">____________________</h2>
+        </div>
+        <div class="orientation-lock-warning-container bubble-container" hidden>
+            <h1>Looks like your Screen is locked</h1>
+            <h3>free your screen orientation to continue</h3>
+
+            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">Back to Menu</a>
+            <div class="unlink_toma-ru_container">
+                <button onclick="disconnect();window.location.href=`/apps/navigation?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`"  class="link_toma-ru">トマールくんと連携解除</button>
+            </div>
         </div>
         <div class="permission-container bubble-container" hidden>
-            <h1>加速度センサーの利用を許可してください</h1>
-            <h3>この機能を利用するには加速度センサーの使用が必要です</h3>
-            <button class="allow-button" onclick="requestPermission()">許可する</button>
+            <h1>Allow motion sensor on your device</h1>
+            <h3>allow the use of accelerometer on your device to use this feature</h3>
+            <button class="allow-button" onclick="requestPermission()">Allow</button>
             <br>
-            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">メニューに戻る</a>
+            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">Back to Menu</a>
+            <div class="unlink_toma-ru_container">
+                <button onclick="disconnect();window.location.href=`/apps/navigation?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`"  class="link_toma-ru">トマールくんと連携解除</button>
+            </div>
         </div>
         <div class="orientation-warning-container bubble-container" hidden>
-            <h1>画面の向きが違うようです</h1>
-            <h3>画面を縦にしてください</h3>
+            <h1>Looks like your screen orientation is not right</h1>
+            <h3>please rotate your screen to portrait orientation</h3>
 
-            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">メニューに戻る</a>
+            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">Back to Menu</a>
+            <div class="unlink_toma-ru_container">
+                <button onclick="disconnect();window.location.href=`/apps/navigation?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`"  class="link_toma-ru">トマールくんと連携解除</button>
+            </div>
         </div>
         <div class="survey-container bubble-container" hidden>
-            <h1>車両を選んでください</h1>
-            <h3>何に乗っているかを選んでください</h3>
+            <h1>Select your vehicle</h1>
+            <h3>please select what you are riding</h3>
             
-            <button class="bike" onclick="selectVehicle('bike')">自転車</button><br>
-            <button class="car" onclick="selectVehicle('car')">車</button><br>
+            <button class="bike" onclick="selectVehicle('bike')">Bike</button><br>
+            <button class="car" onclick="selectVehicle('car')">Car</button><br>
             
-            <button class="tomaru-link-button" onclick="window.location.href=`/apps/navigation-tomaruKun?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`">
-                トマールくんと連携
-            </button>
             <br>
-            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">メニューに戻る</a>
+            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">Back to Menu</a>
+            <div class="unlink_toma-ru_container">
+                <button onclick="disconnect();window.location.href=`/apps/navigation?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`"  class="link_toma-ru">トマールくんと連携解除</button>
+            </div>
         </div>
         <div class="calibration-container bubble-container" hidden>
-            <h1>センサーを補正</h1>
-            <h3>もう少し！</h3>
-            <h2>下のボタンを押して端末をできるだけ動かさずに3秒間センサーを補正してください</h2>
+            <h1>Sensor Calibration</h1>
+            <h3>You're almost there!</h3>
+            <h2>When you're device is stable and ready, press the button below to start the calibration</h2>
             
-            <button class="calibrate-button" onclick="startCalibration()">補正</button><br>
+            <button class="calibrate-button" onclick="startCalibration()">start</button><br>
             
             <br>
-            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;">メニューに戻る</a>
+            <a onclick="window.location.href=`/menu?token=${window.sessionStorage.token}`;">Back to Menu</a>
+            <div class="unlink_toma-ru_container">
+                <button onclick="disconnect();window.location.href=`/apps/navigation?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`"  class="link_toma-ru">トマールくんと連携解除</button>
+            </div>
         </div>
         <div class="main-container" hidden>
             <div class="signal-meter" style="position: absolute; right: 20px; top: 10px;">
@@ -65,28 +113,27 @@
             <h1 style="color: #bebebe;"><span class="speedometer" style="color: white; font-size: 10rem;">---</span> km/h</h1>
             <h1 style="color: #bebebe;"><span class="compass" style="color: white; font-size: 5rem;">-- ---</span></h1>
             <h1 style="color: #bebebe;"><span class="total-distance" style="color: white; font-size: 5rem;">---</span> km</h1>
-            <button onclick="summary();" class="done-button" style="font-size: 2rem; color: black;">終わる</button>
+            <button onclick="summary();" class="done-button" style="font-size: 2rem; color: black;">Done</button>
             
             <!--Delete on Deployment-->
-            <h4 class="gravityVector">重力ベクトル: ---</h4>
-            <h4 class="accelerationOrientation">加速度の向き: ---</h4>
-            <h4 class="accelerationType">種類: ---</h4>
+            <h4 class="gravityVector">GravityVector: ---</h4>
+            <h4 class="accelerationOrientation">Orientation: ---</h4>
+            <h4 class="accelerationType">Type: ---</h4>
             <h4 class="log"></h4>
             <!---->
         </div>
         <div class="alert-container" hidden>
             <div class="alert-window" >
                 <div name="alert-distance" style="background-color: red;">
-                    <h1 style="font-size: 5rem; color: rgb(106, 255, 0);"><span class="alert-distance">100</span>m 先</h1>
+                    <h1 style="font-size: 5rem; color: rgb(106, 255, 0);"><span class="alert-distance">100</span>m ahead</h1>
                 </div>
                 
                 <div name="alert-content" class="alert-blink">
                     <img src="/imgs/apps/navigation/warning.png" alt="warning sign" width="75%" style="margin-top: 20px;">
-                    <h1 class="alert-message" style="color: black; font-size: 4rem; margin-left: 15px; margin-right: 15px;"></h1>
+                    <h1 class="alert-message" style="color: black; font-size: 4rem; margin-left: 15px; margin-right: 15px;">alert message</h1>
                 </div>
             </div>
         </div>
-        <svg xmlns:xlink="http://www.w3.org/1999/xlink" style="position: absolute; bottom:-10px; left: 0px;" height="30%" viewBox="0 0 1440 190" version="1.1" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="sw-gradient-0" x1="0" x2="0" y1="1" y2="0"><stop stop-color="rgba(62, 99.619, 243, 1)" offset="0%"/><stop stop-color="rgba(11, 185.497, 255, 1)" offset="100%"/></linearGradient></defs><path style="transform:translate(0, 0px); opacity:1" fill="url(#sw-gradient-0)" d="M0,76L10.4,76C20.9,76,42,76,63,79.2C83.5,82,104,89,125,95C146.1,101,167,108,188,101.3C208.7,95,230,76,250,63.3C271.3,51,292,44,313,38C333.9,32,355,25,376,41.2C396.5,57,417,95,438,107.7C459.1,120,480,108,501,114C521.7,120,543,146,563,152C584.3,158,605,146,626,126.7C647,108,668,82,689,85.5C709.6,89,730,120,751,117.2C772.2,114,793,76,814,57C834.8,38,856,38,877,60.2C897.4,82,918,127,939,123.5C960,120,981,70,1002,44.3C1022.6,19,1043,19,1064,34.8C1085.2,51,1106,82,1127,101.3C1147.8,120,1169,127,1190,114C1210.4,101,1231,70,1252,69.7C1273,70,1294,101,1315,95C1335.7,89,1357,44,1377,28.5C1398.3,13,1419,25,1440,34.8C1460.9,44,1482,51,1492,53.8L1502.6,57L1502.6,190L1492.2,190C1481.7,190,1461,190,1440,190C1419.1,190,1398,190,1377,190C1356.5,190,1336,190,1315,190C1293.9,190,1273,190,1252,190C1231.3,190,1210,190,1190,190C1168.7,190,1148,190,1127,190C1106.1,190,1085,190,1064,190C1043.5,190,1023,190,1002,190C980.9,190,960,190,939,190C918.3,190,897,190,877,190C855.7,190,835,190,814,190C793,190,772,190,751,190C730.4,190,710,190,689,190C667.8,190,647,190,626,190C605.2,190,584,190,563,190C542.6,190,522,190,501,190C480,190,459,190,438,190C417.4,190,397,190,376,190C354.8,190,334,190,313,190C292.2,190,271,190,250,190C229.6,190,209,190,188,190C167,190,146,190,125,190C104.3,190,83,190,63,190C41.7,190,21,190,10,190L0,190Z"/><defs><linearGradient id="sw-gradient-1" x1="0" x2="0" y1="1" y2="0"><stop stop-color="rgba(62, 191.251, 250, 1)" offset="0%"/><stop stop-color="rgba(11, 226.357, 255, 1)" offset="100%"/></linearGradient></defs><path style="transform:translate(0, 50px); opacity:0.9" fill="url(#sw-gradient-1)" d="M0,38L10.4,44.3C20.9,51,42,63,63,57C83.5,51,104,25,125,41.2C146.1,57,167,114,188,114C208.7,114,230,57,250,28.5C271.3,0,292,0,313,28.5C333.9,57,355,114,376,126.7C396.5,139,417,108,438,82.3C459.1,57,480,38,501,31.7C521.7,25,543,32,563,47.5C584.3,63,605,89,626,101.3C647,114,668,114,689,117.2C709.6,120,730,127,751,120.3C772.2,114,793,95,814,79.2C834.8,63,856,51,877,50.7C897.4,51,918,63,939,72.8C960,82,981,89,1002,85.5C1022.6,82,1043,70,1064,76C1085.2,82,1106,108,1127,101.3C1147.8,95,1169,57,1190,44.3C1210.4,32,1231,44,1252,69.7C1273,95,1294,133,1315,126.7C1335.7,120,1357,70,1377,41.2C1398.3,13,1419,6,1440,31.7C1460.9,57,1482,114,1492,142.5L1502.6,171L1502.6,190L1492.2,190C1481.7,190,1461,190,1440,190C1419.1,190,1398,190,1377,190C1356.5,190,1336,190,1315,190C1293.9,190,1273,190,1252,190C1231.3,190,1210,190,1190,190C1168.7,190,1148,190,1127,190C1106.1,190,1085,190,1064,190C1043.5,190,1023,190,1002,190C980.9,190,960,190,939,190C918.3,190,897,190,877,190C855.7,190,835,190,814,190C793,190,772,190,751,190C730.4,190,710,190,689,190C667.8,190,647,190,626,190C605.2,190,584,190,563,190C542.6,190,522,190,501,190C480,190,459,190,438,190C417.4,190,397,190,376,190C354.8,190,334,190,313,190C292.2,190,271,190,250,190C229.6,190,209,190,188,190C167,190,146,190,125,190C104.3,190,83,190,63,190C41.7,190,21,190,10,190L0,190Z"/></svg>
         <script>
             const speedometer = document.querySelector(".speedometer");
             const compass = document.querySelector(".compass");
@@ -121,24 +168,27 @@
 
             let timeLastSentAccident;
 
-            let accelerationDurationType = "none";
+            let accelerationDurationType= "none";
             let accelerationDurationStart = 0;
             let accelerationDurationThreshold = 0;
 
+            let tomaruName;
+            let tomaruPassword;
+
             const distanceSounds = {
-                10: new Audio("/sounds/ja/10m.mp3"),
-                20: new Audio("/sounds/ja/20m.mp3"),
-                30: new Audio("/sounds/ja/30m.mp3"),
-                40: new Audio("/sounds/ja/40m.mp3"),
-                50: new Audio("/sounds/ja/50m.mp3"),
-                60: new Audio("/sounds/ja/60m.mp3"),
-                70: new Audio("/sounds/ja/70m.mp3"),
-                80: new Audio("/sounds/ja/80m.mp3"),
-                90: new Audio("/sounds/ja/90m.mp3"),
-                100: new Audio("/sounds/ja/100m.mp3"),
+                10: new Audio("/sounds/en/10m.mp3"),
+                20: new Audio("/sounds/en/20m.mp3"),
+                30: new Audio("/sounds/en/30m.mp3"),
+                40: new Audio("/sounds/en/40m.mp3"),
+                50: new Audio("/sounds/en/50m.mp3"),
+                60: new Audio("/sounds/en/60m.mp3"),
+                70: new Audio("/sounds/en/70m.mp3"),
+                80: new Audio("/sounds/en/80m.mp3"),
+                90: new Audio("/sounds/en/90m.mp3"),
+                100: new Audio("/sounds/en/100m.mp3"),
             };
-            const suddenBrakeWarningSound = new Audio("/sounds/ja/sudden_brake.mp3");
-            const rearImpactWarningSound = new Audio("/sounds/ja/rear_impact.mp3");
+            const suddenBrakeWarningSound = new Audio("/sounds/en/sudden_brake.mp3");
+            const rearImpactWarningSound = new Audio("/sounds/en/rear_impact.mp3");
 
             // ---------------------------------- main process ----------------------------------
             function updateMeasurements(){
@@ -163,7 +213,7 @@
                 }else if(accuracy < 15){
                     //3
                     zero.style.opacity = "100%";
-                    one.style.opacity = "100%"; 
+                    one.style.opacity = "100%";
                     two.style.opacity = "100%";
                     three.style.opacity = "30%";
                 }else if(accuracy < 20){
@@ -212,8 +262,8 @@
                 if(Date.now() - timeLastSentAccident < 3000){
                     return;
                 }
-                document.querySelector(".accelerationOrientation").innerHTML = `加速度の向き: ${firstNDigits(accelerationOrientation, 3)}`;
-                document.querySelector(".accelerationType").innerHTML = `種類: ${accelerationDurationType}`;
+                document.querySelector(".accelerationOrientation").innerHTML = `Orientation: ${firstNDigits(accelerationOrientation, 3)}`;
+                document.querySelector(".accelerationType").innerHTML = `Type: ${accelerationDurationType}`;
                 if(currentSpeed < 6){
                     return;
                 }
@@ -249,9 +299,15 @@
                         accelerationDurationType = "brake";
                     }
                     if(Date.now() - accelerationDurationStart > accelerationDurationThreshold && accelerationDurationType != "none"){
+                        let imgName = "";
+                        const timestamp = Date.now();
+                        if(accelerationDurationType == "brake"){
+                            imgName = `${window.sessionStorage.username}${timestamp}`
+                            sendCommand(`takePic ${imgName}`)
+                        }
                         console.log(`${accelerationDurationType} detected`);
                         document.querySelector(".log").innerHTML += `${accelerationDurationType} detected<br>`;
-                        sendAccident(accelerationDurationType);
+                        sendAccident(accelerationDurationType, imgName);
                         timeLastSentAccident = Date.now();
                     }
                 }
@@ -333,15 +389,17 @@
                     }
                     var location = locations[index];
                     distanceToAccident = getDistanceOnEarth(currentPosition.latitude, currentPosition.longitude, location.location.lat, location.location.lon);
-                    alertAccident(firstNDigits(distanceToAccident*1000, 2), convertToMessage[location.type], 7000, location.type);
                     //surroundingAccidents[index]["alerted"] = true;
                     var coordinate = location.location;
+                    let numOfAccidents = 0;
                     for(i in surroundingAccidents){
                         var loc = surroundingAccidents[i].location;
                         if(getDistanceOnEarth(coordinate.lat, coordinate.lon, loc.lat, loc.lon)*1000 < 10){
+                            numOfAccidents++;
                             surroundingAccidents[i]["alerted"] = true;
                         }
                     }
+                    alertAccident(firstNDigits(distanceToAccident*1000, 2), convertToMessage[location.type], 7000, location.type);
                 }
             }
             
@@ -362,17 +420,18 @@
                 const distanceSoundToPlay = distanceSounds[roundedDistance];
                 let warningSoundToPlay;
                 let waitTime = 0;
+                sendCommand("brake");
                 if(type == "brake"){
                     warningSoundToPlay = suddenBrakeWarningSound;
-                    waitTime = 1100;
+                    waitTime = 1700;
                 }else if(type == "rear impact"){
                     warningSoundToPlay = rearImpactWarningSound;
-                    waitTime = 1100;
+                    waitTime = 1700;
                 }
                 navigator.vibrate(1000);
-                distanceSoundToPlay.play();
+                warningSoundToPlay.play();
                 setTimeout(() => {
-                    warningSoundToPlay.play();
+                    distanceSoundToPlay.play();
                 }, waitTime);
             }
 
@@ -411,9 +470,10 @@
 
             // ----------------------------------- summary and leave -----------------------------------
             function summary(){
-                if(!confirm(`走行距離： ${parseFloat(parseFloat((totalDistanceTraveled / 1000).toFixed(2)).toPrecision(3))} km`)){
+                if(!confirm(`Total distance traveled: ${parseFloat(parseFloat((totalDistanceTraveled / 1000).toFixed(2)).toPrecision(3))} km`)){
                     return;
                 }
+                disconnect()
                 fetch("/apps/navigation/sendSummary", {
                     method: "POST",
                     body: JSON.stringify({
@@ -424,7 +484,7 @@
                         "Content-Type": "application/json"
                     }
                 });
-                window.location.href = `/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;
+                window.location.href = `/menu?token=${window.sessionStorage.token}`;
             }
 
             // ---------------------------------- system flow controls ----------------------------------
@@ -436,15 +496,86 @@
                     const waitForOrientationCorrection = setInterval(() => {
                         if(window.screen.width < window.screen.height){
                             document.querySelector(".orientation-warning-container").hidden = true;
-                            document.querySelector(".survey-container").hidden = false;
+                            //document.querySelector(".survey-container").hidden = false;
+                            //toma-ru_link
+                            document.querySelector(".toma-ru_link").hidden = false;
                             clearInterval(waitForOrientationCorrection);
                         }
                     });
                 }else{
-                    document.querySelector(".survey-container").hidden = false;
+                    //document.querySelector(".survey-container").hidden = false;
+                    document.querySelector(".toma-ru_link").hidden = false;
                 }
             }
-
+            function link_tomaru_new(){
+                document.querySelector(".toma-ru_link").hidden = true;
+                document.querySelector(".link").hidden = false;
+            }
+            async function submitTomaruData(){
+                tomaruName = document.querySelector(".toma-ru_nameField").value;
+                tomaruPassword = await digestMessage(document.querySelector(".toma-ru_passwordField").value);
+                fetch("/tomaru-kun/unlinked/login",{
+                    method:"POST",
+                    body: JSON.stringify({
+                        name: tomaruName,
+                        password: tomaruPassword,
+                        token: window.sessionStorage.token,
+                    }),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                }).then(resp => resp.json())
+                .then(resp => {
+                    status = resp.status;
+                    if (status == "success"){
+                        document.querySelector(".tokenCode").innerHTML = window.sessionStorage.token;
+                        document.querySelector(".link").hidden = true;
+                        document.querySelector(".wait_verify").hidden = false;
+                        waitForVerification();
+                    }else{
+                        document.querySelector(".errMsg").innerHTML = "*The name of Tomaru kun and the password doesn't match.<br>Make sure your Tomaru Kun is turned on";
+                    }
+                });
+            }
+            function waitForVerification(){
+                const waitForVerificationLoop = setInterval(
+                    async () => {
+                        result = await (await fetch(`/tomaru-kun/unlinked/getMessage?name=${tomaruName}&type=status`)).json()
+                        console.log(result);
+                        if (result["message"] == "verified"){
+                            document.querySelector(".wait_verify").hidden = true;
+                            document.querySelector(".survey-container").hidden = false;
+                            clearInterval(waitForVerificationLoop);
+                            fetch("/tomaru-kun/unlinked/link",{
+                                method: "POST",
+                                body: JSON.stringify({
+                                    name: tomaruName,
+                                }),
+                                headers: {
+                                    "Content-Type": "application/json"
+                                }
+                            })
+                            setInterval(() => {
+                                fetch("/tomaru-kun/linked/setCommand", {
+                                    method: "POST",
+                                    body:JSON.stringify({
+                                        name: tomaruName,
+                                        cmd: "updateClientTimestamp"
+                                    }),
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    }
+                                })
+                            }, 10000);
+                        }else if(result["message"] == "denied"){
+                            alert("The connection has been denied");
+                            document.querySelector(".wait_verify").hidden = true;
+                            document.querySelector(".link").hidden = false;
+                            clearInterval(waitForVerificationLoop);
+                        }
+                    }
+                , 2000)
+            }
             function selectVehicle(vehicle){
                 askSensorPermission();
                 selectedVehicle = vehicle;
@@ -486,7 +617,7 @@
                 }, 75);
             }
             function main(){
-                document.querySelector(".gravityVector").innerHTML = `重力ベクトル:<br>x: ${gravityVector.x}<br>y: ${gravityVector.y}<br>z: ${gravityVector.z}<br>`;
+                document.querySelector(".gravityVector").innerHTML = `GravityVector:<br>x: ${gravityVector.x}<br>y: ${gravityVector.y}<br>z: ${gravityVector.z}<br>`;
                 startMain();
                 console.log(`x: ${gravityVector.x}\ny: ${gravityVector.y}\nz: ${gravityVector.z}\n`);
                 console.log(`baseOrientation: ${rad2deg(baseOrientation)} deg`);
@@ -588,6 +719,21 @@
             }
 
             // ----------------------------------- general functions -------------------------------------
+            function disconnect(){
+                sendCommand("disconnect");
+            }
+            function sendCommand(command){
+                fetch("/tomaru-kun/linked/setCommand",{
+                    method: "POST",
+                    body: JSON.stringify({
+                        name: tomaruName,
+                        cmd: command,
+                    }),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+            }
             function remapVector(vec, radians){
                 x = vec.x;
                 y = vec.y;
@@ -596,7 +742,7 @@
                 newZ = z * Math.cos(radians) + y * Math.sin(radians)
                 return {x: x, y: newY, z: newZ};
             }
-            function sendAccident(type){
+            function sendAccident(type, image=""){
                 fetch("/apps/navigation/sendData", {
                     method: "POST",
                     body: JSON.stringify({
@@ -606,7 +752,7 @@
                             lon: lastPosition.longitude,
                         },
                         username: window.sessionStorage.username,
-                        img: ""
+                        img: image
                     }),
                     headers:{
                         "Content-Type": "application/json"
@@ -775,11 +921,20 @@
             }
             function back(){
                 alert(`You've traveled for ${(totalDistanceTraveled/1000).toPrecision(3)}km`);
-                window.location.href = `/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;
+                window.location.href = `/menu?token=${window.sessionStorage.token}`;
             }
             function sleep(miliseconds) {
                 var currentTime = new Date().getTime();
                 while (currentTime + miliseconds >= new Date().getTime()) { }
+            }
+            async function digestMessage(message) {
+                const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array
+                const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8); // hash the message
+                const hashArray = Array.from(new Uint8Array(hashBuffer)); // convert buffer to byte array
+                const hashHex = hashArray
+                  .map((b) => b.toString(16).padStart(2, "0"))
+                  .join(""); // convert bytes to hex string
+                return hashHex;
             }
             setInterval(()=>{
                 fetch("/updateToken",{
@@ -804,21 +959,18 @@
         </script>
 
         <style>
-            /*rgba(62, 191.251, 250, 1)" offset="0%"/><stop stop-color="rgba(11, 226.357, 255, 1)*/
             body{
                 font-family: Arial;
                 height: 100vh;
                 background: rgb(0,156,161);
-                background-color: #5523a7;
-                width: 100vw;
-                overflow: hidden;
+                background: linear-gradient(90deg, rgba(0,156,161,1) 0%, rgba(22,147,94,1) 74%, rgba(23,176,72,1) 100%);
             }
             a{
-                color: white;
+                color: dodgerblue;
                 text-decoration: none;
             }
             a:hover{
-                color: rgb(157, 206, 255);
+                color: dodgerblue;
                 text-decoration: underline;
             }
             h1{
@@ -834,36 +986,36 @@
                 color: rgb(215, 215, 215);
             }
             .bike{
-                background-color: rgba(62, 191.251, 250, 1);
+                background-color: aquamarine;
                 height:100px;
                 color:black;
                 font-size: 60px;
             }
             .bike:hover{
-                background-color: rgba(11, 226.357, 255, 1);
+                background-color: rgb(185, 255, 232);
                 border: thin solid rgb(4, 0, 255);
             }
             .calibrate-button{
-                background-color: rgba(62, 191.251, 250, 1);
+                background-color: aquamarine;
                 height:100px;
                 color:black;
                 font-size: 60px;
             }
             .calibrate-button:hover{
-                background-color: rgba(11, 226.357, 255, 1);
+                background-color: rgb(185, 255, 232);
                 border: thin solid rgb(4, 0, 255);
             }
             .calibrate-button:disabled{
                 background-color: gray;
             }
             .car{
-                background-color: rgba(62, 191.251, 250, 1);
+                background-color: aquamarine;
                 height:100px;
                 color:black;
                 font-size: 60px;
             }
             .car:hover{
-                background-color: rgba(11, 226.357, 255, 1);
+                background-color: rgb(185, 255, 232);
                 border: thin solid rgb(4, 0, 255)
             }
             .allow-button{
@@ -885,7 +1037,7 @@
                 left: 50%;
                 -ms-transform: translate(-50%, -50%);
                 transform: translate(-50%, -50%);
-                background-color: rgba(18, 8, 95, 0.257);
+                background-color: rgb(22, 22, 22);
                 border-radius: 10px;
                 text-align: center;
                 width: 350px;
@@ -920,7 +1072,6 @@
                 margin-top: 100px;
                 bottom: 200px;
                 background-color: #f9c452;
-                background-color: rgba(62, 191.251, 250, 1);
                 color: white;
                 border: thin solid gray;
                 border-radius: 15px;
@@ -933,9 +1084,7 @@
             }
             .done-button:hover{
                 border: thin solid #a98537;
-                border: thin solid #374ea9;
                 background: #e4b34a;
-                background-color: rgba(11, 226.357, 255, 1);
             }
             button{
                 background-color:skyblue;
@@ -997,10 +1146,39 @@
                 -ms-transform: translate(-50%, -20%);
                 transform: translate(-50%, -20%);
             }
-            .tomaru-link-button{
-                background-color: white;
+            .link_toma-ru{
                 color: black;
-                width: 50%
+                background-color: white;
+                width: auto;
+                
+            }
+            .unlink_toma-ru_container{
+                position: absolute;
+                bottom: 10%;
+                right: 1%;
+            }
+            input{
+                margin-bottom: 10px;
+                border-radius: 20px;
+                width: 230px;
+                height: 30px;
+                background-color: black;
+                border-color: gray;
+                border: thin solid gray;
+                color: white;
+                text-align: center;
+                transition: border 0.25s;
+                transition: width, 0.25s;
+            }
+            input:focus{
+                width: 270px;
+                border: thin solid greenyellow;
+            }
+            input::-webkit-outer-spin-button, input::-webkit-inner-spin-button{
+                -webkit-appearance: none;
+            }
+            input[type=number]{
+                -moz-appearance: textfield;
             }
         </style>
     </body>
