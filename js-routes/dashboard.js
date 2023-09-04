@@ -71,13 +71,13 @@ function sendCode(toEmailAddress, username, verificationCode, message) {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'chalinavimailer@gmail.com',
-      pass: 'pqntqgngxjteqber'
+      user: 'mamorukunmailer@gmail.com',
+      pass: 'rztpngleoimehlfm'
     }
   });
 
   const mailOptions = {
-    from: 'chalinavimailer@gmail.com',
+    from: 'mamorukunmailer@gmail.com',
     to: toEmailAddress,
     subject: `Email verification for ${username}`,
     text: `${message}\nHere's the verification code: ${verificationCode}`
@@ -96,13 +96,13 @@ function sendEmail(toEmailAddress, subject, content){
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'chalinavimailer@gmail.com',
-      pass: 'pqntqgngxjteqber'
+      user: 'mamorukunmailer@gmail.com',
+      pass: 'rztpngleoimehlfm'
     }
   });
 
   const mailOptions = {
-    from: 'chalinavimailer@gmail.com',
+    from: 'mamorukunmailer@gmail.com',
     to: toEmailAddress,
     subject: subject,
     text: content,
