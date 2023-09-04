@@ -12,7 +12,7 @@
     </head>
     <body onload="getMap();">
         <button style="margin: 5px; border: none; background-color: white;" onclick="window.location.href = `/menu?token=${window.sessionStorage.token}&lang=${window.sessionStorage.language}`;"><span class="material-symbols-outlined" style="font-size: 1.2rem;">arrow_back</span></button>
-        <div id="myMap" style="width: 100vw; height: 100vh; text-align: center; color: white;"></div>
+        <div id="myMap" style="width: 100vw; height: 100vh; text-align: center; color: black;"></div>
         <script>
             setInterval(()=>{
                 fetch("/updateToken",{
