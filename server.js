@@ -238,7 +238,7 @@ app.get("/deleteLocations", (req, resp) => {
 
 var httpServer = http.createServer(app);
 
-let port = process.env.PORT || 15243;
+let port = process.env.PORT || 10000;
 httpServer.listen(port, () => {
   console.log(`server listening on port ${port}`);
 });
