@@ -73,12 +73,14 @@
             <button onclick="summary();" class="done-button" style="font-size: 2rem; color: black;">Done</button>
             
             <!--Delete on Deployment-->
-            <!--
+            
+            <button onclick="_debug_copy_vehilceDataRetrievalDurations();">Copy vehilceDataRetrievalDurations</button>
             <h4 class="gravityVector">GravityVector: ---</h4>
             <h4 class="accelerationOrientation">Orientation: ---</h4>
             <h4 class="accelerationType">Type: ---</h4>
+            <h4 class="n-vehicles">#Vehicles</h4>
             <h4 class="log"></h4>
-            !-->
+            !
             <!---->
         </div>
         <div class="alert-container" hidden>
@@ -146,6 +148,13 @@
             };
             const suddenBrakeWarningSound = new Audio("/sounds/en/sudden_brake.mp3");
             const rearImpactWarningSound = new Audio("/sounds/en/rear_impact.mp3");
+
+            const _debug_vehilceDataRetrievalDurations = [];
+
+            // ---------------------------------- debug ----------------------------------
+            function _debug_copy_vehilceDataRetrievalDurations(){
+                navigator.clipboard.writeText(JSON.stringify(_debug_vehilceDataRetrievalDurations));
+            }
 
             // ---------------------------------- main process ----------------------------------
             function updateMeasurements(){
@@ -401,7 +410,10 @@
                 if(currentPosition == null){
                     currentPosition = (await getPos()).coords;
                 }
+                const start = Date.now();
                 surroundingVehicles = await (await fetch(`/apps/navigation/getVehicleData?lat=${currentPosition.latitude}&lon=${currentPosition.longitude}`)).json();
+                _debug_vehilceDataRetrievalDurations.push(Date.now() - start);
+                document.querySelector(".n-vehicles").innerHTML = `#Vehicles: ${surroundingVehicles.length}`;
             }
             async function startMain(){
                 const settings = await (await fetch(`/getSettings?username=${window.sessionStorage.username}`)).json();
