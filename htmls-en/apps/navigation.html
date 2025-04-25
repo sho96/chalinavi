@@ -150,10 +150,16 @@
             const rearImpactWarningSound = new Audio("/sounds/en/rear_impact.mp3");
 
             const _debug_vehilceDataRetrievalDurations = [];
+            const _debug_vehicleDataUploadInternalDelays = [];
+            const _debug_vehicleDataRetrievalInternalDelays = [];
 
             // ---------------------------------- debug ----------------------------------
             function _debug_copy_vehilceDataRetrievalDurations(){
-                navigator.clipboard.writeText(JSON.stringify(_debug_vehilceDataRetrievalDurations));
+                navigator.clipboard.writeText(JSON.stringify({
+                    vehicleDataRetrievalDurations: _debug_vehilceDataRetrievalDurations,
+                    vehicleDataUploadInternalDelays: _debug_vehicleDataUploadInternalDelays,
+                    vehicleDataRetrievalInternalDelays: _debug_vehicleDataRetrievalInternalDelays
+                }));
             }
 
             // ---------------------------------- main process ----------------------------------
@@ -325,6 +331,10 @@
                         "Content-Type": "application/json"
                     }
                 })
+                .then(res => res.text())
+                .then(res => {
+                    _debug_vehicleDataUploadInternalDelays.push(res);
+                })
             }
 
             //check for accidents in sight
@@ -414,6 +424,7 @@
                 const start = Date.now();
                 surroundingVehicles = await (await fetch(`/apps/navigation/getVehicleData?lat=${currentPosition.latitude}&lon=${currentPosition.longitude}`)).json();
                 _debug_vehilceDataRetrievalDurations.push(Date.now() - start);
+                _debug_vehicleDataRetrievalInternalDelays.push(surroundingVehicles.internalDelay);
                 document.querySelector(".n-vehicles").innerHTML = `#Vehicles: ${Object.keys(surroundingVehicles).length}`;
             }
             async function startMain(){
