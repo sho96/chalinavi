@@ -231,6 +231,14 @@ app.get("/deleteLocations", (req, resp) => {
 });
 
 //------------------------------ test ------------------------------
+app.get("/delay", (req, resp) => {
+  const timestamp = req.body.timestamp;
+  resp.status(200).json({
+    received: Date.now(),
+    sent: timestamp,
+    delay: Date.now() - timestamp
+  });
+})
 /*app.get("/test", (req ,resp) => {
   resp.status(200).send(readFileSync("./htmls/test/login-test.html", {encoding: "utf-8"}));
 })
