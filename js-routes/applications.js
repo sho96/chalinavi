@@ -117,7 +117,7 @@ app.post("/apps/navigation/sendVehicleData", (req, resp) => {
   writeFileSync("./jsons/activeVehicles.json", JSON.stringify(vehicleDatas));
 
   const _end = performance.now();
-  resp.status(200).send(_end - _start);
+  resp.status(200).send(`${_end - _start}`);
   console.log(
     `/POST /apps/navigation/sendVehicleData ${_end - _start} ${token}`
   );

@@ -74,7 +74,7 @@
             
             <!--Delete on Deployment-->
             
-            <button onclick="_debug_copy_vehilceDataRetrievalDurations();">Copy vehilceDataRetrievalDurations</button>
+            <button onclick="_debug_copy_vehicleDataRetrievalDurations();">Copy vehicleDataRetrievalDurations</button>
             <h4 class="gravityVector">GravityVector: ---</h4>
             <h4 class="accelerationOrientation">Orientation: ---</h4>
             <h4 class="accelerationType">Type: ---</h4>
@@ -149,15 +149,15 @@
             const suddenBrakeWarningSound = new Audio("/sounds/en/sudden_brake.mp3");
             const rearImpactWarningSound = new Audio("/sounds/en/rear_impact.mp3");
 
-            const _debug_vehilceDataRetrievalDurations = [];
+            const _debug_vehicleDataRetrievalDurations = [];
             const _debug_vehicleDataUploadInternalDelays = [];
             const _debug_vehicleDataRetrievalInternalDelays = [];
             const _debug_gpsUpdateDurations = [];
 
             // ---------------------------------- debug ----------------------------------
-            function _debug_copy_vehilceDataRetrievalDurations(){
+            function _debug_copy_vehicleDataRetrievalDurations(){
                 navigator.clipboard.writeText(JSON.stringify({
-                    vehicleDataRetrievalDurations: _debug_vehilceDataRetrievalDurations,
+                    vehicleDataRetrievalDurations: _debug_vehicleDataRetrievalDurations,
                     vehicleDataUploadInternalDelays: _debug_vehicleDataUploadInternalDelays,
                     vehicleDataRetrievalInternalDelays: _debug_vehicleDataRetrievalInternalDelays,
                     gpsUpdateDurations: _debug_gpsUpdateDurations
@@ -425,9 +425,9 @@
                 }
                 const start = Date.now();
                 surroundingVehicles = await (await fetch(`/apps/navigation/getVehicleData?lat=${currentPosition.latitude}&lon=${currentPosition.longitude}`)).json();
-                _debug_vehilceDataRetrievalDurations.push(Date.now() - start);
+                _debug_vehicleDataRetrievalDurations.push(Date.now() - start);
                 _debug_vehicleDataRetrievalInternalDelays.push({n_vehicles: Object.keys(surroundingVehicles).length - 1, internalDelay: surroundingVehicles.internalDelay});
-                document.querySelector(".n-vehicles").innerHTML = `#Vehicles: ${Object.keys(surroundingVehicles).length}`;
+                document.querySelector(".n-vehicles").innerHTML = `#Vehicles: ${Object.keys(surroundingVehicles).length - 1}`;
             }
             async function startMain(){
                 const settings = await (await fetch(`/getSettings?username=${window.sessionStorage.username}`)).json();
