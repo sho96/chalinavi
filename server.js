@@ -232,7 +232,7 @@ app.get("/deleteLocations", (req, resp) => {
 
 //------------------------------ test ------------------------------
 app.get("/delay", (req, resp) => {
-  const timestamp = req.body.timestamp;
+  const timestamp = req.query.timestamp;
   resp.status(200).json({
     received: Date.now(),
     sent: timestamp,
