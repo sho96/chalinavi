@@ -424,7 +424,7 @@
                 const start = Date.now();
                 surroundingVehicles = await (await fetch(`/apps/navigation/getVehicleData?lat=${currentPosition.latitude}&lon=${currentPosition.longitude}`)).json();
                 _debug_vehilceDataRetrievalDurations.push(Date.now() - start);
-                _debug_vehicleDataRetrievalInternalDelays.push(surroundingVehicles.internalDelay);
+                _debug_vehicleDataRetrievalInternalDelays.push({n_vehicles: Object.keys(surroundingVehicles).length - 1, internalDelay: surroundingVehicles.internalDelay});
                 document.querySelector(".n-vehicles").innerHTML = `#Vehicles: ${Object.keys(surroundingVehicles).length}`;
             }
             async function startMain(){
