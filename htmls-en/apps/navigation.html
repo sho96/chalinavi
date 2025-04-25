@@ -319,6 +319,7 @@
                         direction: currentDirection,
                         speed: currentSpeed,
                         type: selectedVehicle,
+                        timestamp: lastPositionUpdate
                     }),
                     headers: {
                         "Content-Type": "application/json"
@@ -551,7 +552,7 @@
             function startSensors(){
                 navigator.geolocation.watchPosition(
                     pos => {
-                        deltaTime = (Date.now() - lastPositionUpdate)/1000
+                        deltaTime = (pos.timestamp - lastPositionUpdate)/1000
                         if(deltaTime < 1){
                             return;
                         }
@@ -590,7 +591,7 @@
                         
                         positionUpdate = true;
                         lastPosition = currentPosition;
-                        lastPositionUpdate = Date.now();
+                        lastPositionUpdate = pos.timestamp;
                         //console.log(accuracy);
                         //console.log(currentDirection);
                         //console.log(`dist: ${distanceFromPreviousMeasurement}`);
