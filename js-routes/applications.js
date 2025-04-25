@@ -91,7 +91,7 @@ app.get("/apps/navigation/getData", (req, resp) => {
   resp.end(JSON.stringify(dataToSend));
 });
 app.post("/apps/navigation/sendVehicleData", (req, resp) => {
-  const _start = Date.now();
+  const _start = performance.now();
 
   token = req.body.token;
   location = req.body.location;
@@ -116,14 +116,14 @@ app.post("/apps/navigation/sendVehicleData", (req, resp) => {
   }
   writeFileSync("./jsons/activeVehicles.json", JSON.stringify(vehicleDatas));
 
-  const _end = Date.now();
+  const _end = performance.now();
   resp.status(200).send(_end - _start);
   console.log(
     `/POST /apps/navigation/sendVehicleData ${_end - _start} ${token}`
   );
 });
 app.get("/apps/navigation/getVehicleData", (req, resp) => {
-  const _start = Date.now();
+  const _start = performance.now();
 
   lat = req.query.lat;
   lon = req.query.lon;
@@ -138,7 +138,7 @@ app.get("/apps/navigation/getVehicleData", (req, resp) => {
       dataToSend[token] = data;
     }
   }
-  const _end = Date.now();
+  const _end = performance.now();
   console.log(`/GET /apps/navigation/getVehicleData ${_end - _start}`);
 
   resp.setHeader("Content-Type", "application/json");
