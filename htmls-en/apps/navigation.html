@@ -152,13 +152,15 @@
             const _debug_vehilceDataRetrievalDurations = [];
             const _debug_vehicleDataUploadInternalDelays = [];
             const _debug_vehicleDataRetrievalInternalDelays = [];
+            const _debug_gpsUpdateDurations = [];
 
             // ---------------------------------- debug ----------------------------------
             function _debug_copy_vehilceDataRetrievalDurations(){
                 navigator.clipboard.writeText(JSON.stringify({
                     vehicleDataRetrievalDurations: _debug_vehilceDataRetrievalDurations,
                     vehicleDataUploadInternalDelays: _debug_vehicleDataUploadInternalDelays,
-                    vehicleDataRetrievalInternalDelays: _debug_vehicleDataRetrievalInternalDelays
+                    vehicleDataRetrievalInternalDelays: _debug_vehicleDataRetrievalInternalDelays,
+                    gpsUpdateDurations: _debug_gpsUpdateDurations
                 }));
             }
 
@@ -608,6 +610,8 @@
                         //console.log(`dist: ${distanceFromPreviousMeasurement}`);
                         //console.log(`speed: ${currentSpeed}`)
                         sendVehicleData();
+
+                        _debug_gpsUpdateDurations.push(deltaTime * 1000);
                     },
                     err => {
                         console.log(err)
