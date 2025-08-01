@@ -308,6 +308,11 @@
                         currentPosition.latitude, currentPosition.longitude,
                         intersection[1], intersection[0]
                     )
+                    selfTimeToIntersection = distanceToIntersection / (currentSpeed * 0.447)
+                    vehicleTimeToIntersection = distanceToIntersection / (vehicle.speed * 0.447)
+                    if(Math.abs(selfTimeToIntersection - vehicleTimeToIntersection) > 1){
+                        continue;
+                    }
                     if(Math.abs(approachingDirection - 270) < 45){
                         //from right
                         console.log("vehicle approaching from right")
